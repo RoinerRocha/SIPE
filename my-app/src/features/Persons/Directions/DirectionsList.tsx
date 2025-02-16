@@ -79,7 +79,7 @@ export default function DirectionsList({ personId }: Props) {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
-                                    ID de del contacto
+                                    ID del contacto
                                 </TableCell>
                                 <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
                                     ID de la persona

@@ -160,15 +160,23 @@ const assetRetirement = {
   generateExcelFile: (id: number) => requests.download(`/RetirementExcelFile/${id}`),
 };
 
-const salesAssest = {
-  saveSalesAsset: (values: any) => requests.post("saveSalesAsset", values),
-  getSalesAssets: () => requests.get("/getSalesAssets"),
-  updateSalesAsset: (assetSaleId: any, assetSaleData: any) =>
-    requests.put(`/salesAssets/${assetSaleId}`, assetSaleData),//metodo comentado en el backend
-  deleteSalesAsset: (id: number) => requests.delete(`deleteSalesAsset/${id}`),//metodo commentado en el backend
-  getAssetSaleByNumeroBoleta: (id: string) => requests.get(`/salesAssets/boleta/${id}`),
-  generateExcelFile: (id: number) => requests.download(`/SalesExcelFile/${id}`),
+const payments = {
+  savePayments: (values: any) => requests.post("createPayment", values),
+  updatePayments: (id_pago: any, paymentData: any) =>
+     requests.put(`/updatePayment/${id_pago}`, paymentData),//metodo comentado en el backend
+  getPaymentsByIdentification: (identificacion: string) => requests.get(`/getPaymentsByPerson/${identificacion}`),
+  getPaymentsByIDPersona: (id_persona: number) => requests.get(`/getPaymentsByIDPerson/${id_persona}`),
+  getPaymentsByIDPago: (id_pago: number) => requests.get(`/getPaymentsByIDPago/${id_pago}`),
+  getAllPayments: () => requests.get("/getAllPayments"),
+  // generateExcelFile: (id: number) => requests.download(`/SalesExcelFile/${id}`),
 };
+
+const observations = {
+  saveObservations: (values: any) => requests.post("createObservations", values),
+  getAllObservations: () => requests.get("/getAllObservations"),
+  getObservationsByPerson: (id_persona: number) => requests.get(`/getObservationsByIDPerson/${id_persona}`),
+  getObservationsByIdentification: (identificacion: string) => requests.get(`/getObservationByPerson/${identificacion}`),
+}
 
 const depreciations = {
   saveDepreciation: (values: any) => requests.post("/saveDepreciation", values),
@@ -177,13 +185,32 @@ const depreciations = {
     requests.put(`depreciations/${depreciationId}`, depreciationData ),
   deleteDepreciation: (id: number) => requests.delete(`/deleteDepreciation/${id}`)
 }
+
+const requirements = {
+  getAllRequirements: () => requests.get("/getAllRequirements"),
+  getRequirementByPerson: (id_persona: number) => requests.get(`/getRequirementsByPerson/${id_persona}`),
+  getRequirementById: (id_requisito: number) => requests.get(`/getRequirementsById/${id_requisito}`),
+  getRequirementByIdentification: (identificacion: string) => requests.get(`/getRequirementsByIdentification/${identificacion}`),
+  updateRequirement: (id_requisito: any, requirementData: any) =>
+    requests.put(`updateRequirements/${id_requisito}`, requirementData ),
+}
 const persons = {
   savePersons: (values: any) => requests.post("/createPerson", values), 
   getPersons: () => requests.get("/getPersons"),
   getPersonById:(id_persona: number) => requests.get(`/getPersonById/${id_persona}`),
+  getPersonByIdentification:(numero_identifiacion: string) => requests.get(`/getPersonByIdentifcation/${numero_identifiacion}`),
   updatePersons: (id_persona: any, personData: any) => 
     requests.put(`updatePersons/${id_persona}`, personData),
   deletePersons: (id_persona: number) => requests.delete(`deletePersons/${id_persona}`),
+}
+
+const family = {
+  saveMembers: (values: any) => requests.post("/createFamilyMember", values), 
+  getMembersByPerson:(idpersona: number) => requests.get(`/getMemberByPerson/${idpersona}`),
+  getMembersByID:(idnucleo: number) => requests.get(`/getMemberByID/${idnucleo}`),
+  updateMember: (idnucleo: any, memberData: any) => 
+    requests.put(`updateMember/${idnucleo}`, memberData),
+  deleteMember: (idnucleo: number) => requests.delete(`deleteMember/${idnucleo}`),
 }
 
 const contacts = {
@@ -217,17 +244,12 @@ const incomes = {
 }
 
 const history ={
-  getHistory: ()=> requests.get("/getHistorial"),
-  uploadDocumentByBoleta: (NumeroBoleta: string, formData: FormData) =>
-    requests.post(`/uploadDocumentByBoleta/${NumeroBoleta}`, formData),
-  searchHistoryByNumeroBoleta: (NumeroBoleta: string) =>
-    requests.get(`/searchHistoryByNumeroBoleta/${NumeroBoleta}`),
-  generateExcelFileByBoletas: async (boletas: string[]) => {
-    const response = await axios.get(`/generateExcelByBoleta/${boletas.join(',')}`, {
-      responseType: 'blob' // Esto asegura que la respuesta sea tratada como un archivo binario
-    });
-    return response.data; // Devuelve el archivo blob
-  },
+  getAllFiles: () => requests.get("/getAllFiles"),
+  getFilesByCode:(codigo: number) => requests.get(`/getFilesByCode/${codigo}`),
+  getFilesByPerson:(identificacion: string) => requests.get(`/getFilesByPerson/${identificacion}`),
+  getHistoryFiles:(codigo: number) => requests.get(`/getHistoryFiles/${codigo}`),
+  updateFiles: (codigo: any, filesData: any) => 
+    requests.put(`updateFiles/${codigo}`, filesData),
 }
 const api = {
   Account,
@@ -240,12 +262,15 @@ const api = {
   serviceLife,
   newAsset,
   assetRetirement,
-  salesAssest,
+  payments,
+  observations,
   depreciations,
   persons,
+  family,
   contacts,
   directions,
   history,
+  requirements,
   incomes,
 };
 

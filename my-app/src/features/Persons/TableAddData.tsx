@@ -9,6 +9,7 @@ import RegisterPerson from './Person/RegisterPerson';
 import RegisterDirections from './Directions/RegisterDirections';
 import RegisterContacts from './Contacts/RegisterContacts';
 import RegisterIncomes from './Incomes/RegisterIncomes';
+import RegisterFamilyMember from './Family/RegisterFamilyMember';
 
 
 interface TabPanelProps {
@@ -71,6 +72,7 @@ export default function TableAddData({ loadAccess }: TableAddDataProps) {
           <Tab label="Direcciones" {...a11yProps(1)} />
           <Tab label="Contactos" {...a11yProps(2)} />
           <Tab label="Ingresos" {...a11yProps(3)} />
+          <Tab label="Grupo Familiar" {...a11yProps(4)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} dir={theme.direction}>
@@ -84,6 +86,9 @@ export default function TableAddData({ loadAccess }: TableAddDataProps) {
       </TabPanel>
       <TabPanel value={value} index={3} dir={theme.direction}>
         <RegisterIncomes loadAccess={loadAccess} ></RegisterIncomes>
+      </TabPanel>
+      <TabPanel value={value} index={4} dir={theme.direction}>
+        <RegisterFamilyMember loadAccess={loadAccess} ></RegisterFamilyMember>
       </TabPanel>
     </Box>
   );

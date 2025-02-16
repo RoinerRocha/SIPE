@@ -13,15 +13,16 @@ import ServiceLife from "../../features/ServiceLife/NewServiceLife"; //lista de 
 import NewAsset from "../../features/NewAsset/newAsset";
 import RegisterAssets from "../../features/NewAsset/registerAsset";
 import AssetRetirement from "../../features/assetRetirement/assetRetirementFrm"; 
-import AssetSales from "../../features/salesAssest/salesAssestFrm";
 import Depreciation from "../../features/depreciations/NewDepreciations";
 import Access from "../../features/Persons/NewPerson";
 import ProtectedRoute from "./PrivateRoute";
 import MapsRoute from "../../features/Maps/Map"
-import History from "../../features/history/History";
 import MapDetails from "../../features/Maps/MapDetails";
+import Payments from "../../features/Payments/payment";
+import Observations from "../../features/observations/Observations";
+import Files from "../../features/history/Files";
+import Requirements from "../../features/requirements/Requirements"
 import AssetRetirementList from "../../features/assetRetirement/assetRetirement";
-import AssetSalesList from "../../features/salesAssest/salesAssest";
 
 export const router = createBrowserRouter([
   {
@@ -34,10 +35,12 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,  // Protege estas rutas
         children: [
           { path: "RegisterAsset", element: <RegisterAssets /> },
-          { path: "AssetSales", element: <AssetSales /> },
           { path: "AssetRetirement", element: <AssetRetirement /> },
-          { path: "history", element: < History/>},
           { path: "Maps", element: <MapsRoute /> },
+          { path: "Payments", element: <Payments /> },
+          { path: "Observations", element: <Observations /> },
+          { path: "Files", element: <Files /> },
+          { path: "Requirements", element: <Requirements /> },
           { path: "Details/:id", element: < MapDetails/>},
           {
             element: <ProtectedRoute requiredProfile="administrador" />,  // Protege las rutas solo para "Maestro"
@@ -47,18 +50,18 @@ export const router = createBrowserRouter([
               { path: "zonas", element: <Zone /> },
               { path: "nuevaZona", element: <NewZone /> },
               { path: "NewAccount", element: <AccountingAccounts /> },
-              { path: "NewStatusAssets", element: <StatusAssets /> },
+              { path: "Observations", element: <Observations /> },
               { path: "NewRoles", element: <Roles /> },
               { path: "NewServiceLife", element: <ServiceLife /> },
               { path: "NewAsset", element: <NewAsset /> },
               { path: "AssetRetirement", element: <AssetRetirement /> },
               { path: "RetirementList", element: <AssetRetirementList />},
-              { path: "AssetSales", element: <AssetSales /> },
-              { path: "AssetSalesList", element: <AssetSalesList />},
               { path: "Depreciation", element: <Depreciation /> },
               { path: "Access", element: <Access /> },
               { path: "Maps", element: <MapsRoute /> },
-              { path: "history", element: < History/>},
+              { path: "Payments", element: <Payments /> },
+              { path: "Files", element: <Files /> },
+              { path: "Requirements", element: <Requirements /> },
               { path: "Details/:id", element: < MapDetails/>},
             ],
           },

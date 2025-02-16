@@ -191,3 +191,26 @@ export const getPersonById = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getPersonByIdentifcation = async (req: Request, res: Response): Promise<void> => {
+  const { numero_identifiacion } = req.params;
+
+  try {
+    const person = await sequelize.query(
+      `EXEC sp_gestion_persona @tipo_accion = 'N', @numero_identifiacion = :numero_identifiacion,  @id_persona = NULL`,
+      {
+        replacements: { numero_identifiacion },
+        type: QueryTypes.SELECT
+      }
+    );
+
+    if (!person.length) {
+      res.status(404).json({ message: "Persona no encontrada" });
+      return;
+    }
+
+    res.status(200).json({ data: person[0] });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};

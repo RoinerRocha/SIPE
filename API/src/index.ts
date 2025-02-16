@@ -10,7 +10,12 @@ import routerStates from "./routes/states.route";
 import routerPersons from "./routes/persons.route";
 import routerDirections from "./routes/directions.route";
 import routerContacts from "./routes/contacts.route";
-import routerIncomes from "./routes/incomes.router"
+import routerIncomes from "./routes/incomes.router";
+import routerPayments from "./routes/payments.route";
+import routerObservations from "./routes/observations.router";
+import routerFamily from "./routes/family.route";
+import routerFiles from "./routes/Files.route";
+import routerRequirements from "./routes/requirements.router";
 import { exceptionMiddleware } from "./Middleware/exceptionMiddleware";
 
 dotenv.config();
@@ -30,6 +35,11 @@ app.use("/api", routerPersons);
 app.use("/api", routerDirections);
 app.use("/api", routerContacts);
 app.use("/api", routerIncomes);
+app.use("/api", routerPayments);
+app.use("/api", routerObservations);
+app.use("/api", routerFamily);
+app.use("/api", routerFiles);
+app.use("/api", routerRequirements);
 
 // Registrar middleware de manejo de errores
 app.use(exceptionMiddleware);

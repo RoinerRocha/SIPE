@@ -8,7 +8,7 @@ export const createIncome = async (req: Request, res: Response): Promise<void> =
   
     try {
       await sequelize.query(
-        `EXEC sp_gestiona_ingresos @accion = 'I',
+        `EXEC sp_gestion_ingresos @accion = 'I',
                                    @id_persona = :id_persona,
                                    @segmento = :segmento,
                                    @subsegmento = :subsegmento,
@@ -48,7 +48,7 @@ export const createIncome = async (req: Request, res: Response): Promise<void> =
   
     try {
       await sequelize.query(
-        `EXEC sp_gestiona_ingresos @accion = 'U',
+        `EXEC sp_gestion_ingresos @accion = 'U',
                                 @id_ingreso = :id_ingreso,
                                 @segmento = :segmento,
                                 @subsegmento = :subsegmento,
@@ -90,7 +90,7 @@ export const createIncome = async (req: Request, res: Response): Promise<void> =
       try {
         // Ejecuta el procedimiento almacenado con el tipo de acción 'D'
         await sequelize.query(
-          `EXEC sp_gestiona_ingresos 
+          `EXEC sp_gestion_ingresos 
           @accion = 'D', 
           @id_ingreso = :id_ingreso`,
           {
@@ -114,7 +114,7 @@ export const createIncome = async (req: Request, res: Response): Promise<void> =
   
     try {
       const contactos = await sequelize.query(
-        `EXEC sp_gestiona_ingresos @accion = 'Q', @id_persona = :id_persona`,
+        `EXEC sp_gestion_ingresos @accion = 'Q', @id_persona = :id_persona`,
         {
           replacements: { id_persona },
           type: QueryTypes.SELECT,
@@ -137,7 +137,7 @@ export const createIncome = async (req: Request, res: Response): Promise<void> =
   
     try {
       const contact = await sequelize.query(
-        `EXEC sp_gestiona_ingresos @accion = 'G', @id_ingreso = :id_ingreso`,
+        `EXEC sp_gestion_ingresos @accion = 'G', @id_ingreso = :id_ingreso`,
         {
           replacements: { id_ingreso },
           type: QueryTypes.SELECT
@@ -158,7 +158,7 @@ export const createIncome = async (req: Request, res: Response): Promise<void> =
   export const getAllIncomes = async (req: Request, res: Response): Promise<void> => {
       try {
           const persons = await sequelize.query(
-              "EXEC sp_gestiona_ingresos @accion = 'S', @id_persona = NULL", // Agregamos @id_persona
+              "EXEC sp_gestion_ingresos @accion = 'S', @id_persona = NULL", // Agregamos @id_persona
               {
                   type: QueryTypes.SELECT, // Tipo de operación SELECT
               }

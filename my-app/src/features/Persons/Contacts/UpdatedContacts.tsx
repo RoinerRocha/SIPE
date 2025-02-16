@@ -24,8 +24,8 @@ export default function UpdateDirection({ contacts, loadAccess }: UpdateContacts
     const [state, setState] = useState<statesModels[]>([]);
 
     const [currentContact, setCurrentContact] = useState<Partial<contactsModel>>(contacts);
-    
-    
+
+
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({
         mode: 'onTouched',
     });
@@ -35,25 +35,25 @@ export default function UpdateDirection({ contacts, loadAccess }: UpdateContacts
             setCurrentContact(contacts);
             console.log("currentDirection set:", contacts);
         }
-        
+
         const fetchData = async () => {
-          try {
-            const [userData, stateData] = await Promise.all([
-              api.Account.getAllUser(),
-              api.States.getStates(),
-            ]);
-                   // Se verifica que las respuestas sean arrays antes de actualizar el estado
-            if (userData && Array.isArray(userData.data)) {
-                setUsers(userData.data);
-            } else {
-                console.error("User data is not an array", userData);
-            }
-            if (stateData && Array.isArray(stateData.data)) {
-                setState(stateData.data);
-            } else {
-                console.error("States data is not an array", stateData);
-            }
-           
+            try {
+                const [userData, stateData] = await Promise.all([
+                    api.Account.getAllUser(),
+                    api.States.getStates(),
+                ]);
+                // Se verifica que las respuestas sean arrays antes de actualizar el estado
+                if (userData && Array.isArray(userData.data)) {
+                    setUsers(userData.data);
+                } else {
+                    console.error("User data is not an array", userData);
+                }
+                if (stateData && Array.isArray(stateData.data)) {
+                    setState(stateData.data);
+                } else {
+                    console.error("States data is not an array", stateData);
+                }
+
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -69,8 +69,8 @@ export default function UpdateDirection({ contacts, loadAccess }: UpdateContacts
                 toast.success('Contacto actualizada con éxito.');
                 loadAccess();
             } catch (error) {
-              console.error(error);
-              toast.error('Error al actualizar el contacto.');
+                console.error(error);
+                toast.error('Error al actualizar el contacto.');
             }
         }
     };
@@ -96,29 +96,29 @@ export default function UpdateDirection({ contacts, loadAccess }: UpdateContacts
             <Box p={2}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                        <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="contacto-label">Nivel de Estudios</InputLabel>
-                                    <Select
-                                        labelId="contacto-label"
-                                        {...register('tipo_contacto', { required: 'Se necesita el tipo de estudio' })}
-                                        name="tipo_contacto"
-                                        value={currentContact.tipo_contacto?.toString() || ''}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <Select
+                                    labelId="contacto-label"
+                                    {...register('tipo_contacto', { required: 'Se necesita el tipo de estudio' })}
+                                    name="tipo_contacto"
+                                    value={currentContact.tipo_contacto?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="RESIDENCIAL">RESIDENCIAL</MenuItem>
-                                        <MenuItem value="CELULAR">CELULAR</MenuItem>
-                                        <MenuItem value="EMAIL">EMAIL</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="RESIDENCIAL">RESIDENCIAL</MenuItem>
+                                    <MenuItem value="CELULAR">CELULAR</MenuItem>
+                                    <MenuItem value="EMAIL">EMAIL</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
@@ -143,13 +143,13 @@ export default function UpdateDirection({ contacts, loadAccess }: UpdateContacts
                                     label="Seleccionar Estado"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(state) && state.map((states) => (
                                         <MenuItem key={states.id} value={states.estado}>
@@ -185,7 +185,7 @@ export default function UpdateDirection({ contacts, loadAccess }: UpdateContacts
                             />
                         </Grid>
                     </Grid>
-                    <Button  variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
+                    <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
                         Actualizar
                     </Button>
                 </form>

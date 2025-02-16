@@ -8,7 +8,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
   
     try {
       await sequelize.query(
-        `EXEC sp_gestiona_contactos @accion = 'I',
+        `EXEC sp_gestion_contactos @accion = 'I',
                                    @id_persona = :id_persona,
                                    @tipo_contacto = :tipo_contacto,
                                    @identificador = :identificador,
@@ -34,7 +34,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
   
     try {
       await sequelize.query(
-        `EXEC sp_gestiona_contactos @accion = 'U',
+        `EXEC sp_gestion_contactos @accion = 'U',
                                    @id_contacto = :id_contacto,
                                    @tipo_contacto = :tipo_contacto,
                                    @identificador = :identificador,
@@ -59,7 +59,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
       try {
         // Ejecuta el procedimiento almacenado con el tipo de acción 'D'
         await sequelize.query(
-          `EXEC sp_gestiona_contactos 
+          `EXEC sp_gestion_contactos 
           @accion = 'D', 
           @id_contacto = :id_contacto`,
           {
@@ -83,7 +83,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
   
     try {
       const contactos = await sequelize.query(
-        `EXEC sp_gestiona_contactos @accion = 'Q', @id_persona = :id_persona`,
+        `EXEC sp_gestion_contactos @accion = 'Q', @id_persona = :id_persona`,
         {
           replacements: { id_persona },
           type: QueryTypes.SELECT,
@@ -106,7 +106,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
   
     try {
       const contact = await sequelize.query(
-        `EXEC sp_gestiona_contactos @accion = 'G', @id_contacto = :id_contacto`,
+        `EXEC sp_gestion_contactos @accion = 'G', @id_contacto = :id_contacto`,
         {
           replacements: { id_contacto },
           type: QueryTypes.SELECT
@@ -127,7 +127,7 @@ export const createContact = async (req: Request, res: Response): Promise<void> 
   export const getAllContacts = async (req: Request, res: Response): Promise<void> => {
       try {
           const persons = await sequelize.query(
-              "EXEC sp_gestiona_contactos @accion = 'S', @id_persona = NULL", // Agregamos @id_persona
+              "EXEC sp_gestion_contactos @accion = 'S', @id_persona = NULL", // Agregamos @id_persona
               {
                   type: QueryTypes.SELECT, // Tipo de operación SELECT
               }

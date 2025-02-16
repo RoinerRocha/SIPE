@@ -9,6 +9,7 @@ import UpdatePerson from './Person/UpdatePerson';
 import DirectionsList from './Directions/DirectionsList';
 import ContactList from './Contacts/ContactsList';
 import IncomeList from './Incomes/IncomeList';
+import FamilyList from './Family/FamilyList';
 import {personModel} from '../../app/models/persons'
 
 interface TabPanelProps {
@@ -73,6 +74,7 @@ export default function TableUpdateData({ person, loadAccess }: TableUpdateDataP
           <Tab label="Direcciones" {...a11yProps(1)} />
           <Tab label="Contactos" {...a11yProps(2)} />
           <Tab label="Ingresos" {...a11yProps(3)} />
+          <Tab label="Grupo Familiar" {...a11yProps(4)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} dir={theme.direction}>
@@ -86,6 +88,9 @@ export default function TableUpdateData({ person, loadAccess }: TableUpdateDataP
       </TabPanel>
       <TabPanel value={value} index={3} dir={theme.direction}>
         <IncomeList personId={person.id_persona}></IncomeList>
+      </TabPanel>
+      <TabPanel value={value} index={4} dir={theme.direction}>
+        <FamilyList personId={person.id_persona}></FamilyList>
       </TabPanel>
     </Box>
   );
