@@ -4,7 +4,7 @@ export interface requirementsModel {
     tipo_requisito: number;
     estado: string;
     fecha_vigencia: Date;
-    fecha_vecimiento: Date;
+    fecha_vencimiento: Date;
     observaciones: string;
     identificacion?: string;
   }

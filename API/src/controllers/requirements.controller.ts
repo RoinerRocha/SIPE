@@ -3,7 +3,7 @@ import { QueryTypes } from "sequelize";
 import sequelize from "../database/SqlServer";
 
 export const createRequirements = async (req: Request, res: Response): Promise<void> => {
-    const { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vecimiento, observaciones } = req.body;
+    const { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vencimiento, observaciones } = req.body;
 
     try {
         await sequelize.query(
@@ -12,10 +12,10 @@ export const createRequirements = async (req: Request, res: Response): Promise<v
                                    @tipo_requisito = :tipo_requisito,
                                    @estado = :estado,
                                    @fecha_vigencia = :fecha_vigencia,
-                                   @fecha_vecimiento = :fecha_vecimiento,
+                                   @fecha_vencimiento = :fecha_vencimiento,
                                    @observaciones = :observaciones`,
             {
-                replacements: { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vecimiento, observaciones },
+                replacements: { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vencimiento, observaciones },
                 type: QueryTypes.INSERT,
             }
         );
@@ -31,7 +31,7 @@ export const updateRequirements = async (req: Request, res: Response): Promise<v
     const {
         estado,
         fecha_vigencia,
-        fecha_vecimiento,
+        fecha_vencimiento,
         observaciones,
     } = req.body;
 
@@ -42,14 +42,14 @@ export const updateRequirements = async (req: Request, res: Response): Promise<v
                                 @identificacion = NULL,
                                 @estado = :estado,
                                 @fecha_vigencia = :fecha_vigencia,
-                                @fecha_vecimiento = :fecha_vecimiento,
+                                @fecha_vencimiento = :fecha_vencimiento,
                                 @observaciones = :observaciones`,
             {
                 replacements: {
                     id_requisito,
                     estado,
                     fecha_vigencia,
-                    fecha_vecimiento,
+                    fecha_vencimiento,
                     observaciones
                 },
                 type: QueryTypes.UPDATE
@@ -88,27 +88,26 @@ export const getRequirementsByPerson = async (req: Request, res: Response): Prom
 
 export const getRequirementsById = async (req: Request, res: Response): Promise<void> => {
     const { id_requisito } = req.params;
-
+  
     try {
-        const miembro = await sequelize.query(
-            `EXEC sp_gestion_requisitos @accion = 'S', @id_requisito = :id_requisito, @identificacion = NULL`,
-            {
-                replacements: { id_requisito },
-                type: QueryTypes.SELECT
-            }
-        );
-
-        if (!miembro.length) {
-            res.status(404).json({ message: "Requisito no encontrado" });
-            return;
+      const contact = await sequelize.query(
+        `EXEC sp_gestion_requisitos @accion = 'S', @id_requisito = :id_requisito`,
+        {
+          replacements: { id_requisito },
+          type: QueryTypes.SELECT
         }
-
-        // Devuelve todos los resultados en lugar del primero
-        res.status(200).json({ data: miembro });
+      );
+  
+      if (!contact.length) {
+        res.status(404).json({ message: "Requisito no encontrada" });
+        return;
+      }
+  
+      res.status(200).json({ data: contact[0] });
     } catch (error: any) {
-        res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
-};
+  };
 
 export const getRequirementsByIdentification = async (req: Request, res: Response): Promise<void> => {
     const { identificacion } = req.params;
@@ -148,3 +147,19 @@ export const getAllRequirements = async (req: Request, res: Response): Promise<v
         res.status(500).json({ error: error.message });
     }
 };
+
+export const getAllBaseRequirements = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const requirement = await sequelize.query(
+            "EXEC sp_gestion_requisitos @accion = 'X'", // Agregamos @id_persona
+            {
+                type: QueryTypes.SELECT, // Tipo de operación SELECT
+            }
+        );
+
+        res.status(200).json({ message: "Listado de requisitos base exitoso", data: requirement });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
+

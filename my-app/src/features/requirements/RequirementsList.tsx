@@ -6,11 +6,15 @@ import {
 } from "@mui/material";
 
 import { personModel } from "../../app/models/persons";
+import RequirementRegister from "./RegisterRequirement";
 import { useState, useEffect } from "react";
 import api from "../../app/api/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { requirementsModel } from "../../app/models/requirementsModel";
+import UpdateRequirements from "./UpdatedRequirements";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 interface RequirementProps {
     requirements: requirementsModel[];
@@ -96,6 +100,26 @@ export default function RequirementList({ requirements: requirements, setRequire
         }
     };
 
+    const handleDownloadPDF = () => {
+        const doc = new jsPDF();
+        doc.text("Lista de Requisitos", 14, 10);
+
+        autoTable(doc, {
+            startY: 20,
+            head: [["ID Persona", "Tipo", "Estado", "Fecha Vigencia", "Fecha Vencimiento", "Observaciones"]],
+            body: requirements.map(req => [
+                req.id_persona,
+                req.tipo_requisito,
+                req.estado,
+                new Date(req.fecha_vigencia).toLocaleDateString(),
+                new Date(req.fecha_vencimiento).toLocaleDateString(),
+                req.observaciones || "N/A"
+            ]),
+        });
+
+        doc.save("Requisitos.pdf");
+    };
+
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -112,7 +136,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                     color="primary"
                     onClick={handleAddObservation}
                 >
-                    Agregar Pagos
+                    Agregar Requerimientos
                 </Button>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
@@ -141,6 +165,15 @@ export default function RequirementList({ requirements: requirements, setRequire
                     value={personName}
                     InputProps={{ readOnly: true }}
                 />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleDownloadPDF}
+                >
+                    Descargar PDF
+                </Button>
             </Grid>
             <TableContainer component={Paper}>
                 {loading ? (
@@ -179,7 +212,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                                     <TableCell align="center">{requirement.tipo_requisito}</TableCell>
                                     <TableCell align="center">{requirement.estado}</TableCell>
                                     <TableCell align="center">{new Date(requirement.fecha_vigencia).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{new Date(requirement.fecha_vecimiento).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center">{new Date(requirement.fecha_vencimiento).toLocaleDateString()}</TableCell>
                                     <TableCell align="center">{requirement.observaciones}</TableCell>
                                     <TableCell align="center">
                                         <Button
@@ -212,7 +245,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                 maxWidth="lg" // Ajusta el tamaño máximo del diálogo. Opciones: 'xs', 'sm', 'md', 'lg', 'xl'.
                 fullWidth
             >
-                <DialogTitle>Agregar Pagos</DialogTitle>
+                <DialogTitle>Agregar Requerimiento</DialogTitle>
                 <DialogContent
                     sx={{
                         display: 'flex', // Por ejemplo, para organizar los elementos internos.
@@ -223,7 +256,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}
                 >
-                    {/* <PaymentRegister identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0}  ></PaymentRegister> */}
+                    <RequirementRegister identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0}  ></RequirementRegister>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddDialog(false)}>Cerrar</Button>
@@ -245,7 +278,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                         width: '1200px', // Ajusta la altura según necesites.
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}>
-                    {/* {selectedPayment && (<UpdatePayment PaymentsData={selectedPayment} />)} */}
+                    {selectedRequirement && (<UpdateRequirements requirementsData={selectedRequirement} />)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>

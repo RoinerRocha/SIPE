@@ -21,7 +21,8 @@ import MapDetails from "../../features/Maps/MapDetails";
 import Payments from "../../features/Payments/payment";
 import Observations from "../../features/observations/Observations";
 import Files from "../../features/history/Files";
-import Requirements from "../../features/requirements/Requirements"
+import Requirements from "../../features/requirements/Requirements";
+import Referrals from "../../features/referrals/Referral";
 import AssetRetirementList from "../../features/assetRetirement/assetRetirement";
 
 export const router = createBrowserRouter([
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
           { path: "Observations", element: <Observations /> },
           { path: "Files", element: <Files /> },
           { path: "Requirements", element: <Requirements /> },
+          { path: "Referrals", element: <Referrals /> },
           { path: "Details/:id", element: < MapDetails/>},
           {
             element: <ProtectedRoute requiredProfile="administrador" />,  // Protege las rutas solo para "Maestro"
@@ -62,6 +64,7 @@ export const router = createBrowserRouter([
               { path: "Payments", element: <Payments /> },
               { path: "Files", element: <Files /> },
               { path: "Requirements", element: <Requirements /> },
+              { path: "Referrals", element: <Referrals /> },
               { path: "Details/:id", element: < MapDetails/>},
             ],
           },

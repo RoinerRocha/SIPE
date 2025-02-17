@@ -16,7 +16,9 @@ import routerObservations from "./routes/observations.router";
 import routerFamily from "./routes/family.route";
 import routerFiles from "./routes/Files.route";
 import routerRequirements from "./routes/requirements.router";
+import routerReferrals from "./routes/referrals.route";
 import { exceptionMiddleware } from "./Middleware/exceptionMiddleware";
+import path from "path";
 
 dotenv.config();
 
@@ -40,6 +42,16 @@ app.use("/api", routerObservations);
 app.use("/api", routerFamily);
 app.use("/api", routerFiles);
 app.use("/api", routerRequirements);
+app.use("/api", routerReferrals);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
+
 
 // Registrar middleware de manejo de errores
 app.use(exceptionMiddleware);

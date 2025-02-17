@@ -11,4 +11,5 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(exceptionMiddleware);
 
+
 export default app

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createRequirements, getRequirementsByPerson,getRequirementsById, getRequirementsByIdentification, updateRequirements, getAllRequirements } from "../controllers/requirements.controller";
+import { createRequirements, getAllBaseRequirements,  getRequirementsByPerson,getRequirementsById, getRequirementsByIdentification, updateRequirements, getAllRequirements } from "../controllers/requirements.controller";
 
 const router = Router();
 
@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 
 router.post("/createRequirements", createRequirements);
 router.get("/getAllRequirements", getAllRequirements);
+router.get("/getAllBaseRequirements", getAllBaseRequirements);
 router.get("/getRequirementsByPerson/:id_persona", getRequirementsByPerson);
 router.get("/getRequirementsById/:id_requisito", getRequirementsById);
 router.get("/getRequirementsByIdentification/:identificacion", getRequirementsByIdentification);

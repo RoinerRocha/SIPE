@@ -187,13 +187,24 @@ const depreciations = {
 }
 
 const requirements = {
+  saveRequirements: (values: any) => requests.post("/createRequirements", values),
   getAllRequirements: () => requests.get("/getAllRequirements"),
+  getAllBaseRequirements: () => requests.get("/getAllBaseRequirements"),
   getRequirementByPerson: (id_persona: number) => requests.get(`/getRequirementsByPerson/${id_persona}`),
   getRequirementById: (id_requisito: number) => requests.get(`/getRequirementsById/${id_requisito}`),
   getRequirementByIdentification: (identificacion: string) => requests.get(`/getRequirementsByIdentification/${identificacion}`),
   updateRequirement: (id_requisito: any, requirementData: any) =>
     requests.put(`updateRequirements/${id_requisito}`, requirementData ),
 }
+
+const referrals = {
+  saveReferrals: (values: any) => requests.post("/createReferral", values),
+  getAllReferrals: () => requests.get("/getAllReferrals"),
+  getReferralsById: (id_remision: number) =>  requests.get(`/getReferralsById/${id_remision}`),
+  updateReferrals: (id_remision: any, referralsData: any) =>
+    requests.put(`updateReferrals/${id_remision}`, referralsData),
+}
+
 const persons = {
   savePersons: (values: any) => requests.post("/createPerson", values), 
   getPersons: () => requests.get("/getPersons"),
@@ -271,6 +282,7 @@ const api = {
   directions,
   history,
   requirements,
+  referrals,
   incomes,
 };
 

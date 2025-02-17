@@ -1,9 +1,9 @@
 import sql from "mssql";
 
 const dbSettings = {
-    user: "sa",
-    password: "Admin12345",
-    server: "FREDDY",
+    user: "rocha",
+    password: "Hares7S9Q0L1",
+    server: "srv-sipe.database.windows.net",
     database: "SIPE",
     options: {
         encrypt: false,

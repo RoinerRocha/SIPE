@@ -127,7 +127,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
     { title: t('menu-lista-activos'), path: "/NewAsset" },
     { title: t('menu-baja-activos'), path: "/Requirements" },
     { title: t('menu-venta-activos'), path: "/Payments" },
-    { title: t('menu-depreciacion-activos'), path: "/NewServiceLife" },
+    { title: t('menu-depreciacion-activos'), path: "/Referrals" },
     { title: t('menu-Mapas'), path: "/Maps" },
   ];
 
@@ -142,6 +142,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
       { title: t('menu-lista-ventas'), path: "/Payments" },
       { title: t('menu-lista-bajas'), path: "/Requirements" },
       { title: t('menu-estado-activos'), path: "/Observations" },
+      { title: t('menu-depreciacion-activos'), path: "/Referrals" },
   ]);
 
   return (
