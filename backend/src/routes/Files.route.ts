@@ -5,6 +5,7 @@ import {
     getHistoryFiles,
     getFilesByPerson,
     getAllFiles,
+    getFilesByIdPerson,
 } from "../controllers/files.controller";
 
 const router = Router();
@@ -16,6 +17,7 @@ router.get("/", (req, res) => {
 
 router.get("/getAllFiles", getAllFiles);
 router.get("/getFilesByCode/:codigo", getFilesByCode);
+router.get("/getFilesByIdPerson/:id_persona", getFilesByIdPerson);
 router.get("/getHistoryFiles/:codigo", getHistoryFiles);
 router.get("/getFilesByPerson/:identificacion", getFilesByPerson);
 router.put("/updateFiles/:codigo", updateFiles);

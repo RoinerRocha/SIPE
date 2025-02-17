@@ -118,17 +118,16 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
   const midLinks = [
     { title: t('menu-dashboard'), path: "/" },
     { title: t('menu-historial'), path: "/Files" },
-    { title: t('menu-zonas'), path: "/zonas" },
+    // { title: t('menu-zonas'), path: "/zonas" },
     { title: t('menu-usuarios'), path: "/users" },
-    { title: t('menu-cuentas-contables'), path: "/NewAccount" },
+    // { title: t('menu-cuentas-contables'), path: "/NewAccount" },
     { title: t('menu-estado-activos'), path: "/Observations" },
     { title: t('menu-accesos'), path: "/Access" },
     { title: t('menu-perfiles'), path: "/NewRoles" },
-    { title: t('menu-lista-activos'), path: "/NewAsset" },
+    // { title: t('menu-lista-activos'), path: "/NewAsset" },
     { title: t('menu-baja-activos'), path: "/Requirements" },
     { title: t('menu-venta-activos'), path: "/Payments" },
     { title: t('menu-depreciacion-activos'), path: "/Referrals" },
-    { title: t('menu-Mapas'), path: "/Maps" },
   ];
 
   // Filtrar enlaces en función del perfil del usuario
@@ -138,7 +137,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
         link.title === t('menu-historial') ||
         link.title === t('menu-Mapas') 
   ).concat([
-      { title: t('menu-ingreso-activos'), path: "/RegisterAsset" },
+      // { title: t('menu-ingreso-activos'), path: "/RegisterAsset" },
       { title: t('menu-lista-ventas'), path: "/Payments" },
       { title: t('menu-lista-bajas'), path: "/Requirements" },
       { title: t('menu-estado-activos'), path: "/Observations" },

@@ -205,6 +205,14 @@ const referrals = {
     requests.put(`updateReferrals/${id_remision}`, referralsData),
 }
 
+const referralsDetails = {
+  saveReferralDetails: (values: any) => requests.post("/createReferralDetails", values),
+  getReferralDetailById: (id_dremision: number) =>  requests.get(`/getReferralsDetailsById/${id_dremision}`),
+  getReferralDetailByIdRemision: (id_remision: number) =>  requests.get(`/getReferralsDetailsByIdRemision/${id_remision}`),
+  updateReferralsDetails: (id_dremision: any, referralDetailsData: any) =>
+    requests.put(`updateReferralsDetails/${id_dremision}`, referralDetailsData),
+}
+
 const persons = {
   savePersons: (values: any) => requests.post("/createPerson", values), 
   getPersons: () => requests.get("/getPersons"),
@@ -257,6 +265,7 @@ const incomes = {
 const history ={
   getAllFiles: () => requests.get("/getAllFiles"),
   getFilesByCode:(codigo: number) => requests.get(`/getFilesByCode/${codigo}`),
+  getFilesByIdPerson:(id_persona: number) => requests.get(`/getFilesByIdPerson/${id_persona}`),
   getFilesByPerson:(identificacion: string) => requests.get(`/getFilesByPerson/${identificacion}`),
   getHistoryFiles:(codigo: number) => requests.get(`/getHistoryFiles/${codigo}`),
   updateFiles: (codigo: any, filesData: any) => 
@@ -283,6 +292,7 @@ const api = {
   history,
   requirements,
   referrals,
+  referralsDetails,
   incomes,
 };
 

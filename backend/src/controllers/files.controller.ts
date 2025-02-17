@@ -108,6 +108,30 @@ export const getHistoryFiles = async (req: Request, res: Response): Promise<void
     }
 };
 
+export const getFilesByIdPerson = async (req: Request, res: Response): Promise<void> => {
+    const { id_persona } = req.params;
+
+    try {
+        const miembro = await sequelize.query(
+            `EXEC sp_gestion_expediente @tipo = 'P', @id_persona = :id_persona, @codigo = NULL, @identificacion = NULL`,
+            {
+                replacements: { id_persona },
+                type: QueryTypes.SELECT
+            }
+        );
+
+        if (!miembro.length) {
+            res.status(404).json({ message: "Expediente no encontrado" });
+            return;
+        }
+
+        // Devuelve todos los resultados en lugar del primero
+        res.status(200).json({ data: miembro });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 
 export const getFilesByCode = async (req: Request, res: Response): Promise<void> => {
     const { codigo } = req.params;

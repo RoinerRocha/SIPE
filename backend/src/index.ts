@@ -17,6 +17,7 @@ import routerFamily from "./routes/family.route";
 import routerFiles from "./routes/Files.route";
 import routerRequirements from "./routes/requirements.router";
 import routerReferrals from "./routes/referrals.route";
+import routerReferralsDetails from "./routes/referralsDetails.router";
 import { exceptionMiddleware } from "./Middleware/exceptionMiddleware";
 import path from "path";
 
@@ -43,6 +44,7 @@ app.use("/api", routerFamily);
 app.use("/api", routerFiles);
 app.use("/api", routerRequirements);
 app.use("/api", routerReferrals);
+app.use("/api", routerReferralsDetails);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
