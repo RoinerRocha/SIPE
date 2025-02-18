@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+import tedious from "tedious";
 
 
 dotenv.config();
@@ -11,6 +12,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST as string, 
     dialect: "mssql", 
+    dialectModule: tedious,
     dialectOptions: {
       options: {
         encrypt: true,
