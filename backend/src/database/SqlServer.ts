@@ -5,6 +5,8 @@ import tedious from "tedious";
 
 dotenv.config();
 
+const isWindows = process.platform === "win32";
+
 const sequelize = new Sequelize(
   process.env.DB_NAME as string, 
   process.env.DB_USER as string, 
