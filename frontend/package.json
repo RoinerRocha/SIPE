@@ -74,6 +74,6 @@
     "@types/i18next": "^13.0.0",
     "@types/node": "^20.12.13",
     "@types/react-i18next": "^8.1.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.2.2"
   }
 }
