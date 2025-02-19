@@ -1,6 +1,7 @@
 import { Typography, Box, Grid, Stack } from "@mui/material";
 import ChartUserByCountry from './components/ChartUserByCountry';
 import PageViewsBarChart from './components/PageViewsBarChart';
+import FilesViewsBarChart from './components/FilesViewsBarChart';
 import SessionsChart from './components/SessionsChart';
 import CustomizedDataGrid from './components/CustomizedDataGrid';
 import StatCard, { StatCardProps } from './components/StatCard';
@@ -110,11 +111,15 @@ export default function HomePage() {
             <StatCard {...card} />
           </Grid>
         ))}
-      <Grid item xs={12} md={6}>
-          <SessionsChart />
-      </Grid>
+      {/* <Grid item xs={12} md={6}>
+          <SessionsChart /> 
+      </Grid> */}
+      {/* numero de expedientes por persona y usuario*/}
       <Grid item xs={12} md={6}>
           <PageViewsBarChart />
+      </Grid>
+      <Grid item xs={12} md={6}>
+          <FilesViewsBarChart />
       </Grid>
       </Grid>
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
