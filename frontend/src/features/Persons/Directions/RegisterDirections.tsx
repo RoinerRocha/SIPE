@@ -76,18 +76,8 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
 
     useEffect(() => {
         const fetchProvinces = async () => {
-            try {
-                const response = await api.Ubications.getAllProvinces();
-                if (response && Array.isArray(response.data.data)) {
-                    setProvinces(response.data.data); // Cambiar aquí
-                } else {
-                    console.error("La respuesta no contiene datos válidos", response.data);
-                    setProvinces([]);
-                }
-            } catch (error) {
-                console.error("Error fetching provinces:", error);
-                setProvinces([]);
-            }
+            const response = await api.Ubications.getAllProvinces();
+            setProvinces(response.data);
         };
         fetchProvinces();
     }, []);
@@ -255,12 +245,20 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
                                 {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={3}>
                             <FormControl fullWidth>
                                 <InputLabel id="provincia-label">Provincia</InputLabel>
                                 <Select
                                     labelId="provincia-label"
                                     value={selectedProvince || ""}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
                                     {...register("provincia", {
                                         required: "Seleccione una provincia",
                                         onChange: (event) => handleProvinceChange(event)
@@ -275,12 +273,20 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
                                 {errors.provincia && <FormHelperText>{errors.provincia.message?.toString()}</FormHelperText>}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={3}>
                             <FormControl fullWidth disabled={!selectedProvince}>
                                 <InputLabel id="canton-label">Cantón</InputLabel>
                                 <Select
                                     labelId="canton-label"
                                     value={selectedCanton || ""}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
                                     {...register("canton", {
                                         required: "Seleccione un cantón",
                                         onChange: (event) => handleCantonChange(event),
@@ -297,12 +303,20 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
                                 )}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={3}>
                             <FormControl fullWidth disabled={!selectedCanton}>
                                 <InputLabel id="distrito-label">Distrito</InputLabel>
                                 <Select
                                     labelId="distrito-label"
                                     value={selectedDistrict || ""}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
                                     {...register("distrito", {
                                         required: "Seleccione un distrito",
                                         onChange: (event) => handleDistrictChange(event),
@@ -319,11 +333,19 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
                                 )}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={3}>
                             <FormControl fullWidth disabled={!selectedDistrict}>
                                 <InputLabel id="barrio-label">Barrio</InputLabel>
                                 <Select
                                     labelId="barrio-label"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
                                     {...register("barrio", {
                                         required: "Seleccione un barrio",
                                         onChange: (event) => handleNeighborhoodChange(event),
