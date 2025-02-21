@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { QueryTypes } from "sequelize";
+import fs from "fs";
+import path from "path";
 import sequelize from "../database/SqlServer";
 
 // Crear una nueva persona
@@ -58,6 +60,11 @@ export const createPerson = async (req: Request, res: Response): Promise<void> =
         type: QueryTypes.INSERT
       }
     );
+    const documentosPath = path.join(__dirname, "../../Documentos", id_persona.toString());
+
+    if (!fs.existsSync(documentosPath)) {
+      fs.mkdirSync(documentosPath, { recursive: true });
+    }
 
     res.status(201).json({ message: "Persona creada exitosamente" });
   } catch (error: any) {
