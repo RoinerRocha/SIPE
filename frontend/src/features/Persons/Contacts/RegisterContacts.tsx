@@ -5,24 +5,24 @@ import { Button, Card, FormControl, FormHelperText, InputLabel, MenuItem, Select
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, Form, useForm } from 'react-hook-form';
 import api from '../../../app/api/api';
-import { statesModels } from '../../../app/models/states'; 
+import { statesModels } from '../../../app/models/states';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { useEffect, useState } from 'react';
-import {contactsModel} from '../../../app/models/contactsModel';
+import { contactsModel } from '../../../app/models/contactsModel';
 import { personModel } from '../../../app/models/persons';
 
 interface AddSContactProps {
     loadAccess: () => void;
 }
 
-export default function RegisterContacts({loadAccess}: AddSContactProps ) {
+export default function RegisterContacts({ loadAccess }: AddSContactProps) {
     const navigate = useNavigate();
     const [state, setState] = useState<statesModels[]>([]);
     const [person, setPerson] = useState<personModel[]>([]);
 
-    const [newContact, setNewContact ] = useState<Partial<contactsModel>>({
-        id_persona: 0,
+    const [newContact, setNewContact] = useState<Partial<contactsModel>>({
+        id_persona: parseInt(localStorage.getItem('generatedUserId') || "0") || undefined,
         tipo_contacto: "",
         identificador: "",
         estado: "",
@@ -60,34 +60,34 @@ export default function RegisterContacts({loadAccess}: AddSContactProps ) {
 
     const onSubmit = async (data: FieldValues) => {
         try {
-          await api.contacts.saveContacts(data);
-          toast.success("Contacto registrado exitosamente");
-          loadAccess();
+            await api.contacts.saveContacts(data);
+            toast.success("Contacto registrado exitosamente");
+            loadAccess();
         } catch (error) {
-          console.error(error);
-          toast.error("Error al registrar el contacto");
+            console.error(error);
+            toast.error("Error al registrar el contacto");
         }
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setNewContact((prevAsset) => ({
-          ...prevAsset,
-          [name]: value,
+            ...prevAsset,
+            [name]: value,
         }));
     };
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
-            const name = event.target.name as keyof contactsModel;
-            const value = event.target.value;
-            setNewContact((prevAsset) => ({
-              ...prevAsset,
-              [name]: value,
-            }));
+        const name = event.target.name as keyof contactsModel;
+        const value = event.target.value;
+        setNewContact((prevAsset) => ({
+            ...prevAsset,
+            [name]: value,
+        }));
     };
 
     return (
         <Card>
-            <Box  p={2}>
+            <Box p={2}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -100,15 +100,16 @@ export default function RegisterContacts({loadAccess}: AddSContactProps ) {
                                     value={newContact.id_persona?.toString() || ""}
                                     onChange={handleSelectChange}
                                     label="Seleccionar el id de la persona"
+                                    disabled={!!newContact.id_persona}
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(person) && person.map((persons) => (
                                         <MenuItem key={persons.id_persona} value={persons.id_persona}>
@@ -119,17 +120,43 @@ export default function RegisterContacts({loadAccess}: AddSContactProps ) {
                                 {newContact.id_persona !== undefined && newContact.id_persona >= 0 && (
                                     <FormHelperText>
                                         <Card>
-                                        <p><strong>Tipo Identificación:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.tipo_identificacion || "N/A"}</p>
-                                        <p><strong>Número Identificación:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.numero_identifiacion || "N/A"}</p>
-                                        <p><strong>Fecha de Nacimiento:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.fecha_nacimiento.toString() || "N/A"}</p>
-                                        <p><strong>Género:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.genero || "N/A"}</p>
-                                        <p><strong>Estado Civil:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.estado_civil || "N/A"}</p>
-                                        <p><strong>Nacionalidad:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.nacionalidad || "N/A"}</p>
-                                        <p><strong>Fecha de Registro:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.fecha_registro.toString() || "N/A"}</p>
-                                        <p><strong>Usuario Registro:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.usuario_registro || "N/A"}</p>
-                                        <p><strong>Nivel de Estudios:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.nivel_estudios || "N/A"}</p>
-                                        <p><strong>Asesor:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.asesor || "N/A"}</p>
-                                        <p><strong>Estado:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.estado || "N/A"}</p>
+                                            <Grid container spacing={2} direction="row">
+                                                <Grid item>
+                                                    <p><strong>Tipo Identificación:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.tipo_identificacion || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Número Identificación:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.numero_identifiacion || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Fecha de Nacimiento:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.fecha_nacimiento.toString() || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Género:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.genero || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Estado Civil:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.estado_civil || "N/A"}</p>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid container spacing={2} direction="row">
+                                                <Grid item>
+                                                    <p><strong>Nacionalidad:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.nacionalidad || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Fecha de Registro:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.fecha_registro.toString() || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Usuario Registro:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.usuario_registro || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Nivel de Estudios:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.nivel_estudios || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Asesor:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.asesor || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Estado:</strong> {person.find((p) => p.id_persona === newContact.id_persona)?.estado || "N/A"}</p>
+                                                </Grid>
+                                            </Grid>
                                         </Card>
                                     </FormHelperText>
                                 )}
@@ -139,26 +166,26 @@ export default function RegisterContacts({loadAccess}: AddSContactProps ) {
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="contacto-label">Tipo de Contacto</InputLabel>
-                                    <Select
-                                        labelId="contacto-label"
-                                        {...register('tipo_contacto', { required: 'Se necesita el tipo de contacto' })}
-                                        name="tipo_contacto"
-                                        value={newContact.tipo_contacto?.toString() || ''}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <Select
+                                    labelId="contacto-label"
+                                    {...register('tipo_contacto', { required: 'Se necesita el tipo de contacto' })}
+                                    name="tipo_contacto"
+                                    value={newContact.tipo_contacto?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="RESIDENCIAL">RESIDENCIAL</MenuItem>
-                                        <MenuItem value="CELULAR">CELULAR</MenuItem>
-                                        <MenuItem value="EMAIL">EMAIL</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="RESIDENCIAL">RESIDENCIAL</MenuItem>
+                                    <MenuItem value="CELULAR">CELULAR</MenuItem>
+                                    <MenuItem value="EMAIL">EMAIL</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
@@ -183,13 +210,13 @@ export default function RegisterContacts({loadAccess}: AddSContactProps ) {
                                     label="Seleccionar Estado"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(state) && state.map((states) => (
                                         <MenuItem key={states.id} value={states.estado}>
@@ -231,7 +258,7 @@ export default function RegisterContacts({loadAccess}: AddSContactProps ) {
                                 }}
                             />
                         </Grid>
-                        <Button  variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
+                        <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
                             Agregar
                         </Button>
                     </Grid>

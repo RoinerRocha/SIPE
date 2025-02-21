@@ -104,7 +104,6 @@ export default function FilesViewsBarChart() {
                             data: filesPerUser,
                             stack: 'A',
                             valueFormatter: (value) => `${value} Expedientes`,
-                            mark: true,
                         },
                     ]}
                     height={300}

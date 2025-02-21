@@ -21,7 +21,7 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
     const [person, setPerson] = useState<personModel[]>([]);
 
     const [newIncome, setNewIncome ] = useState<Partial<incomesModel>>({
-        id_persona: 0,
+        id_persona: parseInt(localStorage.getItem('generatedUserId') || "0") || undefined,
         segmento: "",
         subsegmento: "",
         patrono: "",
@@ -112,6 +112,7 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                                     value={newIncome.id_persona?.toString() || ""}
                                     onChange={handleSelectChange}
                                     label="Seleccionar el id de la persona"
+                                    disabled={!!newIncome.id_persona}
                                     MenuProps={{
                                         PaperProps: {
                                           style: {
@@ -131,17 +132,43 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                                 {newIncome.id_persona !== undefined && newIncome.id_persona >= 0 && (
                                     <FormHelperText>
                                         <Card>
-                                        <p><strong>Tipo Identificación:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.tipo_identificacion || "N/A"}</p>
-                                        <p><strong>Número Identificación:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.numero_identifiacion || "N/A"}</p>
-                                        <p><strong>Fecha de Nacimiento:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.fecha_nacimiento.toString() || "N/A"}</p>
-                                        <p><strong>Género:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.genero || "N/A"}</p>
-                                        <p><strong>Estado Civil:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.estado_civil || "N/A"}</p>
-                                        <p><strong>Nacionalidad:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.nacionalidad || "N/A"}</p>
-                                        <p><strong>Fecha de Registro:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.fecha_registro.toString() || "N/A"}</p>
-                                        <p><strong>Usuario Registro:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.usuario_registro || "N/A"}</p>
-                                        <p><strong>Nivel de Estudios:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.nivel_estudios || "N/A"}</p>
-                                        <p><strong>Asesor:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.asesor || "N/A"}</p>
-                                        <p><strong>Estado:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.estado || "N/A"}</p>
+                                            <Grid container spacing={2} direction="row">
+                                                <Grid item>
+                                                    <p><strong>Tipo Identificación:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.tipo_identificacion || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Número Identificación:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.numero_identifiacion || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Fecha de Nacimiento:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.fecha_nacimiento.toString() || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Género:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.genero || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Estado Civil:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.estado_civil || "N/A"}</p>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid container spacing={2} direction="row">
+                                                <Grid item>
+                                                    <p><strong>Nacionalidad:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.nacionalidad || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Fecha de Registro:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.fecha_registro.toString() || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Usuario Registro:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.usuario_registro || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Nivel de Estudios:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.nivel_estudios || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Asesor:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.asesor || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Estado:</strong> {person.find((p) => p.id_persona === newIncome.id_persona)?.estado || "N/A"}</p>
+                                                </Grid>
+                                            </Grid>
                                         </Card>
                                     </FormHelperText>
                                 )}

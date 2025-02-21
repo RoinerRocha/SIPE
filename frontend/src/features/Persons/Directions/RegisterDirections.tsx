@@ -5,24 +5,26 @@ import { Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, FormCo
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, Form, useForm } from 'react-hook-form';
 import api from '../../../app/api/api';
-import { statesModels } from '../../../app/models/states'; 
-import { personModel } from '../../../app/models/persons'; 
+import { statesModels } from '../../../app/models/states';
+import { personModel } from '../../../app/models/persons';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { useEffect, useState } from 'react';
-import {directionsModel} from '../../../app/models/directionsModel';
+import { useAppDispatch, useAppSelector } from "../../../store/configureStore";
+import { directionsModel } from '../../../app/models/directionsModel';
 
 interface AddDirectionProps {
     loadAccess: () => void;
 }
 
-export default function RegisterDirections({loadAccess}: AddDirectionProps) {
+export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
     const navigate = useNavigate();
+    const { user } = useAppSelector(state => state.account);
     const [state, setState] = useState<statesModels[]>([]);
     const [person, setPerson] = useState<personModel[]>([]);
     const [openDetailDialog, setOpenDetailDialog] = useState(false);
-    const [newDirection, setNewDirection ] = useState<Partial<directionsModel>>({
-        id_persona: 0,
+    const [newDirection, setNewDirection] = useState<Partial<directionsModel>>({
+        id_persona: parseInt(localStorage.getItem('generatedUserId') || "0") || undefined,
         provincia: "",
         canton: "",
         distrito: "",
@@ -61,27 +63,27 @@ export default function RegisterDirections({loadAccess}: AddDirectionProps) {
     }, []);
     const onSubmit = async (data: FieldValues) => {
         try {
-          await api.directions.saveDirections(data);
-          toast.success("Direccion creada exitosamente");
-          loadAccess();
+            await api.directions.saveDirections(data);
+            toast.success("Direccion creada exitosamente");
+            loadAccess();
         } catch (error) {
-          console.error(error);
-          toast.error("Error al crear la direccion");
+            console.error(error);
+            toast.error("Error al crear la direccion");
         }
     };
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setNewDirection((prevAsset) => ({
-          ...prevAsset,
-          [name]: value,
+            ...prevAsset,
+            [name]: value,
         }));
     };
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
         const name = event.target.name as keyof directionsModel;
         const value = event.target.value;
         setNewDirection((prevAsset) => ({
-          ...prevAsset,
-          [name]: value,
+            ...prevAsset,
+            [name]: value,
         }));
     };
 
@@ -100,15 +102,16 @@ export default function RegisterDirections({loadAccess}: AddDirectionProps) {
                                     value={newDirection.id_persona?.toString() || ""}
                                     onChange={handleSelectChange}
                                     label="Seleccionar el id de la persona"
+                                    disabled={!!newDirection.id_persona}
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(person) && person.map((persons) => (
                                         <MenuItem key={persons.id_persona} value={persons.id_persona}>
@@ -119,17 +122,43 @@ export default function RegisterDirections({loadAccess}: AddDirectionProps) {
                                 {newDirection.id_persona !== undefined && newDirection.id_persona >= 0 && (
                                     <FormHelperText>
                                         <Card>
-                                        <p><strong>Tipo Identificación:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.tipo_identificacion || "N/A"}</p>
-                                        <p><strong>Número Identificación:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.numero_identifiacion || "N/A"}</p>
-                                        <p><strong>Fecha de Nacimiento:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.fecha_nacimiento.toString() || "N/A"}</p>
-                                        <p><strong>Género:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.genero || "N/A"}</p>
-                                        <p><strong>Estado Civil:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.estado_civil || "N/A"}</p>
-                                        <p><strong>Nacionalidad:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.nacionalidad || "N/A"}</p>
-                                        <p><strong>Fecha de Registro:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.fecha_registro.toString() || "N/A"}</p>
-                                        <p><strong>Usuario Registro:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.usuario_registro || "N/A"}</p>
-                                        <p><strong>Nivel de Estudios:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.nivel_estudios || "N/A"}</p>
-                                        <p><strong>Asesor:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.asesor || "N/A"}</p>
-                                        <p><strong>Estado:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.estado || "N/A"}</p>
+                                            <Grid container spacing={2} direction="row">
+                                                <Grid item>
+                                                    <p><strong>Tipo Identificación:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.tipo_identificacion || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Número Identificación:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.numero_identifiacion || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Fecha de Nacimiento:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.fecha_nacimiento.toString() || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Género:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.genero || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Estado Civil:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.estado_civil || "N/A"}</p>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid container spacing={2} direction="row">
+                                                <Grid item>
+                                                    <p><strong>Nacionalidad:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.nacionalidad || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Fecha de Registro:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.fecha_registro.toString() || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Usuario Registro:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.usuario_registro || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Nivel de Estudios:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.nivel_estudios || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Asesor:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.asesor || "N/A"}</p>
+                                                </Grid>
+                                                <Grid item>
+                                                    <p><strong>Estado:</strong> {person.find((p) => p.id_persona === newDirection.id_persona)?.estado || "N/A"}</p>
+                                                </Grid>
+                                            </Grid>
                                         </Card>
                                     </FormHelperText>
                                 )}
@@ -195,27 +224,27 @@ export default function RegisterDirections({loadAccess}: AddDirectionProps) {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl fullWidth>
-                                <InputLabel id="direccion-label">Nivel de Estudios</InputLabel>
-                                    <Select
-                                        labelId="direccion-label"
-                                        {...register('tipo_direccion', { required: 'Se necesita el tipo de estudio' })}
-                                        name="tipo_direccion"
-                                        value={newDirection.tipo_direccion?.toString() || ''}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <InputLabel id="direccion-label">Tipo de Direccion</InputLabel>
+                                <Select
+                                    labelId="direccion-label"
+                                    {...register('tipo_direccion', { required: 'Se necesita el tipo de estudio' })}
+                                    name="tipo_direccion"
+                                    value={newDirection.tipo_direccion?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="DOMICILIO">DOMICILIO</MenuItem>
-                                        <MenuItem value="TRABAJO">TRABAJO</MenuItem>
-                                        <MenuItem value="OFICINA">OFICINA</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="DOMICILIO">DOMICILIO</MenuItem>
+                                    <MenuItem value="TRABAJO">TRABAJO</MenuItem>
+                                    <MenuItem value="OFICINA">OFICINA</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
@@ -230,13 +259,13 @@ export default function RegisterDirections({loadAccess}: AddDirectionProps) {
                                     label="Seleccionar Estado"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(state) && state.map((states) => (
                                         <MenuItem key={states.id} value={states.estado}>
@@ -247,10 +276,10 @@ export default function RegisterDirections({loadAccess}: AddDirectionProps) {
                                 {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
                             </FormControl>
                         </Grid>
-                        <Button  variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
+                        <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
                             Agregar
                         </Button>
-                    </Grid> 
+                    </Grid>
                 </form>
             </Box>
         </Card>

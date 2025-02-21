@@ -2,6 +2,7 @@ import {
     Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow,
     TableBody, Button, Dialog, DialogActions, DialogContent,
     DialogTitle, TablePagination, TextField,
+    Box,
 } from "@mui/material";
 import { personModel } from "../../app/models/persons";
 import { useState, useEffect } from "react";
@@ -207,7 +208,7 @@ export default function PersonList({
             };
 
             // Generar cada tabla con validación de datos
-            generarTabla("Núcleo Familiar", [ "Cédula", "Nombre", "Fecha Nacimiento", "Relación", "Ingresos", "Observaciones"],
+            generarTabla("Núcleo Familiar", ["Cédula", "Nombre", "Fecha Nacimiento", "Relación", "Ingresos", "Observaciones"],
                 familyDetails.length > 0 ? familyDetails.map(fam => [
                     fam.cedula,
                     fam.nombre_completo,
@@ -273,7 +274,7 @@ export default function PersonList({
 
 
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
@@ -321,97 +322,97 @@ export default function PersonList({
                         <TableRow>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 ID de la persona
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Tipo de identificacion
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Numero de identificacion
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Nombre
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Primer Apellido
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Segundo Apellido
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Fecha de Nacimiento
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Genero
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Estado Civil
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Nacionalidad
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Fecha de Registro
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Usuario
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Nivel de estudio
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Asesor
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 Estado
                             </TableCell>
                             <TableCell
                                 align="center"
-                                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
                                 {t('Control-ColumnaConfiguracion')}
                             </TableCell>
@@ -436,30 +437,34 @@ export default function PersonList({
                                 <TableCell align="center">{person.asesor}</TableCell>
                                 <TableCell align="center">{person.estado}</TableCell>
                                 <TableCell align="center">
-                                    <Button
-                                        variant="contained"
-                                        color="info"
-                                        sx={{ margin: "5px" }}
-                                        onClick={() => handleEdit(person.id_persona)}
-                                    >
-                                        {t('Control-BotonEditar')}
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        sx={{ margin: "5px" }}
-                                        onClick={() => handleDelete(person.id_persona)}
-                                    >
-                                        {t('Control-BotonEliminar')}
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="success"
-                                        sx={{ margin: "5px" }}
-                                        onClick={() => handleDownloadPDF(person.id_persona)} // Aquí pasamos el id_remision
-                                    >
-                                        Descargar PDF
-                                    </Button>
+                                    <Box display="flex" flexDirection="column" alignItems="center">
+                                        <Box display="flex">
+                                            <Button
+                                                variant="contained"
+                                                color="info"
+                                                sx={{ margin: "5px", fontSize: "0.65rem" }}
+                                                onClick={() => handleEdit(person.id_persona)}
+                                            >
+                                                {t('Control-BotonEditar')}
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                sx={{ margin: "5px", fontSize: "0.65rem" }}
+                                                onClick={() => handleDelete(person.id_persona)}
+                                            >
+                                                Desactivar Persona
+                                            </Button>
+                                        </Box>
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            sx={{ margin: "5px", fontSize: "0.65rem" }}
+                                            onClick={() => handleDownloadPDF(person.id_persona)} // Aquí pasamos el id_remision
+                                        >
+                                            Descargar PDF
+                                        </Button>
+                                    </Box>
                                 </TableCell>
                             </TableRow>
                         ))}

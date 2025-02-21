@@ -88,6 +88,17 @@ const Zones = {
   getZonaById: (id: number) => requests.get(`/zonas/${id}`),
 };
 
+const Ubications = {
+  getAllProvinces: () => requests.get("/getAllProvince"),
+  getCantonByProvince: (provincia: number) =>
+    requests.get(`/getCantonByProvince/${provincia}`),
+  getDistrictByProvinciaCanton: (provincia: number, canton: number) =>
+    requests.get(`/getDistrictByProvinciaCanton/${provincia}/${canton}`),
+  getNeighborhoodByProvinciaCantonDistrict: (
+    provincia: number, canton: number, distrito: number) =>
+    requests.get( `/getNeighborhoodByProvinciaCantonDistrict/${provincia}/${canton}/${distrito}`),
+}
+
 const AcountingAccounts = {
   saveAccountingAccount: (values: any) =>
     requests.post("saveAccountingAccount", values),
@@ -295,6 +306,7 @@ const api = {
   referrals,
   referralsDetails,
   incomes,
+  Ubications,
 };
 
 export default api;
