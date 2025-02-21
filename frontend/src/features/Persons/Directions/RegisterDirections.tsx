@@ -12,6 +12,10 @@ import { t } from 'i18next';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from "../../../store/configureStore";
 import { directionsModel } from '../../../app/models/directionsModel';
+import { provinceModel } from '../../../app/models/provinceModel';
+import { cantonModel } from '../../../app/models/cantonModel';
+import { districtModel } from '../../../app/models/districtModel';
+import { neighborhoodModel } from '../../../app/models/neighborhoodModel';
 
 interface AddDirectionProps {
     loadAccess: () => void;
@@ -23,6 +27,14 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
     const [state, setState] = useState<statesModels[]>([]);
     const [person, setPerson] = useState<personModel[]>([]);
     const [openDetailDialog, setOpenDetailDialog] = useState(false);
+    const [provinces, setProvinces] = useState<provinceModel[]>([]);
+    const [cantons, setCantons] = useState<cantonModel[]>([]);
+    const [districts, setDistricts] = useState<districtModel[]>([]);
+    const [neighborhoods, setNeighborhoods] = useState<neighborhoodModel[]>([]);
+
+    const [selectedProvince, setSelectedProvince] = useState<number | null>(null);
+    const [selectedCanton, setSelectedCanton] = useState<number | null>(null);
+    const [selectedDistrict, setSelectedDistrict] = useState<number | null>(null);
     const [newDirection, setNewDirection] = useState<Partial<directionsModel>>({
         id_persona: parseInt(localStorage.getItem('generatedUserId') || "0") || undefined,
         provincia: "",
@@ -33,7 +45,7 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
         tipo_direccion: "",
         estado: "",
     });
-    const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid, isSubmitSuccessful } } = useForm({
+    const { register, handleSubmit, setValue, setError, formState: { isSubmitting, errors, isValid, isSubmitSuccessful } } = useForm({
         mode: 'onTouched'
     });
 
@@ -61,6 +73,61 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const fetchProvinces = async () => {
+            try {
+                const response = await api.Ubications.getAllProvinces();
+                if (response && Array.isArray(response.data.data)) {
+                    setProvinces(response.data.data); // Cambiar aquí
+                } else {
+                    console.error("La respuesta no contiene datos válidos", response.data);
+                    setProvinces([]);
+                }
+            } catch (error) {
+                console.error("Error fetching provinces:", error);
+                setProvinces([]);
+            }
+        };
+        fetchProvinces();
+    }, []);
+
+    useEffect(() => {
+        if (selectedProvince) {
+            api.Ubications.getCantonByProvince(selectedProvince).then((response) => {
+                setCantons(response.data);
+                setDistricts([]);
+                setNeighborhoods([]);
+                setSelectedCanton(null);
+                setSelectedDistrict(null);
+            });
+        }
+    }, [selectedProvince]);
+
+
+    useEffect(() => {
+        if (selectedProvince && selectedCanton) {
+            api.Ubications.getDistrictByProvinciaCanton(selectedProvince, selectedCanton).then((response) => {
+                setDistricts(response.data);
+                setNeighborhoods([]);
+                setSelectedDistrict(null);
+            });
+        }
+    }, [selectedCanton]);
+
+    useEffect(() => {
+        if (selectedProvince && selectedCanton && selectedDistrict) {
+            api.Ubications.getNeighborhoodByProvinciaCantonDistrict(
+                selectedProvince,
+                selectedCanton,
+                selectedDistrict
+            ).then((response) => {
+                setNeighborhoods(response.data);
+            });
+        }
+    }, [selectedDistrict]);
+
+
     const onSubmit = async (data: FieldValues) => {
         try {
             await api.directions.saveDirections(data);
@@ -85,6 +152,29 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
             ...prevAsset,
             [name]: value,
         }));
+    };
+
+    const handleProvinceChange = (event: SelectChangeEvent<number>) => {
+        const provinceId = Number(event.target.value);
+        setSelectedProvince(provinceId);
+        setValue("provincia", provinceId);
+    };
+
+    const handleCantonChange = (event: SelectChangeEvent<number>) => {
+        const cantonId = Number(event.target.value);
+        setSelectedCanton(cantonId);
+        setValue("canton", cantonId);
+    };
+
+    const handleDistrictChange = (event: SelectChangeEvent<number>) => {
+        const districtId = Number(event.target.value);
+        setSelectedDistrict(districtId);
+        setValue("distrito", districtId);
+    };
+
+    const handleNeighborhoodChange = (event: SelectChangeEvent<number>) => {
+        const neighborhoodId = Number(event.target.value);
+        setValue("barrio", neighborhoodId);
     };
 
     return (
@@ -165,45 +255,90 @@ export default function RegisterDirections({ loadAccess }: AddDirectionProps) {
                                 {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('provincia', { required: 'Se necesita la provincia' })}
-                                name="provincia"
-                                label="Provincia"
-                                value={newDirection.provincia?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="provincia-label">Provincia</InputLabel>
+                                <Select
+                                    labelId="provincia-label"
+                                    value={selectedProvince || ""}
+                                    {...register("provincia", {
+                                        required: "Seleccione una provincia",
+                                        onChange: (event) => handleProvinceChange(event)
+                                    })}
+                                >
+                                    {provinces.map((province) => (
+                                        <MenuItem key={province.provincia} value={province.provincia}>
+                                            {province.nombre}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {errors.provincia && <FormHelperText>{errors.provincia.message?.toString()}</FormHelperText>}
+                            </FormControl>
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('canton', { required: 'Se necesita el canton' })}
-                                name="canton"
-                                label="Canton"
-                                value={newDirection.canton?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                        <Grid item xs={12}>
+                            <FormControl fullWidth disabled={!selectedProvince}>
+                                <InputLabel id="canton-label">Cantón</InputLabel>
+                                <Select
+                                    labelId="canton-label"
+                                    value={selectedCanton || ""}
+                                    {...register("canton", {
+                                        required: "Seleccione un cantón",
+                                        onChange: (event) => handleCantonChange(event),
+                                    })}
+                                >
+                                    {cantons.map((canton) => (
+                                        <MenuItem key={canton.canton} value={canton.canton}>
+                                            {canton.nombre}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {errors.canton && (
+                                    <FormHelperText>{errors.canton.message?.toString()}</FormHelperText>
+                                )}
+                            </FormControl>
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('distrito', { required: 'Se necesita el distrito' })}
-                                name="distrito"
-                                label="Distrito"
-                                value={newDirection.distrito?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                        <Grid item xs={12}>
+                            <FormControl fullWidth disabled={!selectedCanton}>
+                                <InputLabel id="distrito-label">Distrito</InputLabel>
+                                <Select
+                                    labelId="distrito-label"
+                                    value={selectedDistrict || ""}
+                                    {...register("distrito", {
+                                        required: "Seleccione un distrito",
+                                        onChange: (event) => handleDistrictChange(event),
+                                    })}
+                                >
+                                    {districts.map((district) => (
+                                        <MenuItem key={district.distrito} value={district.distrito}>
+                                            {district.nombre}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {errors.distrito && (
+                                    <FormHelperText>{errors.distrito.message?.toString()}</FormHelperText>
+                                )}
+                            </FormControl>
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('barrio', { required: 'Se necesita el barrio' })}
-                                name="barrio"
-                                label="Barrio"
-                                value={newDirection.barrio?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                        <Grid item xs={12}>
+                            <FormControl fullWidth disabled={!selectedDistrict}>
+                                <InputLabel id="barrio-label">Barrio</InputLabel>
+                                <Select
+                                    labelId="barrio-label"
+                                    {...register("barrio", {
+                                        required: "Seleccione un barrio",
+                                        onChange: (event) => handleNeighborhoodChange(event),
+                                    })}
+                                >
+                                    {neighborhoods.map((neighborhood) => (
+                                        <MenuItem key={neighborhood.barrio} value={neighborhood.barrio}>
+                                            {neighborhood.nombre}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {errors.barrio && (
+                                    <FormHelperText>{errors.barrio.message?.toString()}</FormHelperText>
+                                )}
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
