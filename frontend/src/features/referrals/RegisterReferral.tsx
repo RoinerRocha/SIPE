@@ -133,6 +133,7 @@ export default function ReferralRegister() {
                                     }}
                                 >
                                     {/* Bancos Públicos */}
+                                    <MenuItem value="Banhvi">Banhvi</MenuItem>
                                     <MenuItem value="Banco Nacional de Costa Rica">Banco Nacional de Costa Rica</MenuItem>
                                     <MenuItem value="Banco de Costa Rica">Banco de Costa Rica</MenuItem>
                                     <MenuItem value="Banco Popular y de Desarrollo Comunal">Banco Popular y de Desarrollo Comunal</MenuItem>
