@@ -15,14 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllFiles = exports.getFilesByCode = exports.getFilesByIdPerson = exports.getHistoryFiles = exports.getFilesByPerson = exports.updateFiles = void 0;
 const sequelize_1 = require("sequelize");
 const SqlServer_1 = __importDefault(require("../database/SqlServer"));
+// @id_persona = NULL,
+// @identificacion = NULL
 const updateFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { codigo } = req.params;
-    const { tipo_expediente, estado, fecha_creacion, fecha_emitido, fecha_enviado_entidad, ubicacion, etiqueta, entidad, observaciones, remitente, asignadoa, } = req.body;
+    const { estado, fecha_creacion, fecha_emitido, fecha_enviado_entidad, ubicacion, etiqueta, entidad, observaciones, remitente, asignadoa, tipo_expediente, numero_bono, proposito_bono, monto_bono, contrato_CFIA, acta_traslado, fecha_envio_acta, estado_emitido, fecha_aprobado, folio_real, numero_plano, area_construccion, ingeniero_responsable, fiscal, monto_compra_venta, monto_presupuesto, monto_solucion, monto_comision, monto_costo_terreno, monto_honorarios_abogado, monto_patrimonio_familiar, monto_poliza, monto_fiscalizacion, monto_kilometraje, monto_afiliacion, monto_trabajo_social, monto_construccion, constructora_asignada, boleta, acuerdo_aprobacion, } = req.body;
     try {
         yield SqlServer_1.default.query(`EXEC sp_gestion_expediente @tipo = 'U',
-                                @id_persona = NULL,
-                                @identificacion = NULL,
-                                @tipo_expediente = :tipo_expediente,
                                 @codigo = :codigo,
                                 @estado = :estado,
                                 @fecha_creacion = :fecha_creacion,
@@ -33,10 +32,39 @@ const updateFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                                 @entidad = :entidad,
                                 @observaciones = :observaciones,
                                 @remitente = :remitente,
-                                @asignadoa = :asignadoa`, {
+                                @asignadoa = :asignadoa,
+                                @tipo_expediente = :tipo_expediente,
+                                @numero_bono = :numero_bono,
+                                @proposito_bono = :proposito_bono,
+                                @monto_bono = :monto_bono,
+                                @contrato_CFIA = :contrato_CFIA,
+                                @acta_traslado = :acta_traslado,
+                                @fecha_envio_acta = :fecha_envio_acta,
+                                @estado_emitido = :estado_emitido,
+                                @fecha_aprobado = :fecha_aprobado,
+                                @folio_real = :folio_real,
+                                @numero_plano = :numero_plano,
+                                @area_construccion = :area_construccion,
+                                @ingeniero_responsable = :ingeniero_responsable,
+                                @fiscal = :fiscal,
+                                @monto_compra_venta = :monto_compra_venta,
+                                @monto_presupuesto = :monto_presupuesto,
+                                @monto_solucion = :monto_solucion,
+                                @monto_comision = :monto_comision,
+                                @monto_costo_terreno = :monto_costo_terreno,
+                                @monto_honorarios_abogado = :monto_honorarios_abogado,
+                                @monto_patrimonio_familiar = :monto_patrimonio_familiar,
+                                @monto_poliza = :monto_poliza,
+                                @monto_fiscalizacion = :monto_fiscalizacion,
+                                @monto_kilometraje = :monto_kilometraje,
+                                @monto_afiliacion = :monto_afiliacion,
+                                @monto_trabajo_social = :monto_trabajo_social,
+                                @monto_construccion = :monto_construccion,
+                                @constructora_asignada = :constructora_asignada,
+                                @boleta = :boleta,
+                                @acuerdo_aprobacion = :acuerdo_aprobacion`, {
             replacements: {
                 codigo,
-                tipo_expediente,
                 estado,
                 fecha_creacion,
                 fecha_emitido,
@@ -46,7 +74,37 @@ const updateFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 entidad,
                 observaciones,
                 remitente,
-                asignadoa
+                asignadoa,
+                tipo_expediente,
+                numero_bono,
+                proposito_bono,
+                monto_bono,
+                contrato_CFIA,
+                acta_traslado,
+                fecha_envio_acta,
+                estado_emitido,
+                fecha_aprobado,
+                folio_real,
+                numero_plano,
+                area_construccion,
+                ingeniero_responsable,
+                fiscal,
+                monto_compra_venta,
+                monto_presupuesto,
+                monto_solucion,
+                monto_comision,
+                monto_costo_terreno,
+                monto_honorarios_abogado,
+                monto_patrimonio_familiar,
+                monto_poliza,
+                monto_fiscalizacion,
+                monto_kilometraje,
+                monto_afiliacion,
+                monto_trabajo_social,
+                monto_construccion,
+                constructora_asignada,
+                boleta,
+                acuerdo_aprobacion
             },
             type: sequelize_1.QueryTypes.UPDATE
         });
