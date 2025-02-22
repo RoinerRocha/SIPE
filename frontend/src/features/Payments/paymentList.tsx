@@ -239,7 +239,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                 maxWidth="lg" // Ajusta el tamaño máximo del diálogo. Opciones: 'xs', 'sm', 'md', 'lg', 'xl'.
                 fullWidth
             >
-                <DialogTitle>Agregar Pagos</DialogTitle>
+                <DialogTitle>Agregar Pago o Deposito</DialogTitle>
                 <DialogContent
                     sx={{
                         display: 'flex', // Por ejemplo, para organizar los elementos internos.

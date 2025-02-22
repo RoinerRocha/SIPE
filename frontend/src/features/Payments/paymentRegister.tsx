@@ -129,7 +129,10 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
 
     return (
         <Card>
-            <Box p={2}>
+            <Box p={2} sx={{
+                maxHeight: '65vh', // Limita la altura a un 80% de la altura visible
+                overflowY: 'auto', // Habilita scroll vertical
+            }}>
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>

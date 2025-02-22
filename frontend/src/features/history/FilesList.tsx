@@ -11,6 +11,10 @@ import api from "../../app/api/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import UpdateFiles from "./UpdatedFiles";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+// import * as XLSX from 'xlsx';
+
 
 
 interface FilesProps {
@@ -80,12 +84,132 @@ export default function FilesList({ files, setFiles }: FilesProps) {
         }
     };
 
-    const formatDecimal = (value: any): string => {
-        const numberValue = parseFloat(value);
+    const formatDecimal = (value: number | string): string => {
+        const numberValue = parseFloat(value as string);
         return isNaN(numberValue) ? "0.00" : numberValue.toFixed(2);
     };
 
+    // const formatDecimal = (value: any): string => {
+    //     const numberValue = parseFloat(value);
+    //     return isNaN(numberValue) ? "0.00" : numberValue.toFixed(2);
+    // };
 
+
+    const handleDownloadExcel = async (files: filesModel[]): Promise<void> => {
+        if (!files || files.length === 0) {
+            toast.error("No hay expedientes disponibles para exportar.");
+            return;
+        }
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Expedientes");
+
+        // Definir las cabeceras
+        const columns = [
+            "Código", "ID de la persona", "Identificación", "Nombre completo", "Provincia", "Cantón", "Distrito", "Barrio", "Otras señas",
+            "Estado", "Fecha de creación", "Fecha de emisión", "Fecha envío entidad", "Ubicación", "Etiqueta", "Entidad", "Observaciones",
+            "Remitente", "Asignado(a)", "Tipo de expediente", "Número de bono", "Propósito bono", "Monto bono", "Contrato CFIA",
+            "Acta traslado", "Fecha envío acta", "Estado emitido", "Fecha aprobado", "Folio real", "Número plano", "Área construcción",
+            "Ingeniero responsable", "Fiscal", "Monto compra venta", "Monto presupuesto", "Monto solución", "Monto comisión",
+            "Monto costo terreno", "Monto honorarios abogado", "Monto patrimonio familiar", "Monto póliza", "Monto fiscalización",
+            "Monto kilometraje", "Monto afiliación", "Monto trabajo social", "Monto construcción", "Constructora asignada", "Boleta",
+            "Acuerdo aprobación", "Monto de Estudio Social", "Monto de Aporte Familiar", "Patrimonio Familiar", "Monto de Gastos de Formalización",
+            "Monto de Aporte de Gastos", "Monto de Diferencia de Aporte", "Monto de Prima de Seguros"
+        ];
+
+        worksheet.columns = columns.map((header) => ({
+            header,
+            width: 20,
+        }));
+
+        // Aplicar estilos al encabezado
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.fill = {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "1E3A8A" }, // Azul oscuro
+            };
+            cell.font = {
+                color: { argb: "FFFFFF" }, // Blanco
+                bold: true,
+                size: 12,
+            };
+            cell.alignment = { vertical: "middle", horizontal: "center" };
+            cell.border = {
+                top: { style: "thin" },
+                bottom: { style: "thin" },
+                left: { style: "thin" },
+                right: { style: "thin" },
+            };
+        });
+
+        // Agregar datos a la hoja
+        files.forEach((file: filesModel) => {
+            worksheet.addRow([
+                file.codigo,
+                file.id_persona,
+                file.identificacion,
+                file.beneficiario,
+                file.provincia || "N/A",
+                file.canton || "N/A",
+                file.distrito || "N/A",
+                file.barrio || "N/A",
+                file.otras_senas || "N/A",
+                file.estado,
+                new Date(file.fecha_creacion).toLocaleDateString(),
+                new Date(file.fecha_emitido).toLocaleDateString(),
+                new Date(file.fecha_enviado_entidad).toLocaleDateString(),
+                file.ubicacion,
+                file.etiqueta,
+                file.entidad,
+                file.observaciones,
+                file.remitente,
+                file.asignadoa,
+                file.tipo_expediente,
+                file.numero_bono,
+                file.proposito_bono,
+                formatDecimal(file.monto_bono),
+                file.contrato_CFIA,
+                file.acta_traslado,
+                new Date(file.fecha_envio_acta).toLocaleDateString(),
+                file.estado_emitido,
+                new Date(file.fecha_aprobado).toLocaleDateString(),
+                file.folio_real,
+                file.numero_plano,
+                formatDecimal(file.area_construccion),
+                file.ingeniero_responsable,
+                file.fiscal,
+                formatDecimal(file.monto_compra_venta),
+                formatDecimal(file.monto_presupuesto),
+                formatDecimal(file.monto_solucion),
+                formatDecimal(file.monto_comision),
+                formatDecimal(file.monto_costo_terreno),
+                formatDecimal(file.monto_honorarios_abogado),
+                formatDecimal(file.monto_patrimonio_familiar),
+                formatDecimal(file.monto_poliza),
+                formatDecimal(file.monto_fiscalizacion),
+                formatDecimal(file.monto_kilometraje),
+                formatDecimal(file.monto_afiliacion),
+                formatDecimal(file.monto_trabajo_social),
+                formatDecimal(file.monto_construccion),
+                file.constructora_asignada,
+                file.boleta,
+                file.acuerdo_aprobacion,
+                formatDecimal(file.monto_estudio_social),
+                formatDecimal(file.monto_aporte_familia),
+                file.patrimonio_familiar,
+                formatDecimal(file.monto_gastos_formalizacion),
+                formatDecimal(file.monto_aporte_gastos),
+                formatDecimal(file.monto_diferencia_aporte),
+                formatDecimal(file.monto_prima_seguros),
+            ]);
+        });
+
+        // Exportar archivo
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        saveAs(blob, "Expedientes_Con_Formato.xlsx");
+    };
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -99,7 +223,7 @@ export default function FilesList({ files, setFiles }: FilesProps) {
             <Grid item xs={12} sm={6} md={3}>
                 <TextField
                     fullWidth
-                    label="Número de Identificación"
+                    label="Identificación"
                     value={identification}
                     onChange={(e) => setIdentification(e.target.value)}
                     sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
@@ -125,6 +249,16 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                     InputProps={{ readOnly: true }}
                     sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+                <Button
+                    variant="contained"
+                    color="success"
+                    sx={{ marginBottom: 2, height: "56px" }}
+                    onClick={() => handleDownloadExcel(files)} // Aquí pasamos el id_remision
+                >
+                    Descargar Excel
+                </Button>
             </Grid>
             <TableContainer component={Paper}>
                 {loading ? (
@@ -263,6 +397,27 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                                     Acuerdo aprobación
                                 </TableCell>
                                 <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Monto de Estudio Social
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Monto de Aporte Familiar
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Patrimonio Familiar
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Monto de Gastos de Formalizacion
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Monto de Aporte de Gastos
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Monto de Diferencia de Aporte
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Monto de Prima de Seguros
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -313,6 +468,13 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.constructora_asignada}</TableCell>
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.boleta}</TableCell>
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.acuerdo_aprobacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{formatDecimal(files.monto_estudio_social)}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{formatDecimal(files.monto_aporte_familia)}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.patrimonio_familiar}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{formatDecimal(files.monto_gastos_formalizacion)}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{formatDecimal(files.monto_aporte_gastos)}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{formatDecimal(files.monto_diferencia_aporte)}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{formatDecimal(files.monto_prima_seguros)}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"

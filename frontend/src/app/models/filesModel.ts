@@ -1,6 +1,12 @@
 export interface filesModel {
     codigo: number;
     id_persona: number;
+    beneficiario: string;
+    provincia: string;
+    canton: string;
+    distrito:string;
+    otras_senas: string;
+    barrio: string;
     identificacion: string;
     estado: string;
     fecha_creacion: Date;
