@@ -96,6 +96,7 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                     label="Número de Identificación"
                     value={identification}
                     onChange={(e) => setIdentification(e.target.value)}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -104,6 +105,7 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                     color="primary"
                     onClick={handleSearch}
                     fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
                     disabled={loading}
                 >
                     {loading ? "Buscando..." : "Buscar"}
@@ -115,6 +117,7 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                     label="Nombre de la persona"
                     value={personName}
                     InputProps={{ readOnly: true }}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <TableContainer component={Paper}>
@@ -122,48 +125,48 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Codigo
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID de la persona
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Tipo de expediente
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de creacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de emision
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha Envio Entidad
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Ubicacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Etiqueta
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Entidad
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Observaciones
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Remitente
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Asignado(a)
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -171,24 +174,24 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                         <TableBody>
                             {paginatedFiles.map((files) => (
                                 <TableRow key={files.codigo}>
-                                    <TableCell align="center">{files.codigo}</TableCell>
-                                    <TableCell align="center">{files.id_persona}</TableCell>
-                                    <TableCell align="center">{files.tipo_expediente}</TableCell>
-                                    <TableCell align="center">{files.estado}</TableCell>
-                                    <TableCell align="center">{new Date(files.fecha_creacion).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{new Date(files.fecha_emitido).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{new Date(files.fecha_enviado_entidad).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{files.ubicacion}</TableCell>
-                                    <TableCell align="center">{files.etiqueta}</TableCell>
-                                    <TableCell align="center">{files.entidad}</TableCell>
-                                    <TableCell align="center">{files.observaciones}</TableCell>
-                                    <TableCell align="center">{files.remitente}</TableCell>
-                                    <TableCell align="center">{files.asignadoa}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.codigo}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.id_persona}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.tipo_expediente}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(files.fecha_creacion).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(files.fecha_emitido).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(files.fecha_enviado_entidad).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.ubicacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.etiqueta}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.entidad}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.observaciones}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.remitente}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{files.asignadoa}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"
                                             color="info"
-                                            sx={{ margin: "5px" }}
+                                            sx={{ fontSize: "0.65rem", minWidth: "40px", minHeight: "20px" }}
                                             onClick={() => handleEdit(files.codigo)}
                                         >
                                             Editar Expediente

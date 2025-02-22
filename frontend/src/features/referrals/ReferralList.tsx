@@ -161,26 +161,30 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                     variant="contained"
                     color="primary"
                     onClick={handleAddObservation}
+                    fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     Agregar Remisiones
                 </Button>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
                 <TextField
                     fullWidth
                     label="Código de Remisión"
                     value={searchId}
                     onChange={(e) => setSearchId(e.target.value === "" ? "" : Number(e.target.value))}
                     type="number"
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid item xs={12} sm={6} md={1}>
                 <Button
                     variant="contained"
                     color="primary"
                     onClick={handleSearch}
                     fullWidth
                     disabled={loading}
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     {loading ? "Buscando..." : "Buscar"}
                 </Button>
@@ -190,27 +194,27 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Codigo
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de Preparacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de Envio
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Correo
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Entidad de Destino
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -218,18 +222,18 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                         <TableBody>
                             {paginatedReferrals.map((referral) => (
                                 <TableRow key={referral.id_remision}>
-                                    <TableCell align="center">{referral.id_remision}</TableCell>
-                                    <TableCell align="center">{new Date(referral.fecha_preparacion).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{new Date(referral.fecha_envio).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{referral.usuario_prepara}</TableCell>
-                                    <TableCell align="center">{referral.entidad_destino}</TableCell>
-                                    <TableCell align="center">{referral.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{referral.id_remision}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(referral.fecha_preparacion).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(referral.fecha_envio).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{referral.usuario_prepara}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{referral.entidad_destino}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{referral.estado}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"
                                             color="info"
-                                            sx={{ margin: "5px" }}
                                             onClick={() => handleEdit(referral.id_remision)}
+                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
                                         >
                                             Editar
                                         </Button>
@@ -237,15 +241,15 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                                         <Button
                                             variant="contained"
                                             color="error"
-                                            sx={{ margin: "5px" }}
-                                            onClick={() => handleDownloadPDF(referral.id_remision)} // Aquí pasamos el id_remision
+                                            onClick={() => handleDownloadPDF(referral.id_remision)}
+                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }} // Aquí pasamos el id_remision
                                         >
                                             Descargar PDF
                                         </Button>
                                         <Button
                                             variant="contained"
                                             color="success"
-                                            sx={{ margin: "5px" }}
+                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
                                             onClick={() => handleAddDetailsDialog(referral.id_remision)}
                                         >
                                             Agregar Detalle Remisión

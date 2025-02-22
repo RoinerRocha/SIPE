@@ -1,19 +1,6 @@
 import {
-  Grid,
-  TableContainer,
-  Paper,
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TablePagination,
+  Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow, TableBody,
+  Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, TablePagination,
 } from "@mui/material";
 import { roleModels } from "../../app/models/roleModels";
 import { useState, useEffect } from "react";
@@ -108,27 +95,30 @@ export default function RolesList({
   const paginatedRoles = roles.slice(startIndex, endIndex);
 
   return (
-    <Grid container spacing={1}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setOpenAddDialog(true)}
-      >
-        {t('Perfil-botonAgregar')}
-      </Button>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6} md={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpenAddDialog(true)}
+          sx={{ marginBottom: 2, height: "56px" }}
+        >
+          {t('Perfil-botonAgregar')}
+        </Button>
+      </Grid>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
             <TableRow>
               <TableCell
                 align="center"
-                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
               >
                 {t('Perfil-columnaNombre')}
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
               >
                 {t('Perfil-columnaConfiguracion')}
               </TableCell>
@@ -137,21 +127,21 @@ export default function RolesList({
           <TableBody>
             {paginatedRoles.map((role) => (
               <TableRow key={role.id}>
-                <TableCell align="center">{role.rol}</TableCell>
+                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{role.rol}</TableCell>
                 <TableCell align="center">
                   <Button
                     variant="contained"
                     color="info"
-                    sx={{ margin: "5px" }}
                     onClick={() => handleEdit(role)}
+                    sx={{ fontSize: "0.65rem", minWidth: "40px", minHeight: "20px", margin: "5px" }}
                   >
                     {t('Perfil-botonEditar')}
                   </Button>
                   <Button
                     variant="contained"
                     color="error"
-                    sx={{ margin: "5px" }}
                     onClick={() => handleDelete(role.id)}
+                    sx={{ fontSize: "0.65rem", minWidth: "40px", minHeight: "20px", margin: "5px" }}
                   >
                     {t('Perfil-botonEliminar')}
                   </Button>
@@ -183,9 +173,9 @@ export default function RolesList({
               setSelectedRole(
                 selectedRole
                   ? {
-                      ...selectedRole,
-                      rol: e.target.value,
-                    }
+                    ...selectedRole,
+                    rol: e.target.value,
+                  }
                   : null
               )
             }
@@ -216,7 +206,7 @@ export default function RolesList({
             margin="dense"
           />
         </DialogContent>
-        
+
         <DialogActions>
           <Button onClick={() => setOpenAddDialog(false)}>{t('AgregarPerfil-botonCancelar')}</Button>
           <Button onClick={handleAdd}>{t('AgregarPerfil-botonAgregar')}</Button>

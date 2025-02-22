@@ -1,20 +1,5 @@
-import {
-  Grid,
-  TableContainer,
-  Paper,
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableBody,
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TablePagination,
+import { Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow, TableBody, Button, TextField,
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TablePagination,
 } from "@mui/material";
 import { statusAssets } from "../../app/models/statusAsset";
 import { useState, useEffect } from "react";
@@ -149,11 +134,12 @@ export default function StatusAssetList({
   const paginatedStatusAssets = statusAssets.slice(startIndex, endIndex);
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Button
         variant="contained"
         color="primary"
         onClick={() => setOpenAddDialog(true)}
+        sx={{ marginBottom: 2, height: "56px" }}
       >
         {t('EstadoActivos-BotonAgregar')}
       </Button>

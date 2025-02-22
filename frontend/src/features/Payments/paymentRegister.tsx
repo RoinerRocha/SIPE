@@ -1,14 +1,16 @@
 import {
     Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow,
     TableBody, Button, TablePagination, CircularProgress,
-    Dialog, DialogActions, DialogContent, DialogTitle,  SelectChangeEvent,
+    Dialog, DialogActions, DialogContent, DialogTitle, SelectChangeEvent,
     Card,
     Box,
     FormControl,
     InputLabel,
     MenuItem,
     Select,
-    TextField
+    TextField,
+    FormHelperText,
+    styled
 } from "@mui/material";
 
 import { FieldValues, Form, useForm } from 'react-hook-form';
@@ -19,6 +21,7 @@ import { personModel } from "../../app/models/persons";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import api from "../../app/api/api";
+import { t } from "i18next";
 
 interface Prop {
     idPersona: number;
@@ -26,7 +29,7 @@ interface Prop {
     identificationPerson: string;
 }
 
-export default function PaymentRegister({  idPersona: idPersona, person: person, identificationPerson: identificationPerson }: Prop) {
+export default function PaymentRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson }: Prop) {
     const { user } = useAppSelector(state => state.account);
     const [newPayment, setNewPayment] = useState<Partial<paymentsModel>>({
         id_persona: idPersona,
@@ -40,7 +43,7 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
         moneda: "",
         usuario: user?.nombre_usuario,
         observaciones: "",
-        archivo: "",
+        archivo: null,
     });
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid, isSubmitSuccessful } } = useForm({
         mode: 'onTouched'
@@ -52,11 +55,11 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
     const onSubmit = async (data: FieldValues) => {
         try {
             // Formateamos las fechas antes de enviarlas
-            data.fecha_pago = formatDate(new Date(data.fecha_pago));
-            data.fecha_presentacion = formatDate(new Date(data.fecha_presentacion));
-    
+            // data.fecha_pago = formatDate(new Date(data.fecha_pago));
+            // data.fecha_presentacion = formatDate(new Date(data.fecha_presentacion));
+
             console.log("Datos enviados al backend:", data); // Para verificar antes de enviarlo
-    
+
             await api.payments.savePayments(data);
             toast.success("Pago registrado correctamente");
         } catch (error) {
@@ -64,6 +67,27 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
             toast.error("Error al registrar el pago");
         }
     };
+
+    const handleFormSubmit = (data: FieldValues) => {
+        const formData = new FormData();
+        formData.append("id_persona", (newPayment.id_persona?.toString() ?? ''));
+        formData.append("identificacion", (identificationPerson?.toString() ?? ''));
+        formData.append("comprobante", (newPayment.comprobante?.toString() ?? ''));
+        formData.append("tipo_pago", (newPayment.tipo_pago?.toString() ?? ''));
+        formData.append("fecha_pago", (newPayment.fecha_pago?.toString() ?? ''));
+        formData.append("fecha_presentacion", (newPayment.fecha_presentacion?.toString() ?? ''));
+        formData.append("estado", (newPayment.estado?.toString() ?? ''));
+        formData.append("monto", (newPayment.monto?.toString() ?? ''));
+        formData.append("moneda", (newPayment.moneda?.toString() ?? ''));
+        formData.append("usuario", (user?.nombre_usuario || ""));
+        formData.append("observaciones", (newPayment.observaciones?.toString() ?? ''));
+        if (newPayment.archivo) {
+            formData.append("archivo", newPayment.archivo);
+        }
+
+        onSubmit(formData);
+
+    }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -81,10 +105,32 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
         }));
     };
 
-    return (  
+    const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, files } = event.target;
+        if (files && files.length > 0) {
+            setNewPayment((prevAsset) => ({
+                ...prevAsset,
+                [name]: files[0],
+            }));
+        }
+    };
+
+    const VisuallyHiddenInput = styled("input")({
+        clip: "rect(0 0 0 0)",
+        clipPath: "inset(50%)",
+        height: 1,
+        overflow: "hidden",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        whiteSpace: "nowrap",
+        width: 1,
+    });
+
+    return (
         <Card>
             <Box p={2}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <TextField
@@ -127,14 +173,24 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('tipo_pago', { required: 'Se necesita el tipo de pago' })}
-                                name="tipo_pago"
-                                label="Tipo de Pago"
-                                value={newPayment.tipo_pago?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="tipo_pago-label">Moneda</InputLabel>
+                                <Select
+                                    labelId="tipo_pago-label"
+                                    {...register('tipo_pago', { required: 'Se necesita el comprobante' })}
+                                    name="tipo_pago"
+                                    value={newPayment.tipo_pago?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="PLANO CATASTRO">Plano Catastro</MenuItem>
+                                    <MenuItem value="PAGO DE AVALUO">Pago de Avaluo</MenuItem>
+                                    <MenuItem value="PAGO CARTA DE AGUA">Pago Carta de Agua</MenuItem>
+                                    <MenuItem value="PAGO USO DE SUELOS">Pago Uso de Suelos</MenuItem>
+                                    <MenuItem value="PAGODERECHO DEL MEDIDOR DE AGUA">Pago Derecho del Medidor de Agua</MenuItem>
+                                    <MenuItem value="PAGO ABOGADOS">Pago Abogados</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
@@ -191,21 +247,27 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('moneda', { required: 'Se necesita el tipo de moneda' })}
-                                name="moneda"
-                                label="Moneda"
-                                value={newPayment.moneda?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="moneda-label">Moneda</InputLabel>
+                                <Select
+                                    labelId="moneda-label"
+                                    {...register('moneda', { required: 'Se necesita el comprobante' })}
+                                    name="moneda"
+                                    value={newPayment.moneda?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="Dolares">Dolares</MenuItem>
+                                    <MenuItem value="Colones">Colones</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
                                 fullWidth
                                 {...register('usuario', { required: 'Se necesita el usuario' })}
                                 name="usuario"
-                                label="Nombre de usuario" 
+                                label="Nombre de usuario"
                                 value={newPayment.usuario?.toString() || ''}
                                 onChange={handleInputChange}
                                 disabled
@@ -228,18 +290,19 @@ export default function PaymentRegister({  idPersona: idPersona, person: person,
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('archivo', { required: 'Se necesita el Archivo' })}
-                                name="archivo"
-                                label="Archivo"
-                                value={newPayment.archivo?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                        <Grid item xs={3}>
+                            <Button variant="contained" component="label" fullWidth>
+                                Agregar Archivo
+                                <VisuallyHiddenInput
+                                    type="file"
+                                    name="archivo"
+                                    onChange={handleFileInputChange}
+                                />
+                            </Button>
+                            {newPayment.archivo && <FormHelperText>{t('EditarLista-TituloArchivo')}: {newPayment.archivo.name}</FormHelperText>}
                         </Grid>
-                        <Button  variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
-                                Agregar
+                        <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
+                            Agregar
                         </Button>
                     </Grid>
                 </form>

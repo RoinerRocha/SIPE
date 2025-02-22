@@ -135,16 +135,19 @@ export default function RequirementList({ requirements: requirements, setRequire
                     variant="contained"
                     color="primary"
                     onClick={handleAddObservation}
+                    fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     Agregar Requerimientos
                 </Button>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={2}>
                 <TextField
                     fullWidth
-                    label="Número de Identificación"
+                    label="Identificación"
                     value={identification}
                     onChange={(e) => setIdentification(e.target.value)}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -154,6 +157,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                     onClick={handleSearch}
                     fullWidth
                     disabled={loading}
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     {loading ? "Buscando..." : "Buscar"}
                 </Button>
@@ -164,6 +168,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                     label="Nombre de la persona"
                     value={personName}
                     InputProps={{ readOnly: true }}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -171,6 +176,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                     variant="contained"
                     color="error"
                     onClick={handleDownloadPDF}
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     Descargar PDF
                 </Button>
@@ -180,27 +186,27 @@ export default function RequirementList({ requirements: requirements, setRequire
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID de la persona
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Tipo de requisito
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de Vigencia
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de vencimiento
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Observaciones
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -208,17 +214,17 @@ export default function RequirementList({ requirements: requirements, setRequire
                         <TableBody>
                             {paginatedRequirements.map((requirement) => (
                                 <TableRow key={requirement.id_requisito}>
-                                    <TableCell align="center">{requirement.id_persona}</TableCell>
-                                    <TableCell align="center">{requirement.tipo_requisito}</TableCell>
-                                    <TableCell align="center">{requirement.estado}</TableCell>
-                                    <TableCell align="center">{new Date(requirement.fecha_vigencia).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{new Date(requirement.fecha_vencimiento).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{requirement.observaciones}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{requirement.id_persona}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{requirement.tipo_requisito}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{requirement.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(requirement.fecha_vigencia).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(requirement.fecha_vencimiento).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{requirement.observaciones}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"
                                             color="info"
-                                            sx={{ margin: "5px" }}
+                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px" }}
                                             onClick={() => handleEdit(requirement.id_requisito)}
                                         >
                                             Editar

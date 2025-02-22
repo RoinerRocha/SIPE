@@ -99,6 +99,8 @@ export default function ObservationList({ observations, setObservations }: Obser
                     variant="contained"
                     color="primary"
                     onClick={handleAddObservation}
+                    fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     Agregar Observaciones
                 </Button>
@@ -109,6 +111,7 @@ export default function ObservationList({ observations, setObservations }: Obser
                     label="Número de Identificación"
                     value={identification}
                     onChange={(e) => setIdentification(e.target.value)}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -117,6 +120,8 @@ export default function ObservationList({ observations, setObservations }: Obser
                     color="primary"
                     onClick={handleSearch}
                     disabled={loading}
+                    fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     {loading ? "Buscando..." : "Buscar"}
                 </Button>
@@ -127,6 +132,7 @@ export default function ObservationList({ observations, setObservations }: Obser
                     label="Nombre de la persona"
                     value={personName}
                     InputProps={{ readOnly: true }}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <TableContainer component={Paper}>
@@ -134,18 +140,18 @@ export default function ObservationList({ observations, setObservations }: Obser
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead  sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Persona
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Identificador
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Observacion
                                 </TableCell>
                             </TableRow>
@@ -153,10 +159,10 @@ export default function ObservationList({ observations, setObservations }: Obser
                         <TableBody>
                             {paginatedObservations.map((obs) => (
                                 <TableRow key={obs.id_observ}>
-                                    <TableCell align="center">{obs.id_persona}</TableCell>
-                                    <TableCell align="center">{obs.identificacion}</TableCell>
-                                    <TableCell align="center">{new Date(obs.fecha).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{obs.observacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{obs.id_persona}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{obs.identificacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(obs.fecha).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{obs.observacion}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

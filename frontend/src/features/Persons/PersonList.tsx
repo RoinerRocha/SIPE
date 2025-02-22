@@ -8,7 +8,7 @@ import { personModel } from "../../app/models/persons";
 import { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-
+import { useTheme } from "@mui/material/styles";
 import api from "../../app/api/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
@@ -33,6 +33,8 @@ export default function PersonList({
     const [selectedPerson, setSelectedPerson] = useState<personModel | null>(
         null
     );
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === "dark";
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [openAddDialog, setOpenAddDialog] = useState(false);
     const [personName, setPersonName] = useState("");
@@ -281,20 +283,25 @@ export default function PersonList({
     const paginatedPersons = persons.slice(startIndex, endIndex);
 
     return (
-        <Grid container spacing={1}>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setOpenAddDialog(true)}
-            >
-                {t('Control-BotonAgregar')}
-            </Button>
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setOpenAddDialog(true)}
+                    fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
+                >
+                    {t('Control-BotonAgregar')}
+                </Button>
+            </Grid>
             <Grid item xs={12} sm={6} md={4}>
                 <TextField
                     fullWidth
                     label="Número de Identificación"
                     value={identification}
                     onChange={(e) => setIdentification(e.target.value)}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -304,6 +311,7 @@ export default function PersonList({
                     onClick={handleSearch}
                     fullWidth
                     disabled={loading}
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     {loading ? "Buscando..." : "Buscar"}
                 </Button>
@@ -314,11 +322,12 @@ export default function PersonList({
                     label="Nombre de la persona"
                     value={personName}
                     InputProps={{ readOnly: true }}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead>
+                    <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                         <TableRow>
                             <TableCell
                                 align="center"
@@ -421,28 +430,28 @@ export default function PersonList({
                     <TableBody>
                         {paginatedPersons.map((person) => (
                             <TableRow key={person.id_persona}>
-                                <TableCell align="center">{person.id_persona}</TableCell>
-                                <TableCell align="center">{person.tipo_identificacion}</TableCell>
-                                <TableCell align="center">{person.numero_identifiacion}</TableCell>
-                                <TableCell align="center">{person.nombre}</TableCell>
-                                <TableCell align="center">{person.primer_apellido}</TableCell>
-                                <TableCell align="center">{person.segundo_apellido}</TableCell>
-                                <TableCell align="center">{new Date(person.fecha_nacimiento).toLocaleDateString()}</TableCell>
-                                <TableCell align="center">{person.genero}</TableCell>
-                                <TableCell align="center">{person.estado_civil}</TableCell>
-                                <TableCell align="center">{person.nacionalidad}</TableCell>
-                                <TableCell align="center">{new Date(person.fecha_registro).toLocaleDateString()}</TableCell>
-                                <TableCell align="center">{person.usuario_registro}</TableCell>
-                                <TableCell align="center">{person.nivel_estudios}</TableCell>
-                                <TableCell align="center">{person.asesor}</TableCell>
-                                <TableCell align="center">{person.estado}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.id_persona}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.tipo_identificacion}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.numero_identifiacion}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.nombre}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.primer_apellido}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.segundo_apellido}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(person.fecha_nacimiento).toLocaleDateString()}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.genero}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.estado_civil}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.nacionalidad}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(person.fecha_registro).toLocaleDateString()}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.usuario_registro}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.nivel_estudios}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.asesor}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.estado}</TableCell>
                                 <TableCell align="center">
                                     <Box display="flex" flexDirection="column" alignItems="center">
-                                        <Box display="flex">
+                                        <Box display="flex" justifyContent="center" gap={1}>
                                             <Button
                                                 variant="contained"
                                                 color="info"
-                                                sx={{ margin: "5px", fontSize: "0.65rem" }}
+                                                sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px" }}
                                                 onClick={() => handleEdit(person.id_persona)}
                                             >
                                                 {t('Control-BotonEditar')}
@@ -450,20 +459,20 @@ export default function PersonList({
                                             <Button
                                                 variant="contained"
                                                 color="error"
-                                                sx={{ margin: "5px", fontSize: "0.65rem" }}
+                                                sx={{ fontSize: "0.65rem", minWidth: "40px", minHeight: "20px" }}
                                                 onClick={() => handleDelete(person.id_persona)}
                                             >
-                                                Desactivar Persona
+                                                Desactivar
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                color="success"
+                                                sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px" }}
+                                                onClick={() => handleDownloadPDF(person.id_persona)} // Aquí pasamos el id_remision
+                                            >
+                                                Descargar PDF
                                             </Button>
                                         </Box>
-                                        <Button
-                                            variant="contained"
-                                            color="success"
-                                            sx={{ margin: "5px", fontSize: "0.65rem" }}
-                                            onClick={() => handleDownloadPDF(person.id_persona)} // Aquí pasamos el id_remision
-                                        >
-                                            Descargar PDF
-                                        </Button>
                                     </Box>
                                 </TableCell>
                             </TableRow>

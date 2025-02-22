@@ -11,5 +11,5 @@ export interface paymentsModel {
   moneda: string;
   usuario: string;
   observaciones: string;
-  archivo: string;
+  archivo: File | null;
 }

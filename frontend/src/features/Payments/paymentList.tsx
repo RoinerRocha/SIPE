@@ -61,7 +61,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
     const handleAddObservation = async () => {
         // Primero intentamos encontrar el pago en los pagos existentes
         const foundObservation = payments.find(obs => obs.identificacion === identification);
-    
+
         if (foundObservation) {
             // Si encontramos el pago, tomamos el id_persona asociado
             setSelectedIdPersona(foundObservation.id_persona);
@@ -82,7 +82,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                 return; // Si hay un error en la consulta, no abrimos el diálogo
             }
         }
-    
+
         // Abrimos el diálogo para agregar el pago
         setOpenAddDialog(true);
     };
@@ -112,16 +112,18 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                     variant="contained"
                     color="primary"
                     onClick={handleAddObservation}
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     Agregar Pagos
                 </Button>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
                 <TextField
                     fullWidth
-                    label="Número de Identificación"
+                    label="Identificación"
                     value={identification}
                     onChange={(e) => setIdentification(e.target.value)}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -131,6 +133,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                     onClick={handleSearch}
                     fullWidth
                     disabled={loading}
+                    sx={{ marginBottom: 2, height: "56px" }}
                 >
                     {loading ? "Buscando..." : "Buscar"}
                 </Button>
@@ -141,6 +144,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                     label="Nombre de la persona"
                     value={personName}
                     InputProps={{ readOnly: true }}
+                    sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
             <TableContainer component={Paper}>
@@ -148,42 +152,42 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Numero de identificacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Comprobante
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Tipo de pago
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de pago
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     fecha de presentacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Monto
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Moneda
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Usuario
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Observaciones
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Archivo
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -191,22 +195,24 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                         <TableBody>
                             {paginatedPayments.map((payments) => (
                                 <TableRow key={payments.id_pago}>
-                                    <TableCell align="center">{payments.identificacion}</TableCell>
-                                    <TableCell align="center">{payments.comprobante}</TableCell>
-                                    <TableCell align="center">{payments.tipo_pago}</TableCell>
-                                    <TableCell align="center">{new Date(payments.fecha_pago).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{new Date(payments.fecha_presentacion).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{payments.estado}</TableCell>
-                                    <TableCell align="center">{payments.monto}</TableCell>
-                                    <TableCell align="center">{payments.moneda}</TableCell>
-                                    <TableCell align="center">{payments.usuario}</TableCell>
-                                    <TableCell align="center">{payments.observaciones}</TableCell>
-                                    <TableCell align="center">{payments.archivo}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.identificacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.comprobante}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.tipo_pago}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(payments.fecha_pago).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(payments.fecha_presentacion).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.monto}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.moneda}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.usuario}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.observaciones}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>
+                                        {payments.archivo ? payments.archivo.name : 'Sin archivo'}
+                                    </TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"
                                             color="info"
-                                            sx={{ margin: "5px" }}
+                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px" }}
                                             onClick={() => handleEdit(payments.id_pago)}
                                         >
                                             Editar
