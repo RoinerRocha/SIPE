@@ -48,6 +48,13 @@ export const updateFiles = async (req: Request, res: Response): Promise<void> =>
         constructora_asignada,
         boleta,
         acuerdo_aprobacion,
+        monto_estudio_social,
+        monto_aporte_familia,
+        patrimonio_familiar,
+        monto_gastos_formalizacion,
+        monto_aporte_gastos,
+        monto_diferencia_aporte,
+        monto_prima_seguros,
     } = req.body;
 
     try {
@@ -93,7 +100,14 @@ export const updateFiles = async (req: Request, res: Response): Promise<void> =>
                                 @monto_construccion = :monto_construccion,
                                 @constructora_asignada = :constructora_asignada,
                                 @boleta = :boleta,
-                                @acuerdo_aprobacion = :acuerdo_aprobacion`,
+                                @acuerdo_aprobacion = :acuerdo_aprobacion,
+                                @monto_estudio_social = :monto_estudio_social,
+                                @monto_aporte_familia = :monto_aporte_familia,
+                                @patrimonio_familiar = :patrimonio_familiar,
+                                @monto_gastos_formalizacion = :monto_gastos_formalizacion,
+                                @monto_aporte_gastos = :monto_aporte_gastos,
+                                @monto_diferencia_aporte = :monto_diferencia_aporte,
+                                @monto_prima_seguros = :monto_prima_seguros`,
             {
                 replacements: {
                     codigo,
@@ -136,7 +150,15 @@ export const updateFiles = async (req: Request, res: Response): Promise<void> =>
                     monto_construccion,
                     constructora_asignada,
                     boleta,
-                    acuerdo_aprobacion
+                    acuerdo_aprobacion,
+                    monto_estudio_social,
+                    monto_aporte_familia,
+                    patrimonio_familiar,
+                    monto_gastos_formalizacion,
+                    monto_aporte_gastos,
+                    monto_diferencia_aporte,
+                    monto_prima_seguros
+
                 },
                 type: QueryTypes.UPDATE
             }
