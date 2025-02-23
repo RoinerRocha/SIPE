@@ -280,8 +280,8 @@ const history ={
   getFilesByIdPerson:(id_persona: number) => requests.get(`/getFilesByIdPerson/${id_persona}`),
   getFilesByPerson:(identificacion: string) => requests.get(`/getFilesByPerson/${identificacion}`),
   getHistoryFiles:(codigo: number) => requests.get(`/getHistoryFiles/${codigo}`),
-  updateFiles: (codigo: any, filesData: any) => 
-    requests.put(`updateFiles/${codigo}`, filesData),
+  updateFiles: (codigo: any, usuario_sistema: string, filesData: any) => 
+    requests.put(`updateFiles/${codigo}/${usuario_sistema}`, filesData),
 }
 const api = {
   Account,

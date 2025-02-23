@@ -33,9 +33,9 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
     }, [FilesData]);
 
     const onSubmit = async (data: FieldValues) => {
-        if (currentFile) {
+        if (currentFile && user?.nombre_usuario) {
             try {
-                await api.history.updateFiles(currentFile.codigo, data);
+                await api.history.updateFiles(currentFile.codigo, user?.nombre_usuario, data);
                 toast.success('Expediente actualizado con éxito.');
             } catch (error) {
                 console.error(error);
@@ -93,15 +93,6 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={3}>
-                            <Grid item xs={3}>
-                                <TextField
-                                    fullWidth
-                                    {...register('usuario_sistema')}
-                                    name="usuario_sistema"
-                                    value={user?.nombre_usuario}
-                                    disabled
-                                />
-                            </Grid>
                             <FormControl fullWidth>
                                 <InputLabel id="tipo-label">Tipo de expediente</InputLabel>
                                 <Select
@@ -288,7 +279,7 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
                             />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={2}>
                             <TextField
                                 fullWidth
                                 {...register('acta_traslado', { required: 'Se necesita el acta de traslado' })}
@@ -326,6 +317,16 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={2}>
+                            <TextField
+                                fullWidth
+                                {...register('usuario_sistema')}
+                                name="usuario_sistema"
+                                value={user?.nombre_usuario}
+                                disabled
                             />
                         </Grid>
 

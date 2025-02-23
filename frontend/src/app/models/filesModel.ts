@@ -55,4 +55,5 @@ export interface filesModel {
     monto_aporte_gastos: number;
     monto_diferencia_aporte: number;
     monto_prima_seguros: number;
+    usuario_sistema: string;
 }
