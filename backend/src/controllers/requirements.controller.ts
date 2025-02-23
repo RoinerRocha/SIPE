@@ -1,9 +1,38 @@
 import { Request, Response } from "express";
 import { QueryTypes } from "sequelize";
 import sequelize from "../database/SqlServer";
+import fs from "fs";
+import path from "path";
+import multer from "multer";
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const id_persona = req.body.id_persona;
+        const documentosPath = path.join(__dirname, "../../Documentos", id_persona.toString());
+
+        if (!fs.existsSync(documentosPath)) {
+            fs.mkdirSync(documentosPath, { recursive: true });
+        }
+
+        cb(null, documentosPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}_${file.originalname}`);
+    },
+});
+
+export const upload = multer({ storage }).single("archivo");
+
 
 export const createRequirements = async (req: Request, res: Response): Promise<void> => {
-    const { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vencimiento, observaciones } = req.body;
+    const { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vencimiento, observaciones, archivo } = req.body;
+
+    let archivoPath = null;
+
+    if (req.file) {
+        archivoPath = path.join("Documentos", id_persona.toString(), req.file.filename);
+    }
+
 
     try {
         await sequelize.query(
@@ -13,9 +42,10 @@ export const createRequirements = async (req: Request, res: Response): Promise<v
                                    @estado = :estado,
                                    @fecha_vigencia = :fecha_vigencia,
                                    @fecha_vencimiento = :fecha_vencimiento,
-                                   @observaciones = :observaciones`,
+                                   @observaciones = :observaciones,
+                                   @archivo = :archivo`,
             {
-                replacements: { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vencimiento, observaciones },
+                replacements: { id_persona, tipo_requisito, estado, fecha_vigencia, fecha_vencimiento, observaciones, archivo: archivoPath },
                 type: QueryTypes.INSERT,
             }
         );
@@ -88,26 +118,26 @@ export const getRequirementsByPerson = async (req: Request, res: Response): Prom
 
 export const getRequirementsById = async (req: Request, res: Response): Promise<void> => {
     const { id_requisito } = req.params;
-  
+
     try {
-      const contact = await sequelize.query(
-        `EXEC sp_gestion_requisitos @accion = 'S', @id_requisito = :id_requisito`,
-        {
-          replacements: { id_requisito },
-          type: QueryTypes.SELECT
+        const contact = await sequelize.query(
+            `EXEC sp_gestion_requisitos @accion = 'S', @id_requisito = :id_requisito`,
+            {
+                replacements: { id_requisito },
+                type: QueryTypes.SELECT
+            }
+        );
+
+        if (!contact.length) {
+            res.status(404).json({ message: "Requisito no encontrada" });
+            return;
         }
-      );
-  
-      if (!contact.length) {
-        res.status(404).json({ message: "Requisito no encontrada" });
-        return;
-      }
-  
-      res.status(200).json({ data: contact[0] });
+
+        res.status(200).json({ data: contact[0] });
     } catch (error: any) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  };
+};
 
 export const getRequirementsByIdentification = async (req: Request, res: Response): Promise<void> => {
     const { identificacion } = req.params;

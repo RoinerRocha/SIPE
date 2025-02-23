@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createRequirements, getAllBaseRequirements,  getRequirementsByPerson,getRequirementsById, getRequirementsByIdentification, updateRequirements, getAllRequirements } from "../controllers/requirements.controller";
+import { createRequirements, upload, getAllBaseRequirements,  getRequirementsByPerson,getRequirementsById, getRequirementsByIdentification, updateRequirements, getAllRequirements } from "../controllers/requirements.controller";
 
 const router = Router();
 
@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
     res.send("Hello, Login!");
 });
 
-router.post("/createRequirements", createRequirements);
+router.post("/createRequirements", upload, createRequirements);
 router.get("/getAllRequirements", getAllRequirements);
 router.get("/getAllBaseRequirements", getAllBaseRequirements);
 router.get("/getRequirementsByPerson/:id_persona", getRequirementsByPerson);

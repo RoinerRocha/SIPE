@@ -6,7 +6,7 @@ const router = (0, express_1.Router)();
 router.get("/", (req, res) => {
     res.send("Hello, Login!");
 });
-router.post("/createRequirements", requirements_controller_1.createRequirements);
+router.post("/createRequirements", requirements_controller_1.upload, requirements_controller_1.createRequirements);
 router.get("/getAllRequirements", requirements_controller_1.getAllRequirements);
 router.get("/getAllBaseRequirements", requirements_controller_1.getAllBaseRequirements);
 router.get("/getRequirementsByPerson/:id_persona", requirements_controller_1.getRequirementsByPerson);
