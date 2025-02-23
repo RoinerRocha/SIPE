@@ -4,4 +4,5 @@ export  interface historyFilesModel {
     campo_modificado: string;
     valor_anterior: string;
     valor_nuevo: string;
+    usuario: string;
 }

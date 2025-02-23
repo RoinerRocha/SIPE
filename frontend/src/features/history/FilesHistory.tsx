@@ -48,6 +48,9 @@ export default function HistoryFiles({ HistoryData }: HistoryProps) {
                                 <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
                                     Valor Nuevo
                                 </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                    Usuario responsable
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -58,6 +61,7 @@ export default function HistoryFiles({ HistoryData }: HistoryProps) {
                                     <TableCell align="center">{new Date(history.fecha).toLocaleDateString()}</TableCell>
                                     <TableCell align="center">{history.valor_anterior}</TableCell>
                                     <TableCell align="center">{history.valor_nuevo}</TableCell>
+                                    <TableCell align="center">{history.usuario}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
