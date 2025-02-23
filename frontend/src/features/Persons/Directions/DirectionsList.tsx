@@ -1,7 +1,8 @@
-import { 
-    Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow, 
+import {
+    Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow,
     TableBody, Button, TablePagination, CircularProgress, Dialog, DialogActions,
-    DialogContent, DialogTitle
+    DialogContent, DialogTitle,
+    Box
 } from "@mui/material";
 import { directionsModel } from "../../../app/models/directionsModel";
 import { useState, useEffect } from "react";
@@ -25,22 +26,22 @@ export default function DirectionsList({ personId }: Props) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const { t } = useTranslation();
-    
+
     useEffect(() => {
         loadAccess();
     }, [personId]);
 
     const loadAccess = async () => {
         setLoading(true);
-            try {
-                const response = await api.directions.getDireccionesByPersona(personId);
-                setDirections(response.data);
-            } catch (error) {
-                console.error("Error al obtener direcciones:", error);
-                toast.error("Error al obtener direcciones.");
-            } finally {
-                setLoading(false);
-            }
+        try {
+            const response = await api.directions.getDireccionesByPersona(personId);
+            setDirections(response.data);
+        } catch (error) {
+            console.error("Error al obtener direcciones:", error);
+            toast.error("Error al obtener direcciones.");
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handleEdit = async (id_direccion: number) => {
@@ -56,12 +57,12 @@ export default function DirectionsList({ personId }: Props) {
 
     const handleDelete = async (id_direccion: number) => {
         try {
-           await api.directions.deleteDirections(id_direccion);
-           toast.success("Direccion eliminada");
-           loadAccess();
+            await api.directions.deleteDirections(id_direccion);
+            toast.success("Direccion eliminada");
+            loadAccess();
         } catch (error) {
-           console.error("Error al eliminar el acceso:", error);
-           toast.error("Error al desactivar la direccion");
+            console.error("Error al eliminar el acceso:", error);
+            toast.error("Error al desactivar la direccion");
         }
     };
 
@@ -126,22 +127,26 @@ export default function DirectionsList({ personId }: Props) {
                                     <TableCell align="center">{direction.tipo_direccion}</TableCell>
                                     <TableCell align="center">{direction.estado}</TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            variant="contained"
-                                            color="info"
-                                            sx={{ margin: "5px" }}
-                                            onClick={() =>  handleEdit(direction.id_direccion)}
-                                        >
-                                            {t('Control-BotonEditar')}
-                                        </Button> 
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            sx={{ margin: "5px" }}
-                                            onClick={() => handleDelete(direction.id_direccion)}
-                                        >
-                                            {t('Control-BotonEliminar')}
-                                        </Button> 
+                                        <Box display="flex" flexDirection="column" alignItems="center">
+                                            <Box display="flex" justifyContent="center" gap={1}>
+                                                <Button
+                                                    variant="contained"
+                                                    color="info"
+                                                    sx={{ margin: "5px" }}
+                                                    onClick={() => handleEdit(direction.id_direccion)}
+                                                >
+                                                    {t('Control-BotonEditar')}
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    color="error"
+                                                    sx={{ margin: "5px" }}
+                                                    onClick={() => handleDelete(direction.id_direccion)}
+                                                >
+                                                    {t('Control-BotonEliminar')}
+                                                </Button>
+                                            </Box>
+                                        </Box>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -158,28 +163,28 @@ export default function DirectionsList({ personId }: Props) {
                 onPageChange={(event, newPage) => setPage(newPage)}
                 onRowsPerPageChange={(event) => setRowsPerPage(parseInt(event.target.value, 10))}
             />
-            <Dialog 
-                    open={openEditDialog} 
-                    onClose={() => setOpenEditDialog(false)}
-                    maxWidth="lg" // Ajusta el tamaño máximo del diálogo. Opciones: 'xs', 'sm', 'md', 'lg', 'xl'.
-                    fullWidth
-                >
-                    <DialogTitle>Editar Direccion</DialogTitle>
-                        <DialogContent
-                        sx={{
-                            display: 'flex', // Por ejemplo, para organizar los elementos internos.
-                            flexDirection: 'column', // Organiza los hijos en una columna.
-                            gap: 2, // Espaciado entre elementos.
-                            height: '1200px',
-                            width: '1200px', // Ajusta la altura según necesites.
-                            overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
-                        }}>
-                            {selectedDirection && (<UpdateDirection direction={selectedDirection} loadAccess={loadAccess} />)} 
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>
-                        </DialogActions>
-                </Dialog>
+            <Dialog
+                open={openEditDialog}
+                onClose={() => setOpenEditDialog(false)}
+                maxWidth="lg" // Ajusta el tamaño máximo del diálogo. Opciones: 'xs', 'sm', 'md', 'lg', 'xl'.
+                fullWidth
+            >
+                <DialogTitle>Editar Direccion</DialogTitle>
+                <DialogContent
+                    sx={{
+                        display: 'flex', // Por ejemplo, para organizar los elementos internos.
+                        flexDirection: 'column', // Organiza los hijos en una columna.
+                        gap: 2, // Espaciado entre elementos.
+                        height: '1200px',
+                        width: '1200px', // Ajusta la altura según necesites.
+                        overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
+                    }}>
+                    {selectedDirection && (<UpdateDirection direction={selectedDirection} loadAccess={loadAccess} />)}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>
+                </DialogActions>
+            </Dialog>
         </Grid>
     );
 }

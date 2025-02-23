@@ -1,7 +1,8 @@
 import {
     Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow,
     TableBody, Button, TablePagination, CircularProgress, Dialog, DialogActions,
-    DialogContent, DialogTitle
+    DialogContent, DialogTitle,
+    Box
 } from "@mui/material";
 import { directionsModel } from "../../../app/models/directionsModel";
 import { useState, useEffect } from "react";
@@ -55,12 +56,12 @@ export default function FamilyList({ personId }: Props) {
 
     const handleDelete = async (idnucleo: number) => {
         try {
-           await api.family.deleteMember(idnucleo);
-           toast.success("Miembro eliminado");
-           loadAccess();
+            await api.family.deleteMember(idnucleo);
+            toast.success("Miembro eliminado");
+            loadAccess();
         } catch (error) {
-           console.error("Error al eliminar el miembro familiar:", error);
-           toast.error("Error al desactivar el miembro familiar");
+            console.error("Error al eliminar el miembro familiar:", error);
+            toast.error("Error al desactivar el miembro familiar");
         }
     };
 
@@ -121,22 +122,26 @@ export default function FamilyList({ personId }: Props) {
                                     <TableCell align="center">{member.ingresos}</TableCell>
                                     <TableCell align="center">{member.observaciones}</TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            variant="contained"
-                                            color="info"
-                                            sx={{ margin: "5px" }}
-                                            onClick={() => handleEdit(member.idnucleo)}
-                                        >
-                                            {t('Control-BotonEditar')}
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            sx={{ margin: "5px" }}
-                                            onClick={() => handleDelete(member.idnucleo)}
-                                        >
-                                            {t('Control-BotonEliminar')}
-                                        </Button>
+                                        <Box display="flex" flexDirection="column" alignItems="center">
+                                            <Box display="flex" justifyContent="center" gap={1}>
+                                                <Button
+                                                    variant="contained"
+                                                    color="info"
+                                                    sx={{ margin: "5px" }}
+                                                    onClick={() => handleEdit(member.idnucleo)}
+                                                >
+                                                    {t('Control-BotonEditar')}
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    color="error"
+                                                    sx={{ margin: "5px" }}
+                                                    onClick={() => handleDelete(member.idnucleo)}
+                                                >
+                                                    {t('Control-BotonEliminar')}
+                                                </Button>
+                                            </Box>
+                                        </Box>
                                     </TableCell>
                                 </TableRow>
                             ))}
