@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { filesModel } from "../../app/models/filesModel";
 import HistoryFiles from "./FilesHistory";
 import { historyFilesModel } from "../../app/models/historyFilesModel";
+import { useAppDispatch, useAppSelector } from "../../store/configureStore";
 
 
 interface UpdateFilesProps {
@@ -20,6 +21,7 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
     const [currentFile, setCurrentFile] = useState<Partial<filesModel>>(FilesData);
     const [selectedFile, setSelectedFile] = useState<historyFilesModel[] | null>(null);
     const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
+    const { user } = useAppSelector(state => state.account);
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({
         mode: 'onTouched',
     });
@@ -91,6 +93,15 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={3}>
+                            <Grid item xs={3}>
+                                <TextField
+                                    fullWidth
+                                    {...register('usuario_sistema')}
+                                    name="usuario_sistema"
+                                    value={user?.nombre_usuario}
+                                    disabled
+                                />
+                            </Grid>
                             <FormControl fullWidth>
                                 <InputLabel id="tipo-label">Tipo de expediente</InputLabel>
                                 <Select

@@ -18,7 +18,7 @@ const SqlServer_1 = __importDefault(require("../database/SqlServer"));
 // @id_persona = NULL,
 // @identificacion = NULL
 const updateFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { codigo } = req.params;
+    const { codigo, usuario_sistema } = req.params;
     const { estado, fecha_creacion, fecha_emitido, fecha_enviado_entidad, ubicacion, etiqueta, entidad, observaciones, remitente, asignadoa, tipo_expediente, numero_bono, proposito_bono, monto_bono, contrato_CFIA, acta_traslado, fecha_envio_acta, estado_emitido, fecha_aprobado, folio_real, numero_plano, area_construccion, ingeniero_responsable, fiscal, monto_compra_venta, monto_presupuesto, monto_solucion, monto_comision, monto_costo_terreno, monto_honorarios_abogado, monto_patrimonio_familiar, monto_poliza, monto_fiscalizacion, monto_kilometraje, monto_afiliacion, monto_trabajo_social, monto_construccion, constructora_asignada, boleta, acuerdo_aprobacion, monto_estudio_social, monto_aporte_familia, patrimonio_familiar, monto_gastos_formalizacion, monto_aporte_gastos, monto_diferencia_aporte, monto_prima_seguros, } = req.body;
     try {
         yield SqlServer_1.default.query(`EXEC sp_gestion_expediente @tipo = 'U',
@@ -69,7 +69,8 @@ const updateFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                                 @monto_gastos_formalizacion = :monto_gastos_formalizacion,
                                 @monto_aporte_gastos = :monto_aporte_gastos,
                                 @monto_diferencia_aporte = :monto_diferencia_aporte,
-                                @monto_prima_seguros = :monto_prima_seguros`, {
+                                @monto_prima_seguros = :monto_prima_seguros,
+                                @usuario_sistema = :usuario_sistema`, {
             replacements: {
                 codigo,
                 estado,
@@ -118,7 +119,8 @@ const updateFiles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 monto_gastos_formalizacion,
                 monto_aporte_gastos,
                 monto_diferencia_aporte,
-                monto_prima_seguros
+                monto_prima_seguros,
+                usuario_sistema
             },
             type: sequelize_1.QueryTypes.UPDATE
         });

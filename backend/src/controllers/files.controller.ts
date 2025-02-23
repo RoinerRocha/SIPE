@@ -6,7 +6,7 @@ import sequelize from "../database/SqlServer";
 // @identificacion = NULL
 
 export const updateFiles = async (req: Request, res: Response): Promise<void> => {
-    const { codigo } = req.params;
+    const { codigo, usuario_sistema } = req.params;
     const {
         estado,
         fecha_creacion,
@@ -107,7 +107,8 @@ export const updateFiles = async (req: Request, res: Response): Promise<void> =>
                                 @monto_gastos_formalizacion = :monto_gastos_formalizacion,
                                 @monto_aporte_gastos = :monto_aporte_gastos,
                                 @monto_diferencia_aporte = :monto_diferencia_aporte,
-                                @monto_prima_seguros = :monto_prima_seguros`,
+                                @monto_prima_seguros = :monto_prima_seguros,
+                                @usuario_sistema = :usuario_sistema`,
             {
                 replacements: {
                     codigo,
@@ -157,8 +158,8 @@ export const updateFiles = async (req: Request, res: Response): Promise<void> =>
                     monto_gastos_formalizacion,
                     monto_aporte_gastos,
                     monto_diferencia_aporte,
-                    monto_prima_seguros
-
+                    monto_prima_seguros,
+                    usuario_sistema
                 },
                 type: QueryTypes.UPDATE
             }
