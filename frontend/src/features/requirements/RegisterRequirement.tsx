@@ -8,7 +8,9 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    TextField
+    TextField,
+    styled,
+    FormHelperText
 } from "@mui/material";
 import { FieldValues, Form, useForm } from 'react-hook-form';
 import { requirementsModel } from '../../app/models/requirementsModel';
@@ -18,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../store/configureStore";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import api from "../../app/api/api";
+import { t } from "i18next";
 
 interface Prop {
     idPersona: number;
@@ -35,6 +38,7 @@ export default function RequirementRegister({ idPersona: idPersona, person: pers
         fecha_vigencia: new Date(),
         fecha_vencimiento: new Date(),
         observaciones: "",
+        archivo: null,
     });
 
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid, isSubmitSuccessful } } = useForm({
@@ -69,10 +73,9 @@ export default function RequirementRegister({ idPersona: idPersona, person: pers
 
     const onSubmit = async (data: FieldValues) => {
         try {
-
-            data.fecha_vigencia = formatDate(new Date(data.fecha_vigencia));
-            data.fecha_vencimiento = formatDate(new Date(data.fecha_vencimiento));
-            console.log("Datos enviados al backend:", data); // Para verificar antes de enviarlo
+            // data.fecha_vigencia = formatDate(new Date(data.fecha_vigencia));
+            // data.fecha_vencimiento = formatDate(new Date(data.fecha_vencimiento));
+            // console.log("Datos enviados al backend:", data); // Para verificar antes de enviarlo
 
             await api.requirements.saveRequirements(data);
             toast.success("Requerimiento registrado correctamente");
@@ -81,6 +84,21 @@ export default function RequirementRegister({ idPersona: idPersona, person: pers
             toast.error("Error al registrar el Requerimiento");
         }
     };
+
+    const handleFormSubmit = (data: FieldValues) => {
+        const formData = new FormData();
+        formData.append("id_persona", (idPersona?.toString() ?? ''));
+        formData.append("tipo_requisito", (newRequirement.tipo_requisito?.toString() ?? ''));
+        formData.append("estado", (newRequirement.estado?.toString() ?? ''));
+        formData.append("fecha_vigencia", (newRequirement.fecha_vigencia?.toString() ?? ''));
+        formData.append("fecha_vencimiento", (newRequirement.fecha_vencimiento?.toString() ?? ''));
+        formData.append("observaciones", (newRequirement.observaciones?.toString() ?? ''));
+        if (newRequirement.archivo) {
+            formData.append("archivo", newRequirement.archivo);
+        }
+        onSubmit(formData);
+    }
+
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setNewRequirement((prevAsset) => ({
@@ -105,10 +123,35 @@ export default function RequirementRegister({ idPersona: idPersona, person: pers
         }));
     };
 
+    const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, files } = event.target;
+        if (files && files.length > 0) {
+            setNewRequirement((prevAsset) => ({
+                ...prevAsset,
+                [name]: files[0],
+            }));
+        }
+    };
+
+    const VisuallyHiddenInput = styled("input")({
+        clip: "rect(0 0 0 0)",
+        clipPath: "inset(50%)",
+        height: 1,
+        overflow: "hidden",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        whiteSpace: "nowrap",
+        width: 1,
+    });
+
     return (
         <Card>
-            <Box p={2}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+            <Box p={2} sx={{
+                maxHeight: '70vh', // Limita la altura a un 80% de la altura visible
+                overflowY: 'auto', // Habilita scroll vertical
+            }}>
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <TextField
@@ -227,6 +270,17 @@ export default function RequirementRegister({ idPersona: idPersona, person: pers
                                     },
                                 }}
                             />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button variant="contained" component="label" fullWidth>
+                                Agregar Archivo
+                                <VisuallyHiddenInput
+                                    type="file"
+                                    name="archivo"
+                                    onChange={handleFileInputChange}
+                                />
+                            </Button>
+                            {newRequirement.archivo && <FormHelperText>{t('EditarLista-TituloArchivo')}: {newRequirement.archivo.name}</FormHelperText>}
                         </Grid>
                         <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
                             Agregar

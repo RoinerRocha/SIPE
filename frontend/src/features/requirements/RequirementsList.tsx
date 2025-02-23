@@ -29,6 +29,9 @@ export default function RequirementList({ requirements: requirements, setRequire
     const [identification, setIdentification] = useState("");
     const [selectedIdPersona, setSelectedIdPersona] = useState<number | null>(null);
     const [personName, setPersonName] = useState("");
+    const [imageUrlMap, setImageUrlMap] = useState<Map<number, string>>(new Map());
+
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://backend-sipe.onrender.com/api/";
 
     const handleSearch = async () => {
         if (!identification) {
@@ -120,6 +123,85 @@ export default function RequirementList({ requirements: requirements, setRequire
         doc.save("Requisitos.pdf");
     };
 
+    const handleFileUrl = (filePath: File | string | null) => {
+        if (!filePath) return "Sin archivo";
+
+        // Si es una instancia de File (subido localmente)
+        if (filePath instanceof File) {
+            const localFileUrl = URL.createObjectURL(filePath);
+            if (filePath.name.endsWith(".pdf")) {
+                return (
+                    <>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => window.open(localFileUrl, '_blank')}
+                            sx={{ marginRight: 1 }}
+                        >
+                            Ver PDF
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => downloadFile(localFileUrl, filePath.name)}
+                        >
+                            Descargar
+                        </Button>
+                    </>
+                );
+            }
+
+            return (
+                <img
+                    src={localFileUrl}
+                    alt="Archivo"
+                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                />
+            );
+        }
+
+        // Si es una URL del backend (string)
+        if (typeof filePath === 'string') {
+            const backendFileUrl = `${backendUrl.replace('/api/', '')}/${filePath}`;
+
+            if (filePath.endsWith(".pdf")) {
+                return (
+                    <>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => window.open(backendFileUrl, '_blank')}
+                            sx={{ marginRight: 1 }}
+                        >
+                            Ver Archivo
+                        </Button>
+                    </>
+                );
+            }
+
+            return (
+                <img
+                    src={backendFileUrl}
+                    alt="Archivo"
+                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                />
+            );
+        }
+
+        return "Archivo no válido";
+    };
+
+    const downloadFile = (fileUrl: string, fileName: string) => {
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const [imageUrlMap1, setImageUrlMap1] = useState<Map<string, string>>(new Map());
+
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -207,6 +289,9 @@ export default function RequirementList({ requirements: requirements, setRequire
                                     Observaciones
                                 </TableCell>
                                 <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Archivo
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -220,6 +305,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(requirement.fecha_vigencia).toLocaleDateString()}</TableCell>
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(requirement.fecha_vencimiento).toLocaleDateString()}</TableCell>
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{requirement.observaciones}</TableCell>
+                                    <TableCell align="center">{handleFileUrl(requirement.archivo)}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPersonByIdentifcation = exports.getPersonById = exports.getAllPersons = exports.deletePerson = exports.updatePerson = exports.createPerson = void 0;
+exports.getPersonHistoryChanges = exports.getPersonByIdentifcation = exports.getPersonById = exports.getAllPersons = exports.deletePerson = exports.updatePerson = exports.createPerson = void 0;
 const sequelize_1 = require("sequelize");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -181,3 +181,22 @@ const getPersonByIdentifcation = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.getPersonByIdentifcation = getPersonByIdentifcation;
+const getPersonHistoryChanges = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_persona } = req.params;
+    try {
+        const miembro = yield SqlServer_1.default.query(`EXEC sp_gestion_persona @tipo_accion = 'B', @id_persona = :id_persona`, {
+            replacements: { id_persona },
+            type: sequelize_1.QueryTypes.SELECT
+        });
+        if (!miembro.length) {
+            res.status(404).json({ message: "Persona no encontrada" });
+            return;
+        }
+        // Devuelve todos los resultados en lugar del primero
+        res.status(200).json({ data: miembro });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+exports.getPersonHistoryChanges = getPersonHistoryChanges;

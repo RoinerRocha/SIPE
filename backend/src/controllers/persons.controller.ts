@@ -221,3 +221,27 @@ export const getPersonByIdentifcation = async (req: Request, res: Response): Pro
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getPersonHistoryChanges = async (req: Request, res: Response): Promise<void> => {
+  const { id_persona } = req.params;
+
+  try {
+      const miembro = await sequelize.query(
+          `EXEC sp_gestion_persona @tipo_accion = 'B', @id_persona = :id_persona`,
+          {
+              replacements: { id_persona },
+              type: QueryTypes.SELECT
+          }
+      );
+
+      if (!miembro.length) {
+          res.status(404).json({ message: "Persona no encontrada" });
+          return;
+      }
+
+      // Devuelve todos los resultados en lugar del primero
+      res.status(200).json({ data: miembro });
+  } catch (error: any) {
+      res.status(500).json({ error: error.message });
+  }
+};
