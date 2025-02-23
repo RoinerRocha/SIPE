@@ -84,6 +84,7 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
         if (newPayment.archivo) {
             formData.append("archivo", newPayment.archivo);
         }
+        formData.append("tipo_movimiento", (newPayment.tipo_movimiento?.toString() ?? ''));
 
         onSubmit(formData);
 
@@ -177,7 +178,23 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="tipo_pago-label">Moneda</InputLabel>
+                                <InputLabel id="tipo_movimiento-label">Tipo de Movimiento</InputLabel>
+                                <Select
+                                    labelId="tipo_movimiento-label"
+                                    {...register('tipo_movimiento', { required: 'Se necesita el comprobante' })}
+                                    name="tipo_movimiento"
+                                    value={newPayment.tipo_movimiento?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="PAGO">Pago</MenuItem>
+                                    <MenuItem value="DEPOSITO">Deposito</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="tipo_pago-label">Tipo de Pago</InputLabel>
                                 <Select
                                     labelId="tipo_pago-label"
                                     {...register('tipo_pago', { required: 'Se necesita el comprobante' })}
@@ -186,12 +203,15 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
                                     onChange={handleSelectChange}
                                     fullWidth
                                 >
-                                    <MenuItem value="PLANO CATASTRO">Plano Catastro</MenuItem>
-                                    <MenuItem value="PAGO DE AVALUO">Pago de Avaluo</MenuItem>
-                                    <MenuItem value="PAGO CARTA DE AGUA">Pago Carta de Agua</MenuItem>
-                                    <MenuItem value="PAGO USO DE SUELOS">Pago Uso de Suelos</MenuItem>
-                                    <MenuItem value="PAGODERECHO DEL MEDIDOR DE AGUA">Pago Derecho del Medidor de Agua</MenuItem>
-                                    <MenuItem value="PAGO ABOGADOS">Pago Abogados</MenuItem>
+                                    <MenuItem value="PAGO_HONORARIOS">Pago de Honorarios</MenuItem>
+                                    <MenuItem value="PAGO_POLIZA">Pago de Poliza</MenuItem>
+                                    <MenuItem value="PAGO_FISCALIZACION">Pago de Fiscalizacion</MenuItem>
+                                    <MenuItem value="PAGO_TRABAJO_SOCIAL">Pago de Trabajo Social</MenuItem>
+                                    <MenuItem value="PAGO_ESTUDIO_SOCIAL">Pago de Estudio Social</MenuItem>
+                                    <MenuItem value="PAGO_GASTOS_FORMALIZACION">Pago de Gastos de Formalizacion</MenuItem>
+                                    <MenuItem value="PAGO_APORTE_FAMILIA">Pago de Aporte a la Familia</MenuItem>
+                                    <MenuItem value="DEPOSITO_GASTO_FORMALIZACION">Deposito de Gasto de Formalizacion</MenuItem>
+                                    <MenuItem value="DEPOSITO_APORTE_CONSTRUCCION">Deposito de Aporte de Construccion</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

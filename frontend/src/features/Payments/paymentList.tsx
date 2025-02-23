@@ -188,6 +188,9 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                                     Archivo
                                 </TableCell>
                                 <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
+                                    Tipo de Movimiento
+                                </TableCell>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Realizar Cambios
                                 </TableCell>
                             </TableRow>
@@ -208,6 +211,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>
                                         {payments.archivo ? payments.archivo.name : 'Sin archivo'}
                                     </TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{payments.tipo_movimiento}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"

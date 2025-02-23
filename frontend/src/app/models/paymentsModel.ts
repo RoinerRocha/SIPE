@@ -12,4 +12,5 @@ export interface paymentsModel {
   usuario: string;
   observaciones: string;
   archivo: File | null;
+  tipo_movimiento: string;
 }
