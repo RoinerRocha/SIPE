@@ -33,7 +33,7 @@ const storage = multer_1.default.diskStorage({
 });
 exports.upload = (0, multer_1.default)({ storage }).single("archivo");
 const createPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo } = req.body;
+    const { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo, tipo_movimiento } = req.body;
     let archivoPath = null;
     if (req.file) {
         archivoPath = path_1.default.join("Documentos", id_persona.toString(), req.file.filename);
@@ -51,8 +51,9 @@ const createPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                                    @moneda = :moneda,
                                    @usuario = :usuario,
                                    @observaciones = :observaciones,
-                                   @archivo = :archivo`, {
-            replacements: { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo: archivoPath },
+                                   @archivo = :archivo,
+                                   @tipo_movimiento = :tipo_movimiento`, {
+            replacements: { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo: archivoPath, tipo_movimiento },
             type: sequelize_1.QueryTypes.INSERT,
         });
         res.status(201).json({ message: "Pago creado exitosamente" });

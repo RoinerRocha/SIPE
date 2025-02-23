@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 export const upload = multer({ storage }).single("archivo");
 
 export const createPayment = async (req: Request, res: Response): Promise<void> => {
-  const { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo } = req.body;
+  const { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo, tipo_movimiento } = req.body;
 
   let archivoPath = null;
 
@@ -46,9 +46,10 @@ export const createPayment = async (req: Request, res: Response): Promise<void> 
                                    @moneda = :moneda,
                                    @usuario = :usuario,
                                    @observaciones = :observaciones,
-                                   @archivo = :archivo`,
+                                   @archivo = :archivo,
+                                   @tipo_movimiento = :tipo_movimiento`,
       {
-        replacements: { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo: archivoPath },
+        replacements: { id_persona, identificacion, comprobante, tipo_pago, fecha_pago, fecha_presentacion, estado, monto, moneda, usuario, observaciones, archivo: archivoPath, tipo_movimiento },
         type: QueryTypes.INSERT,
       }
     );
