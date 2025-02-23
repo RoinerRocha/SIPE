@@ -274,6 +274,44 @@ export default function PersonList({
         }
     };
 
+    const handleDownloadPDFHistory = async () => {
+        // Se utiliza la primera persona del arreglo filtrado (ajusta la lógica según tu necesidad)
+        if (!persons || persons.length === 0) {
+            toast.error("No hay una persona seleccionada para descargar el historial de cambios.");
+            return;
+        }
+        const personId = persons[0].id_persona;
+
+        try {
+            const response = await api.persons.getPersonHistoryChanges(personId);
+            const historyData = response.data; // Se espera un arreglo de personHistoryModel
+
+            const doc = new jsPDF();
+            let yPos = 10;
+            doc.setFontSize(16);
+            doc.text(`Historial de Cambios - Persona ${personId}`, 14, yPos);
+            yPos += 10;
+
+            autoTable(doc, {
+                startY: yPos,
+                head: [["Fecha", "Objeto", "Campo Modificado", "Valor Anterior", "Valor Nuevo", "Usuario"]],
+                body: historyData.length > 0 ? historyData.map((item: any) => [
+                    new Date(item.fecha).toLocaleDateString(),
+                    item.objeto,
+                    item.campo_modificado,
+                    item.valor_anterior,
+                    item.valor_nuevo,
+                    item.usuario,
+                ]) : [["No hay historial de cambios disponible"]],
+            });
+
+            doc.save(`Historial_Cambios_Persona_${personId}.pdf`);
+        } catch (error) {
+            console.error("Error al obtener historial de cambios:", error);
+            toast.error("Error al obtener historial de cambios.");
+        }
+    };
+
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -295,7 +333,7 @@ export default function PersonList({
                     {t('Control-BotonAgregar')}
                 </Button>
             </Grid>
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6} md={3}>
                 <TextField
                     fullWidth
                     label="Número de Identificación"
@@ -324,6 +362,17 @@ export default function PersonList({
                     InputProps={{ readOnly: true }}
                     sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
+            </Grid>
+            <Grid item xs={12} sm={6} md={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleDownloadPDFHistory}
+                    fullWidth
+                    sx={{ marginBottom: 2, height: "56px" }}
+                >
+                    Descargar Historial
+                </Button>
             </Grid>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">

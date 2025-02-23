@@ -167,12 +167,35 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
                                         },
                                     }}
                                 >
-                                    <MenuItem value="APROBADO">Aprobado</MenuItem>
+                                    <MenuItem value="CASO_EN_AVALUO">Caso en Avaluo</MenuItem>
+                                    <MenuItem value="CASO_EN_TRABAJO_SOCIAL">Caso en Trabajo Social</MenuItem>
+                                    <MenuItem value="CASO_EN_TRAMITE_CON_LA_CONSTRUCTORA">Caso en Tramite con la Constructora</MenuItem>
+                                    <MenuItem value="CASO_DE_ENVIADO_A_LA_ENTIDAD">Caso de Enviado a la Entidad</MenuItem>
+                                    <MenuItem value="CASO_EN_ANALISIS_EN_ENTIDAD">Caso en Analisis en Entidad</MenuItem>
+                                    <MenuItem value="CASO_CON_OBSERVACIONES_ENTIDAD">Caso con Observaciones Entidad</MenuItem>
+                                    <MenuItem value="EXPEDIENTE_DIGITAL_COMPLETADO">Expediente Digital Completado</MenuItem>
+                                    <MenuItem value="TRASLADO_DE_ENTIDAD">Traslado de Entidad</MenuItem>
+                                    <MenuItem value="EXPEDIENTE_DIGITAL_REGISTRADO">Expediente Digital Registrado</MenuItem>
+                                    <MenuItem value="EXPEDIENTE_APROBADO">Expediente Aprobado</MenuItem>
+                                    <MenuItem value="EXPEDIENTE_CON_ANOMALIAS">Expediente Con Anomalias</MenuItem>
+                                    <MenuItem value="INCONSISTENTE">Inconsistente</MenuItem>
                                     <MenuItem value="RECHAZADO">Rechazado</MenuItem>
+                                    <MenuItem value="PRESENTADO_PARA_RE-POSTULACION">Presentado para Re-postulacion</MenuItem>
+                                    <MenuItem value="APROBADO_EN_REVISION_BANHVI">Aprobado en Revision BANHVI</MenuItem>
+                                    <MenuItem value="EMITIDO">Emitido</MenuItem>
+                                    <MenuItem value="FORMALIZADO">Formalizado</MenuItem>
+                                    <MenuItem value="FORMALIZACION_REVERSADA">Formalizacion Reversada</MenuItem>
+                                    <MenuItem value="COBRADO">Cobrado</MenuItem>
+                                    <MenuItem value="PAGADO">Pagado</MenuItem>
+                                    <MenuItem value="DESENVOLSOS">Desenvolsos</MenuItem>
+                                    <MenuItem value="CASO_LIQUIDADO">Caso Liquidado</MenuItem>
                                     <MenuItem value="ANULADO">Anulado</MenuItem>
-                                    <MenuItem value="FINALIZADO">Finalizado</MenuItem>
-                                    <MenuItem value="ENVIADO A BANHVI">Enviado a Banhvi</MenuItem>
-                                    <MenuItem value="ENVIADO A ENTIDAD">Enviado a Entidad</MenuItem>
+                                    <MenuItem value="PAGADO_SALDO_DEVUELTO_PARCIALMENTE">Pagado Saldo Devuelto Parcialmente</MenuItem>
+                                    <MenuItem value="REGISTRADO_BATCH">Registrado BATCH</MenuItem>
+                                    <MenuItem value="RE-CALCULADO">Re-Calculado</MenuItem>
+                                    <MenuItem value="REEMBOLSO_A_LA_ENTIDAD">Reembolso a la Entidad</MenuItem>
+                                    <MenuItem value="REGISTRADO">Registrado</MenuItem>
+                                    <MenuItem value="REINTEGRO_ANULADO">Reintegro Anulado</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
