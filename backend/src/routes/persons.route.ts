@@ -6,7 +6,8 @@ import {
   deletePerson,
   getPersonById,
   getPersonByIdentifcation,
-  getPersonHistoryChanges
+  getPersonHistoryChanges,
+  getAllDisabilities
 } from "../controllers/persons.controller";
 
 const router = Router();
@@ -18,6 +19,7 @@ router.get("/", (req, res) => {
 
 router.post("/createPerson", createPerson);
 router.get("/getPersons", getAllPersons);
+router.get("/getAllDisabilities", getAllDisabilities);
 router.get("/getPersonById/:id_persona", getPersonById);
 router.get("/getPersonHistoryChanges/:id_persona", getPersonHistoryChanges);
 router.get("/getPersonByIdentifcation/:numero_identifiacion", getPersonByIdentifcation);

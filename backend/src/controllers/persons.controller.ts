@@ -245,3 +245,18 @@ export const getPersonHistoryChanges = async (req: Request, res: Response): Prom
       res.status(500).json({ error: error.message });
   }
 };
+
+export const getAllDisabilities = async (req: Request, res: Response): Promise<void> => {
+  try {
+      const disability = await sequelize.query(
+          "EXEC sp_get_discapacidades", // Agregamos @id_persona
+          {
+              type: QueryTypes.SELECT, // Tipo de operación SELECT
+          }
+      );
+
+      res.status(200).json({ message: "Listado de roles exitoso", data: disability });
+  } catch (error: any) {
+      res.status(500).json({ error: error.message });
+  }
+};

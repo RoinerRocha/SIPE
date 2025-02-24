@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPersonHistoryChanges = exports.getPersonByIdentifcation = exports.getPersonById = exports.getAllPersons = exports.deletePerson = exports.updatePerson = exports.createPerson = void 0;
+exports.getAllDisabilities = exports.getPersonHistoryChanges = exports.getPersonByIdentifcation = exports.getPersonById = exports.getAllPersons = exports.deletePerson = exports.updatePerson = exports.createPerson = void 0;
 const sequelize_1 = require("sequelize");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -200,3 +200,16 @@ const getPersonHistoryChanges = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getPersonHistoryChanges = getPersonHistoryChanges;
+const getAllDisabilities = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const disability = yield SqlServer_1.default.query("EXEC sp_get_discapacidades", // Agregamos @id_persona
+        {
+            type: sequelize_1.QueryTypes.SELECT, // Tipo de operación SELECT
+        });
+        res.status(200).json({ message: "Listado de roles exitoso", data: disability });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+exports.getAllDisabilities = getAllDisabilities;

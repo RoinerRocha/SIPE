@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 });
 router.post("/createPerson", persons_controller_1.createPerson);
 router.get("/getPersons", persons_controller_1.getAllPersons);
+router.get("/getAllDisabilities", persons_controller_1.getAllDisabilities);
 router.get("/getPersonById/:id_persona", persons_controller_1.getPersonById);
 router.get("/getPersonHistoryChanges/:id_persona", persons_controller_1.getPersonHistoryChanges);
 router.get("/getPersonByIdentifcation/:numero_identifiacion", persons_controller_1.getPersonByIdentifcation);
