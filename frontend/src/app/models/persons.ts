@@ -14,4 +14,5 @@ export interface personModel {
     nivel_estudios: string;
     asesor: string;
     estado: string;
+    discapacidad: string;
 }

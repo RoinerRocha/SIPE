@@ -19,7 +19,7 @@ const path_1 = __importDefault(require("path"));
 const SqlServer_1 = __importDefault(require("../database/SqlServer"));
 // Crear una nueva persona
 const createPerson = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_persona, tipo_identificacion, numero_identifiacion, nombre, primer_apellido, segundo_apellido, fecha_nacimiento, genero, estado_civil, nacionalidad, fecha_registro, usuario_registro, nivel_estudios, asesor } = req.body;
+    const { id_persona, tipo_identificacion, numero_identifiacion, nombre, primer_apellido, segundo_apellido, fecha_nacimiento, genero, estado_civil, nacionalidad, fecha_registro, usuario_registro, nivel_estudios, asesor, discapacidad } = req.body;
     try {
         yield SqlServer_1.default.query(`EXEC sp_gestion_persona @tipo_accion = 'I',
                               @id_persona = :id_persona,
@@ -35,7 +35,8 @@ const createPerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                               @fecha_registro = :fecha_registro,
                               @usuario_registro = :usuario_registro,
                               @nivel_estudios = :nivel_estudios,
-                              @asesor = :asesor`, {
+                              @asesor = :asesor,
+                              @discapacidad = :discapacidad`, {
             replacements: {
                 id_persona,
                 tipo_identificacion,
@@ -50,7 +51,8 @@ const createPerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 fecha_registro,
                 usuario_registro,
                 nivel_estudios,
-                asesor
+                asesor,
+                discapacidad
             },
             type: sequelize_1.QueryTypes.INSERT
         });
@@ -68,7 +70,7 @@ exports.createPerson = createPerson;
 // Actualizar una persona
 const updatePerson = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_persona } = req.params;
-    const { tipo_identificacion, numero_identifiacion, nombre, primer_apellido, segundo_apellido, fecha_nacimiento, genero, estado_civil, nacionalidad, fecha_registro, usuario_registro, nivel_estudios, asesor } = req.body;
+    const { tipo_identificacion, numero_identifiacion, nombre, primer_apellido, segundo_apellido, fecha_nacimiento, genero, estado_civil, nacionalidad, fecha_registro, usuario_registro, nivel_estudios, asesor, discapacidad } = req.body;
     try {
         yield SqlServer_1.default.query(`EXEC sp_gestion_persona @tipo_accion = 'U',
                               @id_persona = :id_persona,
@@ -84,7 +86,8 @@ const updatePerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                               @fecha_registro = :fecha_registro,
                               @usuario_registro = :usuario_registro,
                               @nivel_estudios = :nivel_estudios,
-                              @asesor = :asesor`, {
+                              @asesor = :asesor,
+                              @discapacidad = :discapacidad`, {
             replacements: {
                 id_persona,
                 tipo_identificacion,
@@ -99,7 +102,8 @@ const updatePerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 fecha_registro,
                 usuario_registro,
                 nivel_estudios,
-                asesor
+                asesor,
+                discapacidad
             },
             type: sequelize_1.QueryTypes.UPDATE
         });

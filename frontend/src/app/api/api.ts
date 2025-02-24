@@ -228,6 +228,7 @@ const referralsDetails = {
 const persons = {
   savePersons: (values: any) => requests.post("/createPerson", values), 
   getPersons: () => requests.get("/getPersons"),
+  getAllDisabilities: () => requests.get("/getAllDisabilities"),
   getPersonById:(id_persona: number) => requests.get(`/getPersonById/${id_persona}`),
   getPersonHistoryChanges:(id_persona: number) => requests.get(`/getPersonHistoryChanges/${id_persona}`),
   getPersonByIdentification:(numero_identifiacion: string) => requests.get(`/getPersonByIdentifcation/${numero_identifiacion}`),

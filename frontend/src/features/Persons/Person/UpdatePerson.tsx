@@ -10,6 +10,7 @@ import { statesModels } from '../../../app/models/states';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { personModel } from '../../../app/models/persons';
+import { disabilitiesModel } from '../../../app/models/disabilitiesModel';
 
 interface UpdatePersonProps {
     person: personModel;
@@ -23,6 +24,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
     const [users, setUsers] = useState<User[]>([]);
     const [persons, setPersons] = useState<personModel[]>([]);
     const [state, setState] = useState<statesModels[]>([]);
+    const [disabilitie, setDisabilitie] = useState<disabilitiesModel[]>([]);
 
     const [currentPerson, setCurrentPerson] = useState<Partial<personModel>>(person);
     console.log(person.id_persona)
@@ -32,30 +34,36 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const [userData, personData, stateData] = await Promise.all([
-              api.Account.getAllUser(),
-              api.persons.getPersons(),
-              api.States.getStates()
-            ]);
-                   // Se verifica que las respuestas sean arrays antes de actualizar el estado
-            if (userData && Array.isArray(userData.data)) {
-                setUsers(userData.data);
-            } else {
-                console.error("User data is not an array", userData);
-            }
+            try {
+                const [userData, personData, stateData, disabilitieData] = await Promise.all([
+                    api.Account.getAllUser(),
+                    api.persons.getPersons(),
+                    api.States.getStates(),
+                    api.persons.getAllDisabilities(),
+                ]);
+                // Se verifica que las respuestas sean arrays antes de actualizar el estado
+                if (userData && Array.isArray(userData.data)) {
+                    setUsers(userData.data);
+                } else {
+                    console.error("User data is not an array", userData);
+                }
 
-            if (personData && Array.isArray(personData.data)) {
-                setPersons(personData.data);
-            } else {
-                console.error("Persons data is not an array", userData);
-            }
-            if (stateData && Array.isArray(stateData.data)) {
-                setState(stateData.data);
-            } else {
-                console.error("States data is not an array", userData);
-            }
-           
+                if (personData && Array.isArray(personData.data)) {
+                    setPersons(personData.data);
+                } else {
+                    console.error("Persons data is not an array", userData);
+                }
+                if (stateData && Array.isArray(stateData.data)) {
+                    setState(stateData.data);
+                } else {
+                    console.error("States data is not an array", userData);
+                }
+                if (disabilitieData && Array.isArray(disabilitieData.data)) {
+                    setDisabilitie(disabilitieData.data);
+                } else {
+                    console.error("States data is not an array", disabilitieData);
+                }
+
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -70,8 +78,8 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                 toast.success('Persona actualizada con éxito.');
                 loadAccess();
             } catch (error) {
-              console.error(error);
-              toast.error('Error al actualizar la persona.');
+                console.error(error);
+                toast.error('Error al actualizar la persona.');
             }
         }
     };
@@ -107,7 +115,6 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                 onChange={handleInputChange}
                             />
                         </Grid> */}
-                        
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="tipo-identificacion-label">Tipo de Identificación</InputLabel>
@@ -134,7 +141,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                 onChange={handleInputChange}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <TextField
                                 fullWidth
                                 {...register('nombre', { required: 'Se necesita el nombre' })}
@@ -144,7 +151,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                 onChange={handleInputChange}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <TextField
                                 fullWidth
                                 {...register('primer_apellido', { required: 'Se necesita el primer apellido' })}
@@ -154,7 +161,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                 onChange={handleInputChange}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                             <TextField
                                 fullWidth
                                 {...register('segundo_apellido', { required: 'Se necesita el segundo apellido' })}
@@ -181,47 +188,47 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="genero-label">Genero</InputLabel>
-                                    <Select
-                                        labelId="genero-label"
-                                        {...register('genero', { required: 'Se necesita el genero' })}
-                                        name="genero"
-                                        value={currentPerson.genero?.toString() || ''}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                    >
-                                        <MenuItem value="MASCULINO">MASCULINO</MenuItem>
-                                        <MenuItem value="FEMENINO">FEMENINO</MenuItem>
-                                        <MenuItem value="NO APLICA">NO APLICA</MenuItem>
-                                    </Select>
+                                <Select
+                                    labelId="genero-label"
+                                    {...register('genero', { required: 'Se necesita el genero' })}
+                                    name="genero"
+                                    value={currentPerson.genero?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="MASCULINO">MASCULINO</MenuItem>
+                                    <MenuItem value="FEMENINO">FEMENINO</MenuItem>
+                                    <MenuItem value="NO APLICA">NO APLICA</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="estadoCivil-label">Estado Civil</InputLabel>
-                                    <Select
-                                        labelId="estadoCivil-label"
-                                        {...register('estado_civil', { required: 'Se necesita el estado civil' })}
-                                        name="estado_civil"
-                                        value={currentPerson.estado_civil?.toString() || ''}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <Select
+                                    labelId="estadoCivil-label"
+                                    {...register('estado_civil', { required: 'Se necesita el estado civil' })}
+                                    name="estado_civil"
+                                    value={currentPerson.estado_civil?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="NO APLICA">NO APLICA</MenuItem>
-                                        <MenuItem value="SOLTERO(A)">SOLTERO(A)</MenuItem>
-                                        <MenuItem value="CASADO(A)">CASADO(A)</MenuItem>
-                                        <MenuItem value="DIVORCIADO(A)">DIVORCIADO(A)</MenuItem>
-                                        <MenuItem value="VIUDO(A)">VIUDO(A)</MenuItem>
-                                        <MenuItem value="UNION LIBRE">UNION LIBRE</MenuItem>
-                                        <MenuItem value="UNION DE HECHO">UNION DE HECHO</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="NO APLICA">NO APLICA</MenuItem>
+                                    <MenuItem value="SOLTERO(A)">SOLTERO(A)</MenuItem>
+                                    <MenuItem value="CASADO(A)">CASADO(A)</MenuItem>
+                                    <MenuItem value="DIVORCIADO(A)">DIVORCIADO(A)</MenuItem>
+                                    <MenuItem value="VIUDO(A)">VIUDO(A)</MenuItem>
+                                    <MenuItem value="UNION LIBRE">UNION LIBRE</MenuItem>
+                                    <MenuItem value="UNION DE HECHO">UNION DE HECHO</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
@@ -260,13 +267,13 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                     label="Seleccionar Usuario"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(users) && users.map((user) => (
                                         <MenuItem key={user.id} value={user.nombre_usuario}>
@@ -280,32 +287,61 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="estudios-label">Nivel de Estudios</InputLabel>
-                                    <Select
-                                        labelId="estudios-label"
-                                        {...register('nivel_estudios', { required: 'Se necesita el nivel de estudio' })}
-                                        name="nivel_estudios"
-                                        value={currentPerson.nivel_estudios?.toString() || ''}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <Select
+                                    labelId="estudios-label"
+                                    {...register('nivel_estudios', { required: 'Se necesita el nivel de estudio' })}
+                                    name="nivel_estudios"
+                                    value={currentPerson.nivel_estudios?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="NO APLICA">NO APLICA</MenuItem>
-                                        <MenuItem value="PRIMARIA">PRIMARIA</MenuItem>
-                                        <MenuItem value="SECUNDARIA">SECUNDARIA</MenuItem>
-                                        <MenuItem value="TECNICO">TECNICO</MenuItem>
-                                        <MenuItem value="UNIVERSITARIO">UNIVERSITARIO</MenuItem>
-                                        <MenuItem value="POSGRADO">POSGRADO</MenuItem>
-                                        <MenuItem value="LICENCIATURA">LICENCIATURA</MenuItem>
-                                        <MenuItem value="MAESTRIA">MAESTRIA</MenuItem>
-                                        <MenuItem value="DOCTORADO">DOCTORADO</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="NO APLICA">NO APLICA</MenuItem>
+                                    <MenuItem value="PRIMARIA">PRIMARIA</MenuItem>
+                                    <MenuItem value="SECUNDARIA">SECUNDARIA</MenuItem>
+                                    <MenuItem value="TECNICO">TECNICO</MenuItem>
+                                    <MenuItem value="UNIVERSITARIO">UNIVERSITARIO</MenuItem>
+                                    <MenuItem value="POSGRADO">POSGRADO</MenuItem>
+                                    <MenuItem value="LICENCIATURA">LICENCIATURA</MenuItem>
+                                    <MenuItem value="MAESTRIA">MAESTRIA</MenuItem>
+                                    <MenuItem value="DOCTORADO">DOCTORADO</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="usuario-label">Discapacidad</InputLabel>
+                                <Select
+                                    labelId="usuario-label"
+                                    {...register('discapacidad', { required: 'Se necesita Ingresar un valor' })}
+                                    name="discapacidad"
+                                    value={currentPerson.discapacidad?.toString() || ""}
+                                    onChange={handleSelectChange}
+                                    label="Seleccionar Usuario"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+
+                                >
+                                    {Array.isArray(disabilitie) && disabilitie.map((disabilitie) => (
+                                        <MenuItem key={disabilitie.id} value={disabilitie.nombre}>
+                                            {disabilitie.nombre}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
@@ -330,13 +366,13 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                     label="Seleccionar Estado"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(state) && state.map((states) => (
                                         <MenuItem key={states.id} value={states.estado}>

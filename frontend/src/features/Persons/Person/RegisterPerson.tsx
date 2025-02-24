@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { useEffect, useState } from 'react';
 import { personModel } from '../../../app/models/persons';
+import { disabilitiesModel } from '../../../app/models/disabilitiesModel';
 import { useAppDispatch, useAppSelector } from "../../../store/configureStore";
 
 interface AddPersonProps {
@@ -23,6 +24,7 @@ export default function RegisterPerson({ loadAccess }: AddPersonProps) {
     const [users, setUsers] = useState<User[]>([]);
     const [persons, setPersons] = useState<personModel[]>([]);
     const [state, setState] = useState<statesModels[]>([]);
+    const [disabilitie, setDisabilitie] = useState<disabilitiesModel[]>([]);
 
     const [newPerson, setNewPerson] = useState<Partial<personModel>>({
         id_persona: parseInt(localStorage.getItem('generatedUserId') || "0") || undefined,
@@ -60,10 +62,11 @@ export default function RegisterPerson({ loadAccess }: AddPersonProps) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [userData, personData, stateData] = await Promise.all([
+                const [userData, personData, stateData, disabilitieData] = await Promise.all([
                     api.Account.getAllUser(),
                     api.persons.getPersons(),
-                    api.States.getStates()
+                    api.States.getStates(),
+                    api.persons.getAllDisabilities(),
                 ]);
                 // Se verifica que las respuestas sean arrays antes de actualizar el estado
                 if (userData && Array.isArray(userData.data)) {
@@ -81,6 +84,11 @@ export default function RegisterPerson({ loadAccess }: AddPersonProps) {
                     setState(stateData.data);
                 } else {
                     console.error("States data is not an array", userData);
+                }
+                if (disabilitieData && Array.isArray(disabilitieData.data)) {
+                    setDisabilitie(disabilitieData.data);
+                } else {
+                    console.error("States data is not an array", disabilitieData);
                 }
 
             } catch (error) {
@@ -351,15 +359,35 @@ export default function RegisterPerson({ loadAccess }: AddPersonProps) {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('usuario_registro', { required: 'Se necesita la fecha de envio' })}
-                                label="Usuario"
-                                value={user?.nombre_usuario}
-                                disabled
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="usuario-label">Usuario</InputLabel>
+                                <Select
+                                    labelId="usuario-label"
+                                    {...register('usuario_registro', { required: 'Se necesita el usuario' })}
+                                    name="usuario_registro"
+                                    value={newPerson.usuario_registro?.toString() || ""}
+                                    onChange={handleSelectChange}
+                                    label="Seleccionar Usuario"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+
+                                >
+                                    {Array.isArray(users) && users.map((users) => (
+                                        <MenuItem key={users.id} value={users.nombre_usuario}>
+                                            {users.nombre_usuario}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
+                            </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="estudios-label">Nivel de Estudios</InputLabel>
                                 <Select
@@ -388,6 +416,35 @@ export default function RegisterPerson({ loadAccess }: AddPersonProps) {
                                     <MenuItem value="MAESTRIA">MAESTRIA</MenuItem>
                                     <MenuItem value="DOCTORADO">DOCTORADO</MenuItem>
                                 </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="usuario-label">Discapacidad</InputLabel>
+                                <Select
+                                    labelId="usuario-label"
+                                    {...register('discapacidad', { required: 'Se necesita Ingresar un valor' })}
+                                    name="discapacidad"
+                                    value={newPerson.discapacidad?.toString() || ""}
+                                    onChange={handleSelectChange}
+                                    label="Seleccionar Usuario"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+
+                                >
+                                    {Array.isArray(disabilitie) && disabilitie.map((disabilitie) => (
+                                        <MenuItem key={disabilitie.id} value={disabilitie.nombre}>
+                                            {disabilitie.nombre}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>

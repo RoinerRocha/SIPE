@@ -20,7 +20,8 @@ export const createPerson = async (req: Request, res: Response): Promise<void> =
     fecha_registro,
     usuario_registro,
     nivel_estudios,
-    asesor
+    asesor,
+    discapacidad
   } = req.body;
 
   try {
@@ -39,7 +40,8 @@ export const createPerson = async (req: Request, res: Response): Promise<void> =
                               @fecha_registro = :fecha_registro,
                               @usuario_registro = :usuario_registro,
                               @nivel_estudios = :nivel_estudios,
-                              @asesor = :asesor`,
+                              @asesor = :asesor,
+                              @discapacidad = :discapacidad`,
       {
         replacements: {
           id_persona,
@@ -55,7 +57,8 @@ export const createPerson = async (req: Request, res: Response): Promise<void> =
           fecha_registro,
           usuario_registro,
           nivel_estudios,
-          asesor
+          asesor,
+          discapacidad
         },
         type: QueryTypes.INSERT
       }
@@ -88,7 +91,8 @@ export const updatePerson = async (req: Request, res: Response): Promise<void> =
     fecha_registro,
     usuario_registro,
     nivel_estudios,
-    asesor
+    asesor,
+    discapacidad
   } = req.body;
 
   try {
@@ -107,7 +111,8 @@ export const updatePerson = async (req: Request, res: Response): Promise<void> =
                               @fecha_registro = :fecha_registro,
                               @usuario_registro = :usuario_registro,
                               @nivel_estudios = :nivel_estudios,
-                              @asesor = :asesor`,
+                              @asesor = :asesor,
+                              @discapacidad = :discapacidad`,
       {
         replacements: {
           id_persona,
@@ -123,7 +128,8 @@ export const updatePerson = async (req: Request, res: Response): Promise<void> =
           fecha_registro,
           usuario_registro,
           nivel_estudios,
-          asesor
+          asesor,
+          discapacidad
         },
         type: QueryTypes.UPDATE
       }
