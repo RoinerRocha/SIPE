@@ -2,7 +2,8 @@ import {
     Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow,
     TableBody, Button, TablePagination, CircularProgress,
     Dialog, DialogActions, DialogContent, DialogTitle, SelectChangeEvent,
-    Card, Box, FormControl, InputLabel, MenuItem, Select, TextField
+    Card, Box, FormControl, InputLabel, MenuItem, Select, TextField,
+    Typography
 } from "@mui/material";
 
 import { FieldValues, Form, useForm } from 'react-hook-form';
@@ -27,9 +28,29 @@ export default function DetailsRegister({ idRemision: idRemision, loadAccess: lo
         observaciones: "",
     });
 
+    const [referralDetails, setReferralDetails] = useState<referralDetailsModel[]>([]);
+    const [loadingDetails, setLoadingDetails] = useState(false);
+
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid, isSubmitSuccessful } } = useForm({
         mode: 'onTouched'
     });
+
+    const loadDetails = async () => {
+        setLoadingDetails(true);
+        try {
+            const response = await api.referralsDetails.getReferralDetailByIdRemision(idRemision);
+            setReferralDetails(response.data);
+        } catch (error) {
+            console.error("Error al cargar los detalles", error);
+            toast.error("Error al cargar los detalles");
+        } finally {
+            setLoadingDetails(false);
+        }
+    };
+
+    useEffect(() => {
+        loadDetails();
+    }, [idRemision]);
 
     const onSubmit = async (data: FieldValues) => {
         try {
@@ -39,6 +60,7 @@ export default function DetailsRegister({ idRemision: idRemision, loadAccess: lo
             await api.referralsDetails.saveReferralDetails(data);
             toast.success("Detalle registrado correctamente");
             loadAccess();
+            loadDetails();
         } catch (error) {
             console.error("Error en el registro de detalle:", error);
             toast.error("Error al registrar el detalle");
@@ -62,9 +84,19 @@ export default function DetailsRegister({ idRemision: idRemision, loadAccess: lo
         }));
     };
 
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const paginatedReferralsDetails = referralDetails.slice(startIndex, endIndex);
+
     return (
         <Card>
-            <Box p={2}>
+            <Box p={2} sx={{
+                maxHeight: '65vh', // Limita la altura a un 80% de la altura visible
+                overflowY: 'auto', // Habilita scroll vertical
+            }}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
@@ -141,6 +173,55 @@ export default function DetailsRegister({ idRemision: idRemision, loadAccess: lo
                         </Button>
                     </Grid>
                 </form>
+                <Box mt={4} textAlign="center" mb={2}>
+                    <Typography variant="h5" component="h3" align="center">
+                        Detalles de la Remisión
+                    </Typography>
+                    {loadingDetails ? (
+                        <CircularProgress />
+                    ) : (
+                        <>
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Identificación</TableCell>
+                                            <TableCell>Tipo Documento</TableCell>
+                                            <TableCell>Estado</TableCell>
+                                            <TableCell>Observaciones</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {referralDetails.map(detail => (
+                                            <TableRow key={detail.id_dremision}>
+                                                <TableCell>{detail.identificacion}</TableCell>
+                                                <TableCell>{detail.tipo_documento}</TableCell>
+                                                <TableCell>{detail.estado}</TableCell>
+                                                <TableCell>{detail.observaciones}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                        {referralDetails.length === 0 && (
+                                            <TableRow>
+                                                <TableCell colSpan={5} align="center">
+                                                    No hay detalles registrados.
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 15]}
+                                component="div"
+                                count={referralDetails.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={(event, newPage) => setPage(newPage)}
+                                onRowsPerPageChange={(event) => setRowsPerPage(parseInt(event.target.value, 10))}
+                            />
+                        </>
+                    )}
+                </Box>
             </Box>
         </Card>
     )
