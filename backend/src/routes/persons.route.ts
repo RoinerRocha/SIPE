@@ -23,7 +23,7 @@ router.get("/getAllDisabilities", getAllDisabilities);
 router.get("/getPersonById/:id_persona", getPersonById);
 router.get("/getPersonHistoryChanges/:id_persona", getPersonHistoryChanges);
 router.get("/getPersonByIdentifcation/:numero_identifiacion", getPersonByIdentifcation);
-router.put("/updatePersons/:id_persona", updatePerson);
+router.put("/updatePersons/:id_persona/:usuario_sistema", updatePerson);
 router.delete("/deletePersons/:id_persona", deletePerson);
 
 export default router;

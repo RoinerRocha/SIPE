@@ -77,7 +77,7 @@ export const createPerson = async (req: Request, res: Response): Promise<void> =
 
 // Actualizar una persona
 export const updatePerson = async (req: Request, res: Response): Promise<void> => {
-  const { id_persona } = req.params;
+  const { id_persona, usuario_sistema } = req.params;
   const {
     tipo_identificacion,
     numero_identifiacion,
@@ -112,7 +112,8 @@ export const updatePerson = async (req: Request, res: Response): Promise<void> =
                               @usuario_registro = :usuario_registro,
                               @nivel_estudios = :nivel_estudios,
                               @asesor = :asesor,
-                              @discapacidad = :discapacidad`,
+                              @discapacidad = :discapacidad,
+                              @usuario_sistema = :usuario_sistema`,
       {
         replacements: {
           id_persona,
@@ -129,7 +130,8 @@ export const updatePerson = async (req: Request, res: Response): Promise<void> =
           usuario_registro,
           nivel_estudios,
           asesor,
-          discapacidad
+          discapacidad,
+          usuario_sistema
         },
         type: QueryTypes.UPDATE
       }

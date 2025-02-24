@@ -269,6 +269,7 @@ const directions = {
 const incomes = {
   saveIncomes: (values: any) => requests.post("/createIncome", values), 
   getIncomes: () => requests.get("/getAllIncomes"),
+  getSegmentos:(segmento: string) => requests.get(`/getSegmentos/${segmento}`),
   getIncomesByPerson:(id_persona: number) => requests.get(`/getIncomesByPerson/${id_persona}`),
   getIncomesByID:(id_ingreso: number) => requests.get(`/getIncomesByID/${id_ingreso}`),
   updateIncomes: (id_ingreso: any, contactData: any) => 

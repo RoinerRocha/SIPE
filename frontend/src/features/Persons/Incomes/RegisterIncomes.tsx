@@ -5,22 +5,24 @@ import { Button, Card, FormControl, FormHelperText, InputLabel, MenuItem, Select
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, Form, useForm } from 'react-hook-form';
 import api from '../../../app/api/api';
-import { statesModels } from '../../../app/models/states'; 
+import { statesModels } from '../../../app/models/states';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
 import { useEffect, useState } from 'react';
-import {incomesModel} from '../../../app/models/incomesModel';
+import { incomesModel } from '../../../app/models/incomesModel';
 import { personModel } from '../../../app/models/persons';
+import { segmentosModel } from '../../../app/models/segmentosModelo';
 
 interface AddIncomesProps {
     loadAccess: () => void;
 }
 
-export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
+export default function RegisterIncomes({ loadAccess }: AddIncomesProps) {
     const [state, setState] = useState<statesModels[]>([]);
     const [person, setPerson] = useState<personModel[]>([]);
+    const [subsegmentos, setSubsegmentos] = useState<segmentosModel[]>([]);
 
-    const [newIncome, setNewIncome ] = useState<Partial<incomesModel>>({
+    const [newIncome, setNewIncome] = useState<Partial<incomesModel>>({
         id_persona: parseInt(localStorage.getItem('generatedUserId') || "0") || undefined,
         segmento: "",
         subsegmento: "",
@@ -61,22 +63,37 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (newIncome.segmento) {
+            api.incomes.getSegmentos(newIncome.segmento)
+                .then(response => {
+                    setSubsegmentos(response.data);
+                })
+                .catch(err => {
+                    console.error("Error fetching subsegmentos:", err);
+                    // Puedes mostrar un toast o algún mensaje de error aquí si lo deseas
+                });
+        } else {
+            setSubsegmentos([]);
+        }
+    }, [newIncome.segmento])
+
     const onSubmit = async (data: FieldValues) => {
         try {
-          await api.incomes.saveIncomes(data);
-          toast.success("Ingreso registrado");
-          loadAccess();
+            await api.incomes.saveIncomes(data);
+            toast.success("Ingreso registrado");
+            loadAccess();
         } catch (error) {
-          console.error(error);
-          toast.error("Error al crear el ingreso");
+            console.error(error);
+            toast.error("Error al crear el ingreso");
         }
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
         setNewIncome((prevAsset) => ({
-          ...prevAsset,
-          [name]: value,
+            ...prevAsset,
+            [name]: value,
         }));
     };
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
@@ -99,7 +116,7 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
 
     return (
         <Card>
-            <Box  p={2}>
+            <Box p={2}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -115,13 +132,13 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                                     disabled={!!newIncome.id_persona}
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(person) && person.map((persons) => (
                                         <MenuItem key={persons.id_persona} value={persons.id_persona}>
@@ -213,15 +230,17 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                                     MenuProps={{
                                         PaperProps: {
                                             style: {
-                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                maxHeight: 200,
                                                 width: 250,
                                             },
                                         },
                                     }}
                                 >
-                                    <MenuItem value="PRIVADO">Privado</MenuItem>
-                                    <MenuItem value="PUBLICO">Publico</MenuItem>
-                                    <MenuItem value="INDEPENDIENTE">Independiente</MenuItem>
+                                    {subsegmentos.map(seg => (
+                                        <MenuItem key={seg.id_segmento} value={seg.subsegmento}>
+                                            {seg.subsegmento}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -291,13 +310,13 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                                     label="Seleccionar Estado"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(state) && state.map((states) => (
                                         <MenuItem key={states.id} value={states.estado}>
@@ -311,28 +330,28 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="contacto-label">Principal</InputLabel>
-                                    <Select
-                                        labelId="contacto-label"
-                                        {...register('principal', { required: 'Se necesita la confirmacion' })}
-                                        name="principal"
-                                        value={newIncome.principal ? 'true' : 'false'}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <Select
+                                    labelId="contacto-label"
+                                    {...register('principal', { required: 'Se necesita la confirmacion' })}
+                                    name="principal"
+                                    value={newIncome.principal ? 'true' : 'false'}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="true">Si</MenuItem>
-                                        <MenuItem value="false">No</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="true">Si</MenuItem>
+                                    <MenuItem value="false">No</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
-                        <Button  variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
+                        <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
                             Agregar
                         </Button>
                     </Grid>

@@ -11,6 +11,7 @@ import { personModel } from '../../../app/models/persons';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { incomesModel } from '../../../app/models/incomesModel';
+import { segmentosModel } from '../../../app/models/segmentosModelo';
 
 interface UpdateIncomesProps {
     Incomes: incomesModel;
@@ -23,6 +24,7 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
     const [person, setPerson] = useState<personModel[]>([]);
     const [income, setIncome] = useState<incomesModel[]>([]);
     const [state, setState] = useState<statesModels[]>([]);
+    const [subsegmentos, setSubsegmentos] = useState<segmentosModel[]>([]);
 
     const [currentIncome, setCurrentIncome] = useState<Partial<incomesModel>>(Incomes);
 
@@ -60,6 +62,21 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
         };
         fetchData();
     }, [Incomes]);
+
+    useEffect(() => {
+        if (currentIncome.segmento) {
+            api.incomes.getSegmentos(currentIncome.segmento)
+                .then(response => {
+                    setSubsegmentos(response.data);
+                })
+                .catch(err => {
+                    console.error("Error fetching subsegmentos:", err);
+                    // Puedes mostrar un toast o algún mensaje de error aquí si lo deseas
+                });
+        } else {
+            setSubsegmentos([]);
+        }
+    }, [currentIncome.segmento])
 
 
     const onSubmit = async (data: FieldValues) => {
@@ -144,15 +161,17 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
                                     MenuProps={{
                                         PaperProps: {
                                             style: {
-                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                maxHeight: 200,
                                                 width: 250,
                                             },
                                         },
                                     }}
                                 >
-                                    <MenuItem value="PRIVADO">Privado</MenuItem>
-                                    <MenuItem value="PUBLICO">Publico</MenuItem>
-                                    <MenuItem value="INDEPENDIENTE">Independiente</MenuItem>
+                                    {subsegmentos.map(seg => (
+                                        <MenuItem key={seg.id_segmento} value={seg.subsegmento}>
+                                            {seg.subsegmento}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>

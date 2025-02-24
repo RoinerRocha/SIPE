@@ -69,7 +69,7 @@ const createPerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.createPerson = createPerson;
 // Actualizar una persona
 const updatePerson = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_persona } = req.params;
+    const { id_persona, usuario_sistema } = req.params;
     const { tipo_identificacion, numero_identifiacion, nombre, primer_apellido, segundo_apellido, fecha_nacimiento, genero, estado_civil, nacionalidad, fecha_registro, usuario_registro, nivel_estudios, asesor, discapacidad } = req.body;
     try {
         yield SqlServer_1.default.query(`EXEC sp_gestion_persona @tipo_accion = 'U',
@@ -87,7 +87,8 @@ const updatePerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                               @usuario_registro = :usuario_registro,
                               @nivel_estudios = :nivel_estudios,
                               @asesor = :asesor,
-                              @discapacidad = :discapacidad`, {
+                              @discapacidad = :discapacidad,
+                              @usuario_sistema = :usuario_sistema`, {
             replacements: {
                 id_persona,
                 tipo_identificacion,
@@ -103,7 +104,8 @@ const updatePerson = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 usuario_registro,
                 nivel_estudios,
                 asesor,
-                discapacidad
+                discapacidad,
+                usuario_sistema
             },
             type: sequelize_1.QueryTypes.UPDATE
         });

@@ -122,10 +122,10 @@ export default function HomePage() {
           <FilesViewsBarChart />
       </Grid>
       </Grid>
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+      {/* <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Details
-      </Typography>
-      <Grid container spacing={2} columns={12}>
+      </Typography> */}
+      {/* <Grid container spacing={2} columns={12}>
         <Grid item xs={12} lg={9} >
           <CustomizedDataGrid />
         </Grid>
@@ -134,7 +134,7 @@ export default function HomePage() {
             <ChartUserByCountry />
           </Stack>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }

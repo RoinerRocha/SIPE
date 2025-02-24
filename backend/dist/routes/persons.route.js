@@ -13,6 +13,6 @@ router.get("/getAllDisabilities", persons_controller_1.getAllDisabilities);
 router.get("/getPersonById/:id_persona", persons_controller_1.getPersonById);
 router.get("/getPersonHistoryChanges/:id_persona", persons_controller_1.getPersonHistoryChanges);
 router.get("/getPersonByIdentifcation/:numero_identifiacion", persons_controller_1.getPersonByIdentifcation);
-router.put("/updatePersons/:id_persona", persons_controller_1.updatePerson);
+router.put("/updatePersons/:id_persona/:usuario_sistema", persons_controller_1.updatePerson);
 router.delete("/deletePersons/:id_persona", persons_controller_1.deletePerson);
 exports.default = router;
