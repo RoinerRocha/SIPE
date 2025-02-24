@@ -27,9 +27,10 @@ interface Prop {
     idPersona: number;
     person: string;
     identificationPerson: string;
+    loadAccess: () => void;
 }
 
-export default function PaymentRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson }: Prop) {
+export default function PaymentRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson, loadAccess: loadAccess }: Prop) {
     const { user } = useAppSelector(state => state.account);
     const [newPayment, setNewPayment] = useState<Partial<paymentsModel>>({
         id_persona: idPersona,
@@ -62,6 +63,7 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
 
             await api.payments.savePayments(data);
             toast.success("Pago registrado correctamente");
+            loadAccess();
         } catch (error) {
             console.error("Error en el registro de pago:", error);
             toast.error("Error al registrar el pago");

@@ -12,9 +12,10 @@ import { statesModels } from '../../app/models/states';
 
 interface UpdatePaymentsProps {
     PaymentsData: paymentsModel;
+    loadAccess: () => void;
 }
 
-export default function UpdatePayment({ PaymentsData }: UpdatePaymentsProps) {
+export default function UpdatePayment({ PaymentsData, loadAccess }: UpdatePaymentsProps) {
     const navigate = useNavigate();
     const [currentPayment, setCurrentPayment] = useState<Partial<paymentsModel>>(PaymentsData);
     const [state, setState] = useState<statesModels[]>([]);
@@ -36,6 +37,7 @@ export default function UpdatePayment({ PaymentsData }: UpdatePaymentsProps) {
             try {
                 await api.payments.updatePayments(Number(currentPayment.id_pago), data);
                 toast.success('Pago actualizado con éxito.');
+                loadAccess();
             } catch (error) {
                 console.error(error);
                 toast.error('Error al actualizar el pago.');

@@ -19,8 +19,11 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import api from "../../app/api/api";
 
+interface LoadReferralsProps {
+    loadAccess: () => void;
+}
 
-export default function ReferralRegister() {
+export default function ReferralRegister({ loadAccess }: LoadReferralsProps) {
     const { user } = useAppSelector(state => state.account);
     const [newReferral, setNewReferral] = useState<Partial<referralsModel>>({
         fecha_preparacion: new Date(),
@@ -48,6 +51,7 @@ export default function ReferralRegister() {
 
             await api.referrals.saveReferrals(data);
             toast.success("Remision registrado correctamente");
+            loadAccess();
         } catch (error) {
             console.error("Error en el registro de Remision:", error);
             toast.error("Error al registrar la remision");

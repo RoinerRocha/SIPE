@@ -97,7 +97,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
             <Box p={2}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        {/* <Grid item xs={6}>
                             <TextField
                                 fullWidth
                                 {...register('id_persona', { required: 'Se necesita el numero de identificacion' })}
@@ -106,7 +106,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                 value={currentPerson.id_persona?.toString() || ''}
                                 onChange={handleInputChange}
                             />
-                        </Grid>
+                        </Grid> */}
                         
                         <Grid item xs={6}>
                             <FormControl fullWidth>
@@ -277,7 +277,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
                                 {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="estudios-label">Nivel de Estudios</InputLabel>
                                     <Select

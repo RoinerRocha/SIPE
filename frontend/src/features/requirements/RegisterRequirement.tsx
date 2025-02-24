@@ -26,9 +26,10 @@ interface Prop {
     idPersona: number;
     person: string;
     identificationPerson: string;
+    loadAccess: () => void;
 }
 
-export default function RequirementRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson }: Prop) {
+export default function RequirementRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson, loadAccess:loadAccess }: Prop) {
     const { user } = useAppSelector(state => state.account);
     const [baseRequeriments, setBaseRequeriments] = useState<BaseRequirementsModel[]>([]);
     const [newRequirement, setNewRequirement] = useState<Partial<requirementsModel>>({
@@ -79,6 +80,7 @@ export default function RequirementRegister({ idPersona: idPersona, person: pers
 
             await api.requirements.saveRequirements(data);
             toast.success("Requerimiento registrado correctamente");
+            loadAccess();
         } catch (error) {
             console.error("Error en el registro de Requerimiento:", error);
             toast.error("Error al registrar el Requerimiento");

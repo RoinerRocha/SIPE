@@ -80,36 +80,36 @@ export default function IncomeList({ personId }: Props) {
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Segmento
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Subsegmento
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Patrono
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Ocupacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Salario Bruto
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Salario Neto
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha Ingreso
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Principal
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Configuracion
                                 </TableCell>
                             </TableRow>
@@ -117,22 +117,22 @@ export default function IncomeList({ personId }: Props) {
                         <TableBody>
                             {paginatedIncomes.map((incomes) => (
                                 <TableRow key={incomes.id_ingreso}>
-                                    <TableCell align="center">{incomes.segmento}</TableCell>
-                                    <TableCell align="center">{incomes.subsegmento}</TableCell>
-                                    <TableCell align="center">{incomes.patrono}</TableCell>
-                                    <TableCell align="center">{incomes.ocupacion}</TableCell>
-                                    <TableCell align="center">{incomes.salario_bruto}</TableCell>
-                                    <TableCell align="center">{incomes.salario_neto}</TableCell>
-                                    <TableCell align="center">{new Date(incomes.fecha_ingreso).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{incomes.estado}</TableCell>
-                                    <TableCell align="center">{incomes.principal ? "Sí" : "No"}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.segmento}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.subsegmento}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.patrono}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.ocupacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.salario_bruto}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.salario_neto}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(incomes.fecha_ingreso).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{incomes.principal ? "Sí" : "No"}</TableCell>
                                     <TableCell align="center">
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <Box display="flex" justifyContent="center" gap={1}>
                                                 <Button
                                                     variant="contained"
                                                     color="info"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
                                                     onClick={() => handleEdit(incomes.id_ingreso)}
                                                 >
                                                     {t('Control-BotonEditar')}
@@ -140,7 +140,7 @@ export default function IncomeList({ personId }: Props) {
                                                 <Button
                                                     variant="contained"
                                                     color="error"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
                                                     onClick={() => handleDelete(incomes.id_ingreso)}
                                                 >
                                                     {t('Control-BotonEliminar')}

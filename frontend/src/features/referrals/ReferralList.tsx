@@ -2,7 +2,8 @@ import {
     Grid, TableContainer, Paper, Table, TableCell, TableHead, TableRow,
     TableBody, Button, TablePagination, CircularProgress,
     Dialog, DialogActions, DialogContent, DialogTitle,
-    TextField
+    TextField,
+    Box
 } from "@mui/material";
 import { personModel } from "../../app/models/persons";
 import ReferralRegister from "./RegisterReferral";
@@ -30,6 +31,21 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedRefeerral, setSelectedReferral] = useState<referralsModel | null>(null);
     const [searchId, setSearchId] = useState<number | "">("");
+
+    useEffect(() => {
+        // Cargar los accesos al montar el componente
+        loadAccess();
+    }, []);
+
+    const loadAccess = async () => {
+        try {
+            const response = await api.referrals.getAllReferrals();
+            setReferrals(response.data);
+        } catch (error) {
+            console.error("Error al cargar las remisiones:", error);
+            toast.error("Error al cargar las remisiones");
+        }
+    };
 
     const handleSearch = async () => {
         if (!searchId) {
@@ -229,31 +245,35 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{referral.entidad_destino}</TableCell>
                                     <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{referral.estado}</TableCell>
                                     <TableCell align="center">
-                                        <Button
-                                            variant="contained"
-                                            color="info"
-                                            onClick={() => handleEdit(referral.id_remision)}
-                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
-                                        >
-                                            Editar
-                                        </Button>
+                                        <Box display="flex" flexDirection="column" alignItems="center">
+                                            <Box display="flex" justifyContent="center" gap={1}>
+                                                <Button
+                                                    variant="contained"
+                                                    color="info"
+                                                    onClick={() => handleEdit(referral.id_remision)}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
+                                                >
+                                                    Editar
+                                                </Button>
 
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            onClick={() => handleDownloadPDF(referral.id_remision)}
-                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }} // Aquí pasamos el id_remision
-                                        >
-                                            Descargar PDF
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="success"
-                                            sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
-                                            onClick={() => handleAddDetailsDialog(referral.id_remision)}
-                                        >
-                                            Agregar Detalle Remisión
-                                        </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    color="error"
+                                                    onClick={() => handleDownloadPDF(referral.id_remision)}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }} // Aquí pasamos el id_remision
+                                                >
+                                                    Descargar PDF
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    color="success"
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px",  margin: "5px" }}
+                                                    onClick={() => handleAddDetailsDialog(referral.id_remision)}
+                                                >
+                                                    Detalle Remisión
+                                                </Button>
+                                            </Box>
+                                        </Box>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -287,7 +307,7 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}
                 >
-                    <ReferralRegister></ReferralRegister>
+                    <ReferralRegister loadAccess={loadAccess}></ReferralRegister>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddDialog(false)}>Cerrar</Button>
@@ -309,7 +329,7 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                         width: '1200px', // Ajusta la altura según necesites.
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}>
-                    {selectedRefeerral && (<UpdatedReferral ReferralsData={selectedRefeerral} />)}
+                    {selectedRefeerral && (<UpdatedReferral ReferralsData={selectedRefeerral} loadAccess={loadAccess} />)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>
@@ -331,7 +351,7 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
                         width: '1200px', // Ajusta la altura según necesites.
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}>
-                    {idRemisionSeleccionado && (<DetailsRegister idRemision={idRemisionSeleccionado} />)}
+                    {idRemisionSeleccionado && (<DetailsRegister idRemision={idRemisionSeleccionado} loadAccess={loadAccess} />)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddDetailsDialog(false)}>Cancelar</Button>

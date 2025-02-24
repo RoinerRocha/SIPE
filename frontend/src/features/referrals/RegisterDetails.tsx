@@ -15,9 +15,10 @@ import api from "../../app/api/api";
 
 interface DetailProp {
     idRemision: number;
+    loadAccess: () => void;
 }
 
-export default function DetailsRegister({ idRemision: idRemision }: DetailProp) {
+export default function DetailsRegister({ idRemision: idRemision, loadAccess: loadAccess }: DetailProp) {
     const [newDetails, setNewDetails] = useState<Partial<referralDetailsModel>>({
         id_remision: idRemision,
         identificacion: "",
@@ -37,6 +38,7 @@ export default function DetailsRegister({ idRemision: idRemision }: DetailProp) 
 
             await api.referralsDetails.saveReferralDetails(data);
             toast.success("Detalle registrado correctamente");
+            loadAccess();
         } catch (error) {
             console.error("Error en el registro de detalle:", error);
             toast.error("Error al registrar el detalle");

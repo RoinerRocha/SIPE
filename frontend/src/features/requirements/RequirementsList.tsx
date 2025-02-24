@@ -31,6 +31,21 @@ export default function RequirementList({ requirements: requirements, setRequire
     const [personName, setPersonName] = useState("");
     const [imageUrlMap, setImageUrlMap] = useState<Map<number, string>>(new Map());
 
+    useEffect(() => {
+        // Cargar los accesos al montar el componente
+        loadAccess();
+    }, []);
+
+    const loadAccess = async () => {
+        try {
+            const response = await api.requirements.getAllRequirements();
+            setRequirements(response.data);
+        } catch (error) {
+            console.error("Error al cargar las personas:", error);
+            toast.error("Error al cargar los datos");
+        }
+    };
+
     const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://backend-sipe.onrender.com/api/";
 
     const handleSearch = async () => {
@@ -348,7 +363,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}
                 >
-                    <RequirementRegister identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0}  ></RequirementRegister>
+                    <RequirementRegister identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0} loadAccess={loadAccess} ></RequirementRegister>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddDialog(false)}>Cerrar</Button>
@@ -370,7 +385,7 @@ export default function RequirementList({ requirements: requirements, setRequire
                         width: '1200px', // Ajusta la altura según necesites.
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}>
-                    {selectedRequirement && (<UpdateRequirements requirementsData={selectedRequirement} />)}
+                    {selectedRequirement && (<UpdateRequirements requirementsData={selectedRequirement} loadAccess={loadAccess} />)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>

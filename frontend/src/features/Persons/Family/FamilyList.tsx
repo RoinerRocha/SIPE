@@ -76,35 +76,35 @@ export default function FamilyList({ personId }: Props) {
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID del miembro familiar
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID de la persona
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Cedula
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Nombre Completo
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de Nacimiento
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Relacion
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Ingresos
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Observaciones
                                 </TableCell>
                                 <TableCell
                                     align="center"
-                                    sx={{ fontWeight: "bold", textTransform: "uppercase" }}
+                                    sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                                 >
                                     {t('Control-ColumnaConfiguracion')}
                                 </TableCell>
@@ -113,21 +113,21 @@ export default function FamilyList({ personId }: Props) {
                         <TableBody>
                             {paginatedMembers.map((member) => (
                                 <TableRow key={member.idnucleo}>
-                                    <TableCell align="center">{member.idnucleo}</TableCell>
-                                    <TableCell align="center">{member.idpersona}</TableCell>
-                                    <TableCell align="center">{member.cedula}</TableCell>
-                                    <TableCell align="center">{member.nombre_completo}</TableCell>
-                                    <TableCell align="center">{new Date(member.fecha_nacimiento).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{member.relacion}</TableCell>
-                                    <TableCell align="center">{member.ingresos}</TableCell>
-                                    <TableCell align="center">{member.observaciones}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.idnucleo}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.idpersona}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.cedula}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.nombre_completo}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(member.fecha_nacimiento).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.relacion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.ingresos}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{member.observaciones}</TableCell>
                                     <TableCell align="center">
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <Box display="flex" justifyContent="center" gap={1}>
                                                 <Button
                                                     variant="contained"
                                                     color="info"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px", margin: "5px" }}
                                                     onClick={() => handleEdit(member.idnucleo)}
                                                 >
                                                     {t('Control-BotonEditar')}
@@ -135,7 +135,7 @@ export default function FamilyList({ personId }: Props) {
                                                 <Button
                                                     variant="contained"
                                                     color="error"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px", margin: "5px" }}
                                                     onClick={() => handleDelete(member.idnucleo)}
                                                 >
                                                     {t('Control-BotonEliminar')}

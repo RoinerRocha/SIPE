@@ -77,33 +77,33 @@ export default function DirectionsList({ personId }: Props) {
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID del contacto
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID de la persona
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Provincia
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Cantón
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Distrito
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Barrio
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Otras Señas
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Tipo de Dirección
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
                                 <TableCell
@@ -117,22 +117,22 @@ export default function DirectionsList({ personId }: Props) {
                         <TableBody>
                             {paginatedDirections.map((direction) => (
                                 <TableRow key={direction.id_direccion}>
-                                    <TableCell align="center">{direction.id_direccion}</TableCell>
-                                    <TableCell align="center">{direction.id_persona}</TableCell>
-                                    <TableCell align="center">{direction.provincia}</TableCell>
-                                    <TableCell align="center">{direction.canton}</TableCell>
-                                    <TableCell align="center">{direction.distrito}</TableCell>
-                                    <TableCell align="center">{direction.barrio}</TableCell>
-                                    <TableCell align="center">{direction.otras_senas}</TableCell>
-                                    <TableCell align="center">{direction.tipo_direccion}</TableCell>
-                                    <TableCell align="center">{direction.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.id_direccion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.id_persona}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.provincia}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.canton}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.distrito}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.barrio}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.otras_senas}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.tipo_direccion}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{direction.estado}</TableCell>
                                     <TableCell align="center">
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <Box display="flex" justifyContent="center" gap={1}>
                                                 <Button
                                                     variant="contained"
                                                     color="info"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px", margin: "5px" }}
                                                     onClick={() => handleEdit(direction.id_direccion)}
                                                 >
                                                     {t('Control-BotonEditar')}
@@ -140,7 +140,7 @@ export default function DirectionsList({ personId }: Props) {
                                                 <Button
                                                     variant="contained"
                                                     color="error"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px", margin: "5px" }}
                                                     onClick={() => handleDelete(direction.id_direccion)}
                                                 >
                                                     {t('Control-BotonEliminar')}

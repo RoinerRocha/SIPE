@@ -11,9 +11,10 @@ import { requirementsModel } from "../../app/models/requirementsModel";
 
 interface UpdateRequirementsProps {
     requirementsData: requirementsModel;
+    loadAccess: () => void;
 }
 
-export default function UpdateRequirements({ requirementsData }: UpdateRequirementsProps) {
+export default function UpdateRequirements({ requirementsData, loadAccess }: UpdateRequirementsProps) {
     const [currentRequirement, setCurrentRequirement] = useState<Partial<requirementsModel>>(requirementsData);
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({
         mode: 'onTouched',
@@ -38,6 +39,7 @@ export default function UpdateRequirements({ requirementsData }: UpdateRequireme
                 data.fecha_presentacion = formatDate(new Date(data.fecha_vencimiento));
                 await api.requirements.updateRequirement(Number(currentRequirement.id_requisito), data);
                 toast.success('Requerimiento actualizado con éxito.');
+                loadAccess();
             } catch (error) {
                 console.error(error);
                 toast.error('Error al actualizar el Requerimiento.');

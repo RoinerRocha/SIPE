@@ -31,6 +31,21 @@ export default function FilesList({ files, setFiles }: FilesProps) {
     const [selectedIdPersona, setSelectedIdPersona] = useState<number | null>(null);
     const [personName, setPersonName] = useState("");
 
+    useEffect(() => {
+        // Cargar los accesos al montar el componente
+        loadAccess();
+    }, []);
+
+    const loadAccess = async () => {
+        try {
+            const response = await api.history.getAllFiles();
+            setFiles(response.data);
+        } catch (error) {
+            console.error("Error al cargar los expedientes:", error);
+            toast.error("Error al cargar los datos");
+        }
+    };
+
     const handleSearch = async () => {
         if (!identification) {
             const defaultResponse = await api.history.getAllFiles();
@@ -516,7 +531,7 @@ export default function FilesList({ files, setFiles }: FilesProps) {
                         width: '1200px', // Ajusta la altura según necesites.
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}>
-                    {selectedFile && (<UpdateFiles FilesData={selectedFile} />)}
+                    {selectedFile && (<UpdateFiles FilesData={selectedFile} loadAccess={loadAccess} />)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>

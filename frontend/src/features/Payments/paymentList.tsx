@@ -28,6 +28,21 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
     const [personName, setPersonName] = useState("");
     const [imageUrlMap, setImageUrlMap] = useState<Map<number, string>>(new Map());
 
+    useEffect(() => {
+        // Cargar los accesos al montar el componente
+        loadAccess();
+    }, []);
+
+    const loadAccess = async () => {
+        try {
+            const response = await api.payments.getAllPayments();
+            setPayments(response.data);
+        } catch (error) {
+            console.error("Error al cargar los pagos:", error);
+            toast.error("Error al cargar los datos");
+        }
+    };
+
     const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://backend-sipe.onrender.com/api/";
 
     const handleSearch = async () => {
@@ -334,7 +349,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}
                 >
-                    <PaymentRegister identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0}  ></PaymentRegister>
+                    <PaymentRegister identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0} loadAccess={loadAccess} ></PaymentRegister>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddDialog(false)}>Cerrar</Button>
@@ -356,7 +371,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                         width: '1200px', // Ajusta la altura según necesites.
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}>
-                    {selectedPayment && (<UpdatePayment PaymentsData={selectedPayment} />)}
+                    {selectedPayment && (<UpdatePayment PaymentsData={selectedPayment} loadAccess={loadAccess} />)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEditDialog(false)}>Cancelar</Button>

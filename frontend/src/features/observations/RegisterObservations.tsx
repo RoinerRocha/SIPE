@@ -23,10 +23,11 @@ interface Prop {
     idPersona: number;
     person: string;
     identificationPerson: string;
+    loadAccess: () => void;
     
 }
 
-export default function ObservationRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson}: Prop) {
+export default function ObservationRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson, loadAccess: loadAccess}: Prop) {
     const [newObservation, setNewObservation] = useState<Partial<observationModel>>({
         id_persona: idPersona,
         identificacion: identificationPerson,
@@ -41,6 +42,7 @@ export default function ObservationRegister({ idPersona: idPersona, person: pers
         try {
             await api.observations.saveObservations(data);
             toast.success("Observacion registrada correctamente");
+            loadAccess();
         } catch (error) {
             console.error("Error en el registro de observacion:", error);
             toast.error("Error al registrar la observacion");

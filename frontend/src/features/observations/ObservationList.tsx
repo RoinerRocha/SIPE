@@ -26,6 +26,21 @@ export default function ObservationList({ observations, setObservations }: Obser
     const [selectedIdPersona, setSelectedIdPersona] = useState<number | null>(null);
     const [personName, setPersonName] = useState("");
 
+    useEffect(() => {
+        // Cargar los accesos al montar el componente
+        loadAccess();
+    }, []);
+
+    const loadAccess = async () => {
+        try {
+            const response = await api.observations.getAllObservations();
+            setObservations(response.data);
+        } catch (error) {
+            console.error("Error al cargar las personas:", error);
+            toast.error("Error al cargar los datos");
+        }
+    };
+
     const handleSearch = async () => {
         if (!identification) {
             const defaultResponse = await api.observations.getAllObservations();
@@ -195,7 +210,7 @@ export default function ObservationList({ observations, setObservations }: Obser
                         overflowY: 'auto', // Asegura que el contenido sea desplazable si excede el tamaño.
                     }}
                 >
-                    <ObservationRegister  identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0}  ></ObservationRegister>
+                    <ObservationRegister  identificationPerson={identification} person={personName} idPersona={selectedIdPersona ?? 0} loadAccess={loadAccess} ></ObservationRegister>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenAddDialog(false)}>Cerrar</Button>

@@ -76,30 +76,30 @@ export default function ContactList({ personId }: Props) {
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
                 ) : (
                     <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
+                        <TableHead sx={{ backgroundColor: "#B3E5FC" }}>
                             <TableRow>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID del contacto
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     ID de la persona
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Tipo de Contacto
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Identificador
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Estado
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Fecha de registro
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Comentarios
                                 </TableCell>
-                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                                <TableCell align="center" sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}>
                                     Configuracion
                                 </TableCell>
                             </TableRow>
@@ -107,20 +107,20 @@ export default function ContactList({ personId }: Props) {
                         <TableBody>
                             {paginatedContacts.map((contact) => (
                                 <TableRow key={contact.id_contacto}>
-                                    <TableCell align="center">{contact.id_contacto}</TableCell>
-                                    <TableCell align="center">{contact.id_persona}</TableCell>
-                                    <TableCell align="center">{contact.tipo_contacto}</TableCell>
-                                    <TableCell align="center">{contact.identificador}</TableCell>
-                                    <TableCell align="center">{contact.estado}</TableCell>
-                                    <TableCell align="center">{new Date(contact.fecha_registro).toLocaleDateString()}</TableCell>
-                                    <TableCell align="center">{contact.comentarios}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{contact.id_contacto}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{contact.id_persona}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{contact.tipo_contacto}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{contact.identificador}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{contact.estado}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(contact.fecha_registro).toLocaleDateString()}</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{contact.comentarios}</TableCell>
                                     <TableCell align="center">
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <Box display="flex" justifyContent="center" gap={1}>
                                                 <Button
                                                     variant="contained"
                                                     color="info"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px", margin: "5px" }}
                                                     onClick={() => handleEdit(contact.id_contacto)}
                                                 >
                                                     {t('Control-BotonEditar')}
@@ -128,7 +128,7 @@ export default function ContactList({ personId }: Props) {
                                                 <Button
                                                     variant="contained"
                                                     color="error"
-                                                    sx={{ margin: "5px" }}
+                                                    sx={{ fontSize: "0.65rem", minWidth: "50px", minHeight: "20px", margin: "5px" }}
                                                     onClick={() => handleDelete(contact.id_contacto)}
                                                 >
                                                     {t('Control-BotonEliminar')}

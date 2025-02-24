@@ -11,9 +11,10 @@ import { referralsModel } from "../../app/models/referralsModel";
 
 interface UpdateReferralsProps {
     ReferralsData: referralsModel;
+    loadAccess: () => void;
 }
 
-export default function UpdatedReferral({ ReferralsData }: UpdateReferralsProps) {
+export default function UpdatedReferral({ ReferralsData, loadAccess }: UpdateReferralsProps) {
     const [currentReferral, setCurrentReferral] = useState<Partial<referralsModel>>(ReferralsData);
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({
@@ -32,6 +33,7 @@ export default function UpdatedReferral({ ReferralsData }: UpdateReferralsProps)
             try {
                 await api.referrals.updateReferrals(Number(currentReferral.id_remision), data);
                 toast.success('Remision actualizada con éxito.');
+                loadAccess();
             } catch (error) {
                 console.error(error);
                 toast.error('Error al actualizar la remision.');

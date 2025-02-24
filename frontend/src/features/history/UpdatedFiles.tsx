@@ -15,9 +15,10 @@ import { useAppDispatch, useAppSelector } from "../../store/configureStore";
 
 interface UpdateFilesProps {
     FilesData: filesModel;
+    loadAccess: () => void;
 }
 
-export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
+export default function UpdateFiles({ FilesData, loadAccess }: UpdateFilesProps) {
     const [currentFile, setCurrentFile] = useState<Partial<filesModel>>(FilesData);
     const [selectedFile, setSelectedFile] = useState<historyFilesModel[] | null>(null);
     const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
@@ -37,6 +38,7 @@ export default function UpdateFiles({ FilesData }: UpdateFilesProps) {
             try {
                 await api.history.updateFiles(currentFile.codigo, user?.nombre_usuario, data);
                 toast.success('Expediente actualizado con éxito.');
+                loadAccess();
             } catch (error) {
                 console.error(error);
                 toast.error('Error al actualizar el expediente.');
