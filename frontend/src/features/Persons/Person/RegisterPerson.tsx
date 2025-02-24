@@ -291,6 +291,7 @@ export default function RegisterPerson({ loadAccess }: AddPersonProps) {
                                     }}
                                 >
                                     {/* Nacionalidades */}
+                                    <MenuItem value="COSTARRICENSE">Costarricense</MenuItem>
                                     <MenuItem value="EGIPCIA">Egipcia</MenuItem>
                                     <MenuItem value="SUDAFRICANA">Sudafricana</MenuItem>
                                     <MenuItem value="NIGERIANA">Nigeriana</MenuItem>

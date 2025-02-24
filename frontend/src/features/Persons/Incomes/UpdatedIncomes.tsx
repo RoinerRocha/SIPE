@@ -7,7 +7,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import api from '../../../app/api/api';
 import { User } from '../../../app/models/user';
 import { statesModels } from '../../../app/models/states';
-import { personModel } from '../../../app/models/persons'; 
+import { personModel } from '../../../app/models/persons';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { incomesModel } from '../../../app/models/incomesModel';
@@ -25,8 +25,8 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
     const [state, setState] = useState<statesModels[]>([]);
 
     const [currentIncome, setCurrentIncome] = useState<Partial<incomesModel>>(Incomes);
-    
-    
+
+
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({
         mode: 'onTouched',
     });
@@ -35,25 +35,25 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
         if (Incomes) {
             setCurrentIncome(Incomes);
         }
-        
+
         const fetchData = async () => {
-          try {
-            const [personData, stateData] = await Promise.all([
-              api.Account.getAllUser(),
-              api.States.getStates(),
-            ]);
-                   // Se verifica que las respuestas sean arrays antes de actualizar el estado
-            if (personData && Array.isArray(personData.data)) {
-                setPerson(personData.data);
-            } else {
-                console.error("User data is not an array", personData);
-            }
-            if (stateData && Array.isArray(stateData.data)) {
-                setState(stateData.data);
-            } else {
-                console.error("States data is not an array", stateData);
-            }
-           
+            try {
+                const [personData, stateData] = await Promise.all([
+                    api.Account.getAllUser(),
+                    api.States.getStates(),
+                ]);
+                // Se verifica que las respuestas sean arrays antes de actualizar el estado
+                if (personData && Array.isArray(personData.data)) {
+                    setPerson(personData.data);
+                } else {
+                    console.error("User data is not an array", personData);
+                }
+                if (stateData && Array.isArray(stateData.data)) {
+                    setState(stateData.data);
+                } else {
+                    console.error("States data is not an array", stateData);
+                }
+
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -69,8 +69,8 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
                 toast.success('Ingreso actualizado con éxito.');
                 loadAccess();
             } catch (error) {
-              console.error(error);
-              toast.error('Error al actualizar el ingreso.');
+                console.error(error);
+                toast.error('Error al actualizar el ingreso.');
             }
         }
     };
@@ -107,24 +107,54 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('segmento', { required: 'Se necesita el segmento' })}
-                                name="segmento"
-                                label="Segmento"
-                                value={currentIncome.segmento?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="segmento-label">Segmento</InputLabel>
+                                <Select
+                                    labelId="segmento-label"
+                                    {...register('segmento', { required: 'Se necesita el segmento' })}
+                                    name="segmento"
+                                    value={currentIncome.segmento?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="PRIVADO">Privado</MenuItem>
+                                    <MenuItem value="PUBLICO">Publico</MenuItem>
+                                    <MenuItem value="INDEPENDIENTE">Independiente</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('subsegmento', { required: 'Se necesita el subsegmento' })}
-                                name="subsegmento"
-                                label="Sub Segmento"
-                                value={currentIncome.subsegmento?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="subsegmento-label">SubSegmento</InputLabel>
+                                <Select
+                                    labelId="subsegmento-label"
+                                    {...register('subsegmento', { required: 'Se necesita el subsegmento' })}
+                                    name="subsegmento"
+                                    value={currentIncome.subsegmento?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="PRIVADO">Privado</MenuItem>
+                                    <MenuItem value="PUBLICO">Publico</MenuItem>
+                                    <MenuItem value="INDEPENDIENTE">Independiente</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
@@ -192,13 +222,13 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
                                     label="Seleccionar Estado"
                                     MenuProps={{
                                         PaperProps: {
-                                          style: {
-                                            maxHeight: 200, // Limita la altura del menú desplegable
-                                            width: 250,
-                                          },
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
                                         },
                                     }}
-                                    
+
                                 >
                                     {Array.isArray(state) && state.map((states) => (
                                         <MenuItem key={states.id} value={states.estado}>
@@ -212,29 +242,29 @@ export default function UpdateIncomes({ Incomes, loadAccess }: UpdateIncomesProp
                         <Grid item xs={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="contacto-label">Principal</InputLabel>
-                                    <Select
-                                        labelId="contacto-label"
-                                        {...register('principal', { required: 'Se necesita la confirmacion' })}
-                                        name="principal"
-                                        value={currentIncome.principal ? 'true' : 'false'}
-                                        onChange={handleSelectChange}
-                                        fullWidth
-                                        MenuProps={{
-                                            PaperProps: {
-                                              style: {
+                                <Select
+                                    labelId="contacto-label"
+                                    {...register('principal', { required: 'Se necesita la confirmacion' })}
+                                    name="principal"
+                                    value={currentIncome.principal ? 'true' : 'false'}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
                                                 maxHeight: 200, // Limita la altura del menú desplegable
                                                 width: 250,
-                                              },
                                             },
-                                        }}
-                                    >
-                                        <MenuItem value="true">Si</MenuItem>
-                                        <MenuItem value="false">No</MenuItem>
-                                    </Select>
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="true">Si</MenuItem>
+                                    <MenuItem value="false">No</MenuItem>
+                                </Select>
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Button  variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
+                    <Button variant="contained" color="info" sx={{ margin: "10px", width: '100%' }} type="submit" disabled={isSubmitting}>
                         Actualizar
                     </Button>
                 </form>

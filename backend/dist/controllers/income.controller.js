@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllIncomes = exports.getIncomesByID = exports.getIncomesByPerson = exports.deleteIncome = exports.updateIncome = exports.createIncome = void 0;
+exports.getSegmentos = exports.getAllIncomes = exports.getIncomesByID = exports.getIncomesByPerson = exports.deleteIncome = exports.updateIncome = exports.createIncome = void 0;
 const sequelize_1 = require("sequelize");
 const SqlServer_1 = __importDefault(require("../database/SqlServer"));
 // Crear una nueva dirección
@@ -148,3 +148,21 @@ const getAllIncomes = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getAllIncomes = getAllIncomes;
+const getSegmentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { segmento } = req.params;
+    try {
+        const contactos = yield SqlServer_1.default.query(`EXEC sp_obtener_segmentos @p_segmento = :segmento `, {
+            replacements: { segmento },
+            type: sequelize_1.QueryTypes.SELECT,
+        });
+        if (!contactos.length) {
+            res.status(404).json({ message: "No se encontraron segmentos" });
+            return;
+        }
+        res.status(200).json({ data: contactos });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+exports.getSegmentos = getSegmentos;

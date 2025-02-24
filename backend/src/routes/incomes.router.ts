@@ -5,7 +5,8 @@ import {
     updateIncome,
     deleteIncome,
     getIncomesByPerson,
-    getIncomesByID
+    getIncomesByID,
+    getSegmentos
 } from "../controllers/income.controller";
 
 const router = Router();
@@ -18,6 +19,7 @@ router.get("/", (req, res) => {
 router.post("/createIncome", createIncome);
 router.get("/getAllIncomes", getAllIncomes);
 router.get("/getIncomesByPerson/:id_persona", getIncomesByPerson);
+router.get("/getSegmentos/:segmento", getSegmentos);
 router.get("/getIncomesByID/:id_ingreso", getIncomesByID);
 router.put("/updateIncome/:id_ingreso", updateIncome);
 router.delete("/deleteIncome/:id_ingreso", deleteIncome);

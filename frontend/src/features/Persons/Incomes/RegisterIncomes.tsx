@@ -176,24 +176,54 @@ export default function RegisterIncomes({loadAccess}: AddIncomesProps ) {
                             </FormControl>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('segmento', { required: 'Se necesita el identificador' })}
-                                name="segmento"
-                                label="Segmento"
-                                value={newIncome.segmento?.toString()}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="segmento-label">Segmento</InputLabel>
+                                <Select
+                                    labelId="segmento-label"
+                                    {...register('segmento', { required: 'Se necesita el segmento' })}
+                                    name="segmento"
+                                    value={newIncome.segmento?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="PRIVADO">Privado</MenuItem>
+                                    <MenuItem value="PUBLICO">Publico</MenuItem>
+                                    <MenuItem value="INDEPENDIENTE">Independiente</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                {...register('subsegmento', { required: 'Se necesita el sub Segmento' })}
-                                name="subsegmento"
-                                label="Sub Segmento"
-                                value={newIncome.subsegmento?.toString()}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="subsegmento-label">SubSegmento</InputLabel>
+                                <Select
+                                    labelId="subsegmento-label"
+                                    {...register('subsegmento', { required: 'Se necesita el subsegmento' })}
+                                    name="subsegmento"
+                                    value={newIncome.subsegmento?.toString() || ''}
+                                    onChange={handleSelectChange}
+                                    fullWidth
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <MenuItem value="PRIVADO">Privado</MenuItem>
+                                    <MenuItem value="PUBLICO">Publico</MenuItem>
+                                    <MenuItem value="INDEPENDIENTE">Independiente</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
