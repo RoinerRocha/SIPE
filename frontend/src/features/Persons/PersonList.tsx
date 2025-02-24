@@ -460,6 +460,12 @@ export default function PersonList({
                                 align="center"
                                 sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
                             >
+                                Discapacidad
+                            </TableCell>
+                            <TableCell
+                                align="center"
+                                sx={{ fontWeight: "bold", textTransform: "uppercase", fontSize: "0.65rem" }}
+                            >
                                 Asesor
                             </TableCell>
                             <TableCell
@@ -492,6 +498,7 @@ export default function PersonList({
                                 <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{new Date(person.fecha_registro).toLocaleDateString()}</TableCell>
                                 <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.usuario_registro}</TableCell>
                                 <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.nivel_estudios}</TableCell>
+                                <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.discapacidad}</TableCell>
                                 <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.asesor}</TableCell>
                                 <TableCell align="center" sx={{ fontSize: "0.75rem" }}>{person.estado}</TableCell>
                                 <TableCell align="center">
