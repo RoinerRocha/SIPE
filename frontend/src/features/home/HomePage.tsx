@@ -52,7 +52,13 @@ export default function HomePage() {
       try {
         const response = await api.persons.getPersons();
         const persons: personModel[] = response.data;
-        
+        const totalMujeres = persons.filter(
+          (person: personModel) => person.genero === "FEMENINO"
+        ).length;
+        const totalHombres = persons.filter(
+          (person: personModel) => person.genero === "MASCULINO"
+        ).length;
+
         // Simulación de métricas basadas en personas
         const totalPersons = persons.length;
         const newRegistrations = persons.filter((person: personModel) => {
@@ -73,28 +79,35 @@ export default function HomePage() {
             data: Array(30).fill(totalPersons / 30),
           },
           {
+            title: "Total de Mujeres",
+            value: `${totalMujeres}`,
+            interval: "Últimos 30 días",
+            trend: "up",
+            data: Array(30).fill(totalMujeres / 30),
+          },
+          {
+            title: "Total de Hombres",
+            value: `${totalHombres}`,
+            interval: "Últimos 30 días",
+            trend: "up",
+            data: Array(30).fill(totalHombres / 30),
+          },
+          {
             title: "Nuevos Beneficiarios",
             value: `${newRegistrations}`,
             interval: "Este mes",
             trend: newRegistrations > 0 ? "up" : "neutral",
             data: Array(30).fill(newRegistrations / 30),
           },
-          {
-            title: "Personas Activas",
-            value: "85%", // Simulación de porcentaje de actividad
-            interval: "Últimos 30 días",
-            trend: "neutral",
-            data: Array(30).fill(85),
-          },
         ]);
       } catch (error) {
         console.error("Error al obtener datos de personas:", error);
       }
     };
-    
+
     fetchData();
   }, []);
-  
+
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
@@ -107,20 +120,20 @@ export default function HomePage() {
         sx={{ mb: (theme) => theme.spacing(2) }}
       >
         {data.map((card, index) => (
-          <Grid key={index} item xs={12} sm={5} lg={4}>
+          <Grid key={index} item xs={12} sm={5} lg={3}>
             <StatCard {...card} />
           </Grid>
         ))}
-      {/* <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <SessionsChart /> 
       </Grid> */}
-      {/* numero de expedientes por persona y usuario*/}
-      <Grid item xs={12} md={6}>
+        {/* numero de expedientes por persona y usuario*/}
+        <Grid item xs={12} md={6}>
           <PageViewsBarChart />
-      </Grid>
-      <Grid item xs={12} md={6}>
+        </Grid>
+        <Grid item xs={12} md={6}>
           <FilesViewsBarChart />
-      </Grid>
+        </Grid>
       </Grid>
       {/* <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         Details
