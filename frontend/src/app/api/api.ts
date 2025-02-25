@@ -280,7 +280,9 @@ const incomes = {
 const normalizers = {
   saveNormalizer: (values: any) => requests.post("/createNormalizers", values),
   getAllNormalizers: () => requests.get("/getAllNormalizers"),
+  getUniqueCompanies: () => requests.get("/getUniqueCompanies"),
   getNormalizerById: (id: number) => requests.get(`/getNormalizersById/${id}`),
+  getFiscalesAndIngenierosByEmpresa: (empresa: string) => requests.get(`/getFiscalesAndIngenierosByEmpresa/${empresa}`),
   getNormalizeByCompany: (empresa: string) => requests.get(`/getNormalizeByCompany/${empresa}`),
   updateNormalizers: (id: any, normlizerData: any) =>
     requests.put(`updateNormalizers/${id}`, normlizerData),

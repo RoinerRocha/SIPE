@@ -40,7 +40,7 @@ export default function UpdateFiles({ FilesData, loadAccess }: UpdateFilesProps)
         const fetchData = async () => {
             try {
                 const [normalizeData ] = await Promise.all([
-                    api.normalizers.getAllNormalizers(),
+                    api.normalizers.getUniqueCompanies(),
                 ]);
                 // Se verifica que las respuestas sean arrays antes de actualizar el estado
                 if (normalizeData && Array.isArray(normalizeData.data)) {
