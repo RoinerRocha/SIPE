@@ -232,8 +232,8 @@ const persons = {
   getPersonById:(id_persona: number) => requests.get(`/getPersonById/${id_persona}`),
   getPersonHistoryChanges:(id_persona: number) => requests.get(`/getPersonHistoryChanges/${id_persona}`),
   getPersonByIdentification:(numero_identifiacion: string) => requests.get(`/getPersonByIdentifcation/${numero_identifiacion}`),
-  updatePersons: (id_persona: any, personData: any) => 
-    requests.put(`updatePersons/${id_persona}`, personData),
+  updatePersons: (id_persona: any, usuario_sistema: string, personData: any) => 
+    requests.put(`updatePersons/${id_persona}/${usuario_sistema}`, personData),
   deletePersons: (id_persona: number) => requests.delete(`deletePersons/${id_persona}`),
 }
 

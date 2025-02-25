@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { personModel } from '../../../app/models/persons';
 import { disabilitiesModel } from '../../../app/models/disabilitiesModel';
+import { useAppDispatch, useAppSelector } from "../../../store/configureStore";
 
 interface UpdatePersonProps {
     person: personModel;
@@ -25,6 +26,7 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
     const [persons, setPersons] = useState<personModel[]>([]);
     const [state, setState] = useState<statesModels[]>([]);
     const [disabilitie, setDisabilitie] = useState<disabilitiesModel[]>([]);
+    const { user } = useAppSelector(state => state.account);
 
     const [currentPerson, setCurrentPerson] = useState<Partial<personModel>>(person);
     console.log(person.id_persona)
@@ -72,9 +74,9 @@ export default function UpdatePerson({ person, loadAccess }: UpdatePersonProps) 
     }, []);
 
     const onSubmit = async (data: FieldValues) => {
-        if (currentPerson) {
+        if (currentPerson && user?.nombre_usuario) {
             try {
-                await api.persons.updatePersons(currentPerson.id_persona, data);
+                await api.persons.updatePersons(currentPerson.id_persona, user?.nombre_usuario, data);
                 toast.success('Persona actualizada con éxito.');
                 loadAccess();
             } catch (error) {

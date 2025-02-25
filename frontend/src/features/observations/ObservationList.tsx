@@ -199,7 +199,7 @@ export default function ObservationList({ observations, setObservations }: Obser
                 maxWidth="lg" // Ajusta el tamaño máximo del diálogo. Opciones: 'xs', 'sm', 'md', 'lg', 'xl'.
                 fullWidth
             >
-                <DialogTitle>Agregar Pagos</DialogTitle>
+                <DialogTitle>Agregar Observaciones</DialogTitle>
                 <DialogContent
                     sx={{
                         display: 'flex', // Por ejemplo, para organizar los elementos internos.

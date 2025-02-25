@@ -32,6 +32,7 @@ interface Prop {
 
 export default function PaymentRegister({ idPersona: idPersona, person: person, identificationPerson: identificationPerson, loadAccess: loadAccess }: Prop) {
     const { user } = useAppSelector(state => state.account);
+    const [paymentTypes, setPaymentTypes] = useState<string[]>([]);
     const [newPayment, setNewPayment] = useState<Partial<paymentsModel>>({
         id_persona: idPersona,
         identificacion: identificationPerson,
@@ -46,6 +47,7 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
         observaciones: "",
         archivo: null,
     });
+
     const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid, isSubmitSuccessful } } = useForm({
         mode: 'onTouched'
     });
@@ -99,13 +101,37 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
             [name]: value,
         }));
     };
+
     const handleSelectChange = (event: SelectChangeEvent<string>) => {
-        const name = event.target.name as keyof personModel;
+        const name = event.target.name as keyof paymentsModel;
         const value = event.target.value;
+
         setNewPayment((prevAsset) => ({
             ...prevAsset,
             [name]: value,
         }));
+
+        // Cambiar los tipos de pagos según el tipo de movimiento
+        if (name === "tipo_movimiento") {
+            if (value === "PAGO") {
+                setPaymentTypes([
+                    "PAGO_HONORARIOS",
+                    "PAGO_POLIZA",
+                    "PAGO_FISCALIZACION",
+                    "PAGO_TRABAJO_SOCIAL",
+                    "PAGO_ESTUDIO_SOCIAL",
+                    "PAGO_GASTOS_FORMALIZACION",
+                    "PAGO_APORTE_FAMILIA"
+                ]);
+            } else if (value === "DEPOSITO") {
+                setPaymentTypes([
+                    "DEPOSITO_GASTO_FORMALIZACION",
+                    "DEPOSITO_APORTE_CONSTRUCCION"
+                ]);
+            } else {
+                setPaymentTypes([]); // Si se borra el tipo de movimiento
+            }
+        }
     };
 
     const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,18 +230,16 @@ export default function PaymentRegister({ idPersona: idPersona, person: person, 
                                     value={newPayment.tipo_pago?.toString() || ''}
                                     onChange={handleSelectChange}
                                     fullWidth
+                                    disabled={!newPayment.tipo_movimiento} // Deshabilita el select si no hay tipo de movimiento seleccionado
                                 >
-                                    <MenuItem value="PAGO_HONORARIOS">Pago de Honorarios</MenuItem>
-                                    <MenuItem value="PAGO_POLIZA">Pago de Poliza</MenuItem>
-                                    <MenuItem value="PAGO_FISCALIZACION">Pago de Fiscalizacion</MenuItem>
-                                    <MenuItem value="PAGO_TRABAJO_SOCIAL">Pago de Trabajo Social</MenuItem>
-                                    <MenuItem value="PAGO_ESTUDIO_SOCIAL">Pago de Estudio Social</MenuItem>
-                                    <MenuItem value="PAGO_GASTOS_FORMALIZACION">Pago de Gastos de Formalizacion</MenuItem>
-                                    <MenuItem value="PAGO_APORTE_FAMILIA">Pago de Aporte a la Familia</MenuItem>
-                                    <MenuItem value="DEPOSITO_GASTO_FORMALIZACION">Deposito de Gasto de Formalizacion</MenuItem>
-                                    <MenuItem value="DEPOSITO_APORTE_CONSTRUCCION">Deposito de Aporte de Construccion</MenuItem>
+                                    {paymentTypes.map((paymentType) => (
+                                        <MenuItem key={paymentType} value={paymentType}>
+                                            {paymentType.replace(/_/g, ' ')} {/* Formatea el texto con espacios */}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
+
                         </Grid>
                         <Grid item xs={6}>
                             <TextField

@@ -12,6 +12,9 @@ import api from "../../app/api/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import UpdatePayment from "./UpdatedPayment";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 interface Props {
     payments: paymentsModel[];
@@ -199,6 +202,42 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    const handleDownloadPDF = () => {
+        const paymentsToDownload = payments.filter((p) => p.identificacion === identification);
+
+        if (paymentsToDownload.length === 0) {
+            toast.error("No se encontraron pagos para esta persona.");
+            return;
+        }
+
+        const doc = new jsPDF();
+
+        // Encabezado del PDF con el nombre completo
+        doc.setFontSize(16);
+        doc.text("Detalle de Pagos", 14, 10);
+        doc.setFontSize(12);
+        doc.text(`Nombre: ${personName}`, 14, 20);
+        doc.text(`Identificación: ${identification}`, 14, 30);
+
+        // Agregar la tabla de pagos
+        autoTable(doc, {
+            startY: 40,
+            head: [["Comprobante", "Tipo de Pago", "Fecha de Pago", "Monto", "Moneda", "Estado"]],
+            body: paymentsToDownload.map((payment) => [
+                payment.comprobante,
+                payment.tipo_pago.replace(/_/g, " "),
+                new Date(payment.fecha_pago).toLocaleDateString(),
+                payment.monto,
+                payment.moneda,
+                payment.estado,
+            ]),
+        });
+
+        // Guardar el PDF
+        doc.save(`Pagos_${identification}.pdf`);
+    };
+
+
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     const paginatedPayments = payments.slice(startIndex, endIndex);
@@ -244,6 +283,19 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                     sx={{ marginBottom: 2, backgroundColor: "#F5F5DC", borderRadius: "5px" }}
                 />
             </Grid>
+            {payments.some((payment) => payment.identificacion === identification) && (
+                <Grid item xs={12} sm={6} md={2}>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        fullWidth
+                        onClick={() => handleDownloadPDF()}
+                        sx={{ marginBottom: 2, height: "56px" }}
+                    >
+                        Descargar PDF
+                    </Button>
+                </Grid>
+            )}
             <TableContainer component={Paper}>
                 {loading ? (
                     <CircularProgress sx={{ margin: "20px auto", display: "block" }} />
@@ -361,7 +413,7 @@ export default function PaymentList({ payments: payments, setPayments: setPaymen
                 maxWidth="lg" // Ajusta el tamaño máximo del diálogo. Opciones: 'xs', 'sm', 'md', 'lg', 'xl'.
                 fullWidth
             >
-                <DialogTitle>Editar Direccion</DialogTitle>
+                <DialogTitle>Editar Pagos</DialogTitle>
                 <DialogContent
                     sx={{
                         display: 'flex', // Por ejemplo, para organizar los elementos internos.
