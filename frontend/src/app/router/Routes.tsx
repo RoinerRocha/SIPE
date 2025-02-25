@@ -24,6 +24,7 @@ import Files from "../../features/history/Files";
 import Requirements from "../../features/requirements/Requirements";
 import Referrals from "../../features/referrals/Referral";
 import AssetRetirementList from "../../features/assetRetirement/assetRetirement";
+import Normalizers from "../../features/Normalizers/normalizer";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
           { path: "Files", element: <Files /> },
           { path: "Requirements", element: <Requirements /> },
           { path: "Referrals", element: <Referrals /> },
+          { path: "Normalizers", element: <Normalizers /> },
           { path: "Details/:id", element: < MapDetails/>},
           {
             element: <ProtectedRoute requiredProfile="administrador" />,  // Protege las rutas solo para "Maestro"
@@ -65,6 +67,7 @@ export const router = createBrowserRouter([
               { path: "Files", element: <Files /> },
               { path: "Requirements", element: <Requirements /> },
               { path: "Referrals", element: <Referrals /> },
+              { path: "Normalizers", element: <Normalizers /> },
               { path: "Details/:id", element: < MapDetails/>},
             ],
           },

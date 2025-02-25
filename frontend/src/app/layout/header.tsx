@@ -125,7 +125,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
     { title: t('menu-depreciacion-activos'), path: "/Referrals" },
     // { title: t('menu-zonas'), path: "/zonas" },
     { title: t('menu-usuarios'), path: "/users" },
-    // { title: t('menu-cuentas-contables'), path: "/NewAccount" },
+    { title: t('menu-cuentas-contables'), path: "/Normalizers" },
     { title: t('menu-perfiles'), path: "/NewRoles" },
     // { title: t('menu-lista-activos'), path: "/NewAsset" },
   ];

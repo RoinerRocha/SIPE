@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { filesModel } from "../../app/models/filesModel";
 import HistoryFiles from "./FilesHistory";
 import { historyFilesModel } from "../../app/models/historyFilesModel";
+import { normalizerModel } from "../../app/models/normalizerModel";
 import { useAppDispatch, useAppSelector } from "../../store/configureStore";
 
 
@@ -20,18 +21,41 @@ interface UpdateFilesProps {
 
 export default function UpdateFiles({ FilesData, loadAccess }: UpdateFilesProps) {
     const [currentFile, setCurrentFile] = useState<Partial<filesModel>>(FilesData);
+    const [normalize, setNormalize] = useState<normalizerModel[]>([]);
     const [selectedFile, setSelectedFile] = useState<historyFilesModel[] | null>(null);
     const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
     const { user } = useAppSelector(state => state.account);
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm({
         mode: 'onTouched',
     });
+
     useEffect(() => {
         if (FilesData) {
             setCurrentFile(FilesData);
             console.log(FilesData.codigo);
         }
     }, [FilesData]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [normalizeData ] = await Promise.all([
+                    api.normalizers.getAllNormalizers(),
+                ]);
+                // Se verifica que las respuestas sean arrays antes de actualizar el estado
+                if (normalizeData && Array.isArray(normalizeData.data)) {
+                    setNormalize(normalizeData.data);
+                } else {
+                    console.error("Normalize data is not an array", normalizeData);
+                }
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                toast.error("error al cargar datos");
+            }
+        };
+        fetchData();
+    }, []);
 
     const onSubmit = async (data: FieldValues) => {
         if (currentFile && user?.nombre_usuario) {
@@ -732,14 +756,33 @@ export default function UpdateFiles({ FilesData, loadAccess }: UpdateFilesProps)
                             />
                         </Grid>
                         <Grid item xs={5}>
-                            <TextField
-                                fullWidth
-                                {...register('entidad', { required: 'Se necesita la nueva observacion' })}
-                                name="entidad"
-                                label="Entidad"
-                                value={currentFile.entidad?.toString() || ''}
-                                onChange={handleInputChange}
-                            />
+                            <FormControl fullWidth>
+                                <InputLabel id="entidad-label">Entidad</InputLabel>
+                                <Select
+                                    labelId="entidad-label"
+                                    {...register('entidad', { required: 'Se necesita el usuario' })}
+                                    name="entidad"
+                                    value={currentFile.entidad?.toString() || ""}
+                                    onChange={handleSelectChange}
+                                    label="Seleccionar Entidad"
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: 200, // Limita la altura del menú desplegable
+                                                width: 250,
+                                            },
+                                        },
+                                    }}
+
+                                >
+                                    {Array.isArray(normalize) && normalize.map((normalize) => (
+                                        <MenuItem key={normalize.id} value={normalize.empresa}>
+                                            {normalize.empresa}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {/*<FormHelperText>Lista desplegable</FormHelperText>*/}
+                            </FormControl>
                         </Grid>
 
                         <Grid item xs={12}>

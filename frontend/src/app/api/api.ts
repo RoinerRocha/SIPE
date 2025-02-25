@@ -72,9 +72,9 @@ const Account = {
   register: (values: any) => requests.post("register", values),
   currentUser: () => requests.get("currentUser"),
   getAllUser: () => requests.get("getUsers"),
-  updateUser: (accountId: any, accountData: any) => 
+  updateUser: (accountId: any, accountData: any) =>
     requests.put(`/updateUser/${accountId}`, accountData),
-  deleteUser: (id:number) =>requests.delete(`/deleteUser/${id}`),
+  deleteUser: (id: number) => requests.delete(`/deleteUser/${id}`),
   sendEmail: (values: any) => requests.post("sendEmails", values),
   newPasword: (values: any) => requests.post("updatePasswordByEmail", values)
 };
@@ -96,7 +96,7 @@ const Ubications = {
     requests.get(`/getDistrictByProvinciaCanton/${provincia}/${canton}`),
   getNeighborhoodByProvinciaCantonDistrict: (
     provincia: number, canton: number, distrito: number) =>
-    requests.get( `/getNeighborhoodByProvinciaCantonDistrict/${provincia}/${canton}/${distrito}`),
+    requests.get(`/getNeighborhoodByProvinciaCantonDistrict/${provincia}/${canton}/${distrito}`),
 }
 
 const AcountingAccounts = {
@@ -149,7 +149,7 @@ const newAsset = {
   updateNewAsset: (NewAssetId: any, NewAssetData: any) =>
     requests.put(`/newAssets/${NewAssetId}`, NewAssetData),
   deleteNewAsset: (id: number) => requests.delete(`deleteNewAsset/${id}`), //reviar x si da algun problema ya que en el back esta comentado esta funcion
-  getNewAssetById:(id: number) => requests.get(`/searchIdNewAsset/${id}`),
+  getNewAssetById: (id: number) => requests.get(`/searchIdNewAsset/${id}`),
   searchAssetsByZona: (zonaNombre: string) => requests.get(`/searchAssetsByZona?zonaNombre=${zonaNombre}`),  // Cambiado aquí
   getAssetByNumBoleta: (id: string) => requests.get(`/assetByNumBolet/boleta/${id}`),
   generateWordFile: (id: number) => requests.download(`/generateWord/${id}`),
@@ -157,15 +157,15 @@ const newAsset = {
   generateExcelFile: (id: number) => requests.download(`/generateExcelFile/${id}`),
   generateExcelFileForMultipleAssets: (ids: number[]) => requests.download(`/generateExcelFileMultipleAssets?ids=${ids.join(',')}`),
 
-  getAssetPositions:(zonaNombre: string) => requests.get(`getAssetPositions/${zonaNombre}`), //devuelve las posiciones de los activo poo zona
-  saveAssetPositions:(values: any) => requests.post("/saveAssetPositions", values),//posicion del activo en el mapa
+  getAssetPositions: (zonaNombre: string) => requests.get(`getAssetPositions/${zonaNombre}`), //devuelve las posiciones de los activo poo zona
+  saveAssetPositions: (values: any) => requests.post("/saveAssetPositions", values),//posicion del activo en el mapa
 };
 
 const assetRetirement = {
   saveAssetRetirement: (values: any) => requests.post("saveAssetRetirement", values),
   getAssetRetirements: () => requests.get("/getAssetRetirements"),
   updateAssetRetirement: (assetRetirementId: any, assetRetirementData: any) =>
-    requests.put(`/assetRetirements/${assetRetirementId}`,assetRetirementData),
+    requests.put(`/assetRetirements/${assetRetirementId}`, assetRetirementData),
   deleteAssetRetirement: (id: number) => requests.delete(`deleteAssetRetirement/${id}`),
   getAssetRetirementByNumeroBoleta: (id: string) => requests.get(`/assetRetirements/boleta/${id}`),
   getAssetRetirementPlate: (plate: string) => requests.get(`/assetRetirements/plate/${plate}`),
@@ -175,7 +175,7 @@ const assetRetirement = {
 const payments = {
   savePayments: (values: any) => requests.post("createPayment", values),
   updatePayments: (id_pago: any, paymentData: any) =>
-     requests.put(`/updatePayment/${id_pago}`, paymentData),//metodo comentado en el backend
+    requests.put(`/updatePayment/${id_pago}`, paymentData),//metodo comentado en el backend
   getPaymentsByIdentification: (identificacion: string) => requests.get(`/getPaymentsByPerson/${identificacion}`),
   getPaymentsByIDPersona: (id_persona: number) => requests.get(`/getPaymentsByIDPerson/${id_persona}`),
   getPaymentsByIDPago: (id_pago: number) => requests.get(`/getPaymentsByIDPago/${id_pago}`),
@@ -194,7 +194,7 @@ const depreciations = {
   saveDepreciation: (values: any) => requests.post("/saveDepreciation", values),
   getDepreciations: () => requests.get("/getDepreciations"),
   updateDepreciation: (depreciationId: any, depreciationData: any) =>
-    requests.put(`depreciations/${depreciationId}`, depreciationData ),
+    requests.put(`depreciations/${depreciationId}`, depreciationData),
   deleteDepreciation: (id: number) => requests.delete(`/deleteDepreciation/${id}`)
 }
 
@@ -206,84 +206,93 @@ const requirements = {
   getRequirementById: (id_requisito: number) => requests.get(`/getRequirementsById/${id_requisito}`),
   getRequirementByIdentification: (identificacion: string) => requests.get(`/getRequirementsByIdentification/${identificacion}`),
   updateRequirement: (id_requisito: any, requirementData: any) =>
-    requests.put(`updateRequirements/${id_requisito}`, requirementData ),
+    requests.put(`updateRequirements/${id_requisito}`, requirementData),
 }
 
 const referrals = {
   saveReferrals: (values: any) => requests.post("/createReferral", values),
   getAllReferrals: () => requests.get("/getAllReferrals"),
-  getReferralsById: (id_remision: number) =>  requests.get(`/getReferralsById/${id_remision}`),
+  getReferralsById: (id_remision: number) => requests.get(`/getReferralsById/${id_remision}`),
   updateReferrals: (id_remision: any, referralsData: any) =>
     requests.put(`updateReferrals/${id_remision}`, referralsData),
 }
 
 const referralsDetails = {
   saveReferralDetails: (values: any) => requests.post("/createReferralDetails", values),
-  getReferralDetailById: (id_dremision: number) =>  requests.get(`/getReferralsDetailsById/${id_dremision}`),
-  getReferralDetailByIdRemision: (id_remision: number) =>  requests.get(`/getReferralsDetailsByIdRemision/${id_remision}`),
+  getReferralDetailById: (id_dremision: number) => requests.get(`/getReferralsDetailsById/${id_dremision}`),
+  getReferralDetailByIdRemision: (id_remision: number) => requests.get(`/getReferralsDetailsByIdRemision/${id_remision}`),
   updateReferralsDetails: (id_dremision: any, referralDetailsData: any) =>
     requests.put(`updateReferralsDetails/${id_dremision}`, referralDetailsData),
 }
 
 const persons = {
-  savePersons: (values: any) => requests.post("/createPerson", values), 
+  savePersons: (values: any) => requests.post("/createPerson", values),
   getPersons: () => requests.get("/getPersons"),
   getAllDisabilities: () => requests.get("/getAllDisabilities"),
-  getPersonById:(id_persona: number) => requests.get(`/getPersonById/${id_persona}`),
-  getPersonHistoryChanges:(id_persona: number) => requests.get(`/getPersonHistoryChanges/${id_persona}`),
-  getPersonByIdentification:(numero_identifiacion: string) => requests.get(`/getPersonByIdentifcation/${numero_identifiacion}`),
-  updatePersons: (id_persona: any, usuario_sistema: string, personData: any) => 
+  getPersonById: (id_persona: number) => requests.get(`/getPersonById/${id_persona}`),
+  getPersonHistoryChanges: (id_persona: number) => requests.get(`/getPersonHistoryChanges/${id_persona}`),
+  getPersonByIdentification: (numero_identifiacion: string) => requests.get(`/getPersonByIdentifcation/${numero_identifiacion}`),
+  updatePersons: (id_persona: any, usuario_sistema: string, personData: any) =>
     requests.put(`updatePersons/${id_persona}/${usuario_sistema}`, personData),
   deletePersons: (id_persona: number) => requests.delete(`deletePersons/${id_persona}`),
 }
 
 const family = {
-  saveMembers: (values: any) => requests.post("/createFamilyMember", values), 
-  getMembersByPerson:(idpersona: number) => requests.get(`/getMemberByPerson/${idpersona}`),
-  getMembersByID:(idnucleo: number) => requests.get(`/getMemberByID/${idnucleo}`),
-  updateMember: (idnucleo: any, memberData: any) => 
+  saveMembers: (values: any) => requests.post("/createFamilyMember", values),
+  getMembersByPerson: (idpersona: number) => requests.get(`/getMemberByPerson/${idpersona}`),
+  getMembersByID: (idnucleo: number) => requests.get(`/getMemberByID/${idnucleo}`),
+  updateMember: (idnucleo: any, memberData: any) =>
     requests.put(`updateMember/${idnucleo}`, memberData),
   deleteMember: (idnucleo: number) => requests.delete(`deleteMember/${idnucleo}`),
 }
 
 const contacts = {
-  saveContacts: (values: any) => requests.post("/createContact", values), 
+  saveContacts: (values: any) => requests.post("/createContact", values),
   getContacts: () => requests.get("/getAllContacts"),
-  getContactsByPerson:(id_persona: number) => requests.get(`/getContactsByPerson/${id_persona}`),
-  getContactsByID:(id_contacto: number) => requests.get(`/getContactsByID/${id_contacto}`),
-  updateContacts: (id_contacto: any, contactData: any) => 
+  getContactsByPerson: (id_persona: number) => requests.get(`/getContactsByPerson/${id_persona}`),
+  getContactsByID: (id_contacto: number) => requests.get(`/getContactsByID/${id_contacto}`),
+  updateContacts: (id_contacto: any, contactData: any) =>
     requests.put(`updateContacts/${id_contacto}`, contactData),
   deleteContacts: (id_contacto: number) => requests.delete(`deleteContacts/${id_contacto}`),
 }
 
 const directions = {
-  saveDirections: (values: any) => requests.post("/createDireccion", values), 
+  saveDirections: (values: any) => requests.post("/createDireccion", values),
   getDirections: () => requests.get("/getAllDirections"),
-  getDireccionesByPersona:(id_persona: number) => requests.get(`/getDireccionesByPersona/${id_persona}`),
-  getDireccionesByID:(id_direccion: number) => requests.get(`/getDireccionesByID/${id_direccion}`),
-  updateDirections: (id_direccion: any, directionData: any) => 
+  getDireccionesByPersona: (id_persona: number) => requests.get(`/getDireccionesByPersona/${id_persona}`),
+  getDireccionesByID: (id_direccion: number) => requests.get(`/getDireccionesByID/${id_direccion}`),
+  updateDirections: (id_direccion: any, directionData: any) =>
     requests.put(`updateDireccion/${id_direccion}`, directionData),
   deleteDirections: (id_direccion: number) => requests.delete(`deleteDireccion/${id_direccion}`),
 }
 
 const incomes = {
-  saveIncomes: (values: any) => requests.post("/createIncome", values), 
+  saveIncomes: (values: any) => requests.post("/createIncome", values),
   getIncomes: () => requests.get("/getAllIncomes"),
-  getSegmentos:(segmento: string) => requests.get(`/getSegmentos/${segmento}`),
-  getIncomesByPerson:(id_persona: number) => requests.get(`/getIncomesByPerson/${id_persona}`),
-  getIncomesByID:(id_ingreso: number) => requests.get(`/getIncomesByID/${id_ingreso}`),
-  updateIncomes: (id_ingreso: any, contactData: any) => 
+  getSegmentos: (segmento: string) => requests.get(`/getSegmentos/${segmento}`),
+  getIncomesByPerson: (id_persona: number) => requests.get(`/getIncomesByPerson/${id_persona}`),
+  getIncomesByID: (id_ingreso: number) => requests.get(`/getIncomesByID/${id_ingreso}`),
+  updateIncomes: (id_ingreso: any, contactData: any) =>
     requests.put(`updateIncome/${id_ingreso}`, contactData),
   deleteIncomes: (id_ingreso: number) => requests.delete(`deleteIncome/${id_ingreso}`),
 }
 
-const history ={
+const normalizers = {
+  saveNormalizer: (values: any) => requests.post("/createNormalizers", values),
+  getAllNormalizers: () => requests.get("/getAllNormalizers"),
+  getNormalizerById: (id: number) => requests.get(`/getNormalizersById/${id}`),
+  getNormalizeByCompany: (empresa: string) => requests.get(`/getNormalizeByCompany/${empresa}`),
+  updateNormalizers: (id: any, normlizerData: any) =>
+    requests.put(`updateNormalizers/${id}`, normlizerData),
+}
+
+const history = {
   getAllFiles: () => requests.get("/getAllFiles"),
-  getFilesByCode:(codigo: number) => requests.get(`/getFilesByCode/${codigo}`),
-  getFilesByIdPerson:(id_persona: number) => requests.get(`/getFilesByIdPerson/${id_persona}`),
-  getFilesByPerson:(identificacion: string) => requests.get(`/getFilesByPerson/${identificacion}`),
-  getHistoryFiles:(codigo: number) => requests.get(`/getHistoryFiles/${codigo}`),
-  updateFiles: (codigo: any, usuario_sistema: string, filesData: any) => 
+  getFilesByCode: (codigo: number) => requests.get(`/getFilesByCode/${codigo}`),
+  getFilesByIdPerson: (id_persona: number) => requests.get(`/getFilesByIdPerson/${id_persona}`),
+  getFilesByPerson: (identificacion: string) => requests.get(`/getFilesByPerson/${identificacion}`),
+  getHistoryFiles: (codigo: number) => requests.get(`/getHistoryFiles/${codigo}`),
+  updateFiles: (codigo: any, usuario_sistema: string, filesData: any) =>
     requests.put(`updateFiles/${codigo}/${usuario_sistema}`, filesData),
 }
 const api = {
@@ -310,6 +319,7 @@ const api = {
   referralsDetails,
   incomes,
   Ubications,
+  normalizers,
 };
 
 export default api;

@@ -361,5 +361,4 @@ export default function ReferraltList({ referrals: referrals, setReferrals: setR
             </Dialog>
         </Grid>
     )
-
 }

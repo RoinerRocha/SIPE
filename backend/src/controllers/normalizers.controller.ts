@@ -125,3 +125,18 @@ export const getNormalizeByCompany = async (req: Request, res: Response): Promis
         res.status(500).json({ error: error.message });
     }
 };
+
+export const getUniqueCompanies = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const companies = await sequelize.query(
+            `EXEC sp_gestion_normalizadores @accion = 'E'`,
+            {
+                type: QueryTypes.SELECT,
+            }
+        );
+
+        res.status(200).json({ message: "Lista de empresas únicas", data: companies });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+};
